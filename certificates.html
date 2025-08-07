@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MergeScholars Certificate Verification</title>
+
+<!-- Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    user-select: none;
+    transition: background-color 0.5s, color 0.5s;
+  }
+
+  /* THEME STYLES */
+
+  body.bonita {
+    background-color: #f4e1c1;
+    color: #5a381e;
+  }
+  body.bonita #main {
+    background: rgba(244, 225, 193, 0.85);
+    border-color: #c28e47;
+    box-shadow: 0 0 15px #c28e47;
+  }
+  body.bonita input[type="text"] {
+    border-color: #c28e47;
+    background: #fff6e8;
+    color: #5a381e;
+  }
+  body.bonita input[type="text"]:focus {
+    border-color: #a56b1d;
+    box-shadow: 0 0 10px #a56b1d;
+  }
+  body.bonita button {
+    background: #c28e47;
+    color: white;
+    box-shadow: 0 0 10px #c28e47;
+  }
+  body.bonita button:hover {
+    box-shadow: 0 0 20px #a56b1d;
+  }
+  body.bonita #message {
+    color: #5a381e;
+    text-shadow: none;
+  }
+  body.bonita #flag-container {
+    display: none; /* hide flag container completely */
+  }
+  body.bonita #whatsapp-btn {
+    background: #25D366;
+    box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  }
+
+  body.sunora {
+    background-color: #0a0f22;
+    color: #0ff;
+  }
+  body.sunora #main {
+    background: rgba(10, 15, 34, 0.85);
+    border-color: #0ff;
+    box-shadow: 0 0 15px #0ff;
+  }
+  body.sunora input[type="text"] {
+    border-color: #0ff;
+    background: #001122;
+    color: #0ff;
+  }
+  body.sunora input[type="text"]:focus {
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
+  body.sunora button {
+    background: #0ff;
+    color: black;
+    box-shadow: 0 0 10px #0ff;
+  }
+  body.sunora button:hover {
+    box-shadow: 0 0 20px #0ff;
+  }
+  body.sunora #message {
+    color: #0ff;
+    text-shadow: none;
+  }
+  body.sunora #flag-container {
+    display: none; /* hide flag container */
+  }
+  body.sunora #whatsapp-btn {
+    background: #25D366;
+    box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  }
+
+  body.luna {
+    background-color: #fcfcfc;
+    color: #444;
+  }
+  body.luna #main {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #888;
+    box-shadow: 0 0 15px #888;
+  }
+  body.luna input[type="text"] {
+    border-color: #888;
+    background: #fff;
+    color: #444;
+  }
+  body.luna input[type="text"]:focus {
+    border-color: #555;
+    box-shadow: 0 0 10px #555;
+  }
+  body.luna button {
+    background: #555;
+    color: white;
+    box-shadow: 0 0 10px #555;
+  }
+  body.luna button:hover {
+    box-shadow: 0 0 20px #333;
+  }
+  body.luna #message {
+    color: #444;
+    text-shadow: none;
+  }
+  body.luna #flag-container {
+    display: none; /* hide flag container */
+  }
+  body.luna #whatsapp-btn {
+    background: #25D366;
+    box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  }
+
+  #earth-container {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0;
+  }
+
+  #main {
+    position: relative;
+    z-index: 10;
+    max-width: 450px;
+    margin: 4vh auto;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 2px solid currentColor;
+  }
+
+  h1 {
+    margin-top: 0;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    border: 2px solid currentColor;
+    background-color: transparent;
+    color: inherit;
+  }
+
+  input.shake {
+    animation: shake 0.3s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  button {
+    margin-top: 1rem;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+  }
+
+  #message {
+    margin-top: 1rem;
+    min-height: 6rem;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    font-family: monospace;
+    line-height: 1.3;
+  }
+
+  #action-buttons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  #action-buttons button {
+    flex: 1;
+  }
+
+  /* WhatsApp floating button */
+  #whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #25D366, 0 0 30px #25D366;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    transition: transform 0.2s ease;
+    background-color: #25D366;
+  }
+
+  #whatsapp-btn:hover {
+    transform: scale(1.1);
+  }
+
+  #whatsapp-btn svg {
+    fill: white;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Theme toggle button */
+  #theme-toggle-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 25;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  #theme-toggle-container button {
+    padding: 0.4rem 0.8rem;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    background-color: transparent;
+    color: inherit;
+  }
+
+  #theme-toggle-container button:hover,
+  #theme-toggle-container button:focus {
+    border-color: currentColor;
+  }
+
+  /* Notification toast */
+  #toast {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: rgba(0,0,0,0.85);
+    color: #0ff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 0 0 15px #0ff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    z-index: 100;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  #toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+</style>
+</head>
+<body class="sunora">
+
+<div id="earth-container"></div>
+
+<div id="main" role="main" aria-label="Certificate verification section">
+  <h1>Certificate Verification</h1>
+  <label for="cert-id">Enter your Certificate ID:</label>
+  <input type="text" id="cert-id" placeholder="e.g. MS2025080701" maxlength="20" autocomplete="off" aria-describedby="message" />
+  <button id="verify-btn">Verify Certificate</button>
+  <div id="message" aria-live="polite"></div>
+  <div id="action-buttons" style="display:none;">
+    <button id="download-pdf-btn" aria-label="Download Certificate PDF">Download Certificate PDF</button>
+    <button id="copy-link-btn" aria-label="Copy shareable verification link">Copy Shareable Link</button>
+  </div>
+</div>
+
+<!-- Removed flag-container completely -->
+
+<div id="whatsapp-btn" title="Contact Support via WhatsApp" role="button" aria-label="Contact Support via WhatsApp" tabindex="0">
+  <!-- Updated WhatsApp Icon SVG -->
+  <svg viewBox="0 0 448 512" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path d="M380.9 97.1C339-2.9 235.7-24.2 158.6 43.2c-47 45.7-50.5 115.9-39 175.8-43.5-13-80.7-48.6-80.8-109.1-1.1-77.2 73.6-139.1 134.5-118.3 26.6 9.3 43.5 28.6 54.8 45.7 18.3 27.8 21.9 72.6 15.6 109.7-6 33.4-32 50-47 64.2-21.3 20.2-27.9 27.9-44 35.8 17.7 5.2 38.6 6.8 58 3.5 38.4-6.6 64.2-31.8 81.7-60.8 9.7-16.7 16.8-36.4 18-57.1 0-12.6-5.8-23.4-16.1-30.6zM319.4 383c-3.9 1.6-8 3.3-12.3 5.2-19.2 8.9-32.9 14.3-47.3 22.8-20.7 12.4-45.7 29.4-66.2 40.4-29.8 15.3-56.4 23.4-83.5 12.4-15.3-6.3-29.1-23.4-34.4-39.4-6.2-19.8-4.2-43.8 2-66.3 10-38.8 40.5-67.6 81-78.6 33.9-8.7 68.8-1.7 98.3 8.5 21.9 7.2 40.4 18.9 52.9 37.2 4.7 7.6 8.8 16.5 11.2 26.1 1.3 5.2 1.9 11.1 1.7 17.5-.3 11.6-3.7 20.7-9.2 27.7-3.8 5-7.3 7.9-12.6 10z"/>
+  </svg>
+</div>
+
+<div id="theme-toggle-container" aria-label="Theme selection">
+  <button type="button" data-theme="bonita" aria-pressed="false">Bonita Dessert</button>
+  <button type="button" data-theme="sunora" aria-pressed="true">Sunora Moon</button>
+  <button type="button" data-theme="luna" aria-pressed="false">Luna Bella</button>
+</div>
+
+<div id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <script>
+  // Certificate data - Add more certificates here
+  const validCertificates = {
+    "2016345022": {
+      name: "Ishtiak Ahmed Mozumder",
+      nationality: "Bangladesh",
+      event: "Physics Zoom Session",
+      date: "August 7, 2025",
+      issuer: "MergeScholars Founder"
+    },
+    "2016345023": {
+      name: "Fabiha Kaisar Tisha",
+      nationality: "Bangladesh",
+      event: "Cute Pretty Girl",
+      date: "August 7, 2025",
+      issuer: "MergeScholars Organizer"
+    },
+    "2016345024": {
+      name: "Zarin Tasnim",
+      nationality: "Bangladesh",
+      event: "Quantum Mechanics Webinar",
+      date: "July 27, 2025",
+      issuer: "MergeScholars Team"
+    },
+    "2016345025": {
+      name: "Md. Arif Hossain",
+      nationality: "Bangladesh",
+      event: "Intro to Astrophysics",
+      date: "July 30, 2025",
+      issuer: "MergeScholars Team"
+    }
+  };
+</script>
+<script>
+  const certInput = document.getElementById('cert-id');
+  const verifyBtn = document.getElementById('verify-btn');
+  const messageDiv = document.getElementById('message');
+  const downloadPdfBtn = document.getElementById('download-pdf-btn');
+  const copyLinkBtn = document.getElementById('copy-link-btn');
+  const actionButtonsDiv = document.getElementById('action-buttons');
+  const toast = document.getElementById('toast');
+  const whatsappBtn = document.getElementById('whatsapp-btn');
+
+  let currentCert = null;
+
+  // Typing effect helper - super fast (~2 sec total for full text)
+  async function typeText(element, text) {
+    element.textContent = "";
+    const totalDuration = 2000; // 2 seconds total
+    const delay = totalDuration / text.length;
+    for (const char of text) {
+      element.textContent += char;
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Verification logic
+  async function verifyCertificate() {
+    const id = certInput.value.trim().toUpperCase();
+    if (id.length < 10) {
+      certInput.classList.add('shake');
+      messageDiv.style.color = '';
+      messageDiv.style.textShadow = '';
+      messageDiv.textContent = "Certificate ID must be at least 10 characters.";
+      setTimeout(() => certInput.classList.remove('shake'), 400);
+      actionButtonsDiv.style.display = 'none';
+      currentCert = null;
+      return;
+    }
+    if (!(id in validCertificates)) {
+      messageDiv.style.color = '#ff0066';
+      messageDiv.style.textShadow = '0 0 10px #ff3399';
+      await typeText(messageDiv, "Invalid Certificate ID.\nPlease contact support via WhatsApp.");
+      actionButtonsDiv.style.display = 'none';
+      currentCert = null;
+      return;
+    }
+
+    // Valid certificate found
+    currentCert = validCertificates[id];
+    messageDiv.style.color = '';
+    messageDiv.style.textShadow = '';
+    const infoText =
+      `Certificate Verified!\n\n` +
+      `Name: ${currentCert.name}\n` +
+      `Event: ${currentCert.event}\n` +
+      `Date: ${currentCert.date}\n` +
+       `Nationality: ${currentCert.nationality}\n` +
+      `Certificate ID: ${id}`;
+
+    await typeText(messageDiv, infoText);
+    actionButtonsDiv.style.display = 'flex';
+  }
+
+  verifyBtn.addEventListener('click', verifyCertificate);
+  certInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') {
+      verifyCertificate();
+    }
+  });
+
+  // PDF generation - improved professional style
+  downloadPdfBtn.addEventListener('click', () => {
+    if (!currentCert) return;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      unit: 'pt',
+      format: 'a4',
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 50;
+    const usableWidth = pageWidth - margin * 2;
+
+    // White background
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+    // Border
+    doc.setDrawColor(0, 51, 102);
+    doc.setLineWidth(1.5);
+    doc.rect(margin/2, margin/2, pageWidth - margin, pageHeight - margin);
+
+    // Title: MergeScholars top-left
+    doc.setFont('Lora', 'bold');
+    doc.setFontSize(25);
+    doc.setTextColor(0, 51, 102);
+    doc.text('MergeScholars', margin, margin + 25);
+
+    // Subtitle
+    doc.setFontSize(14);
+    doc.setFont('Cormorant Garamond', );
+    doc.setTextColor(70, 70, 70);
+    doc.text('Certificate Verification Test Copy', margin, margin + 50);
+
+    // Main content text
+    doc.setFont('times', 'normal');
+    doc.setFontSize(14);
+    doc.setTextColor(0);
+    const mainText = 
+      `This is to formally verify that ${currentCert.name} has been awarded an official certificate for his/her exceptional participation in the academic and creative event titled "${currentCert.event}" hosted by MergeScholars on ${currentCert.date}.\n\n` +
+      `Throughout the event, ${currentCert.name} demonstrated a high level of enthusiasm, creativity, and engagement.
+      His/Her contributions stood out not only for their quality 
+      but also for the sincerity and dedication with which she approached each activity. 
+      Participants like her reflect the mission of MergeScholars — to empower students 
+      through collaboration, curiosity, and global academic exchange.
+      
+      We were truly impressed by ${currentCert.name}’s commitment to the event 
+      and her willingness to contribute positively to the learning environment. 
+      It is our belief that they possesses the potential to excel further
+      and contribute meaningfully to both academic and extracurricular 
+      platforms in the future.\n\n` +
+      `Certificate ID: ${certInput.value.trim().toUpperCase()}\n\n` +
+      `Country: ${currentCert.nationality}\n\n` +
+      `Issued by: MergeScholars Certificate Verification Team
+    Issued on: ${currentCert.date}\n\n` +
+      `Note:
+    This document is a verified confirmation copy and not the original certificate. 
+      It has been issued by the MergeScholars Verification Team solely 
+      for validation purposes.
+
+      For further authentication or to verify this certificate independently,
+      please visit:
+      https://mergescholars.vercel.app/
+      and enter the Certificate ID provided above in the verification section.`;
+
+    const splitText = doc.splitTextToSize(mainText, usableWidth);
+    doc.text(splitText, margin, margin + 90);
+
+    // Signature - bottom right corner
+    const sigX = pageWidth - margin - 160;
+    const sigY = pageHeight - margin - 60;
+
+    doc.setFont('Indie Flower', 'italic');
+    doc.setFontSize(30);
+    doc.setTextColor(30, 30, 80);
+    doc.text('Istiak', sigX, sigY);
+
+    doc.setFont('times', 'normal');
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text('Ishtiak Ahmed Mozumder', sigX, sigY + 20);
+    doc.text('Founder, MergeScholars', sigX, sigY + 36);
+
+    // Save file with clean filename
+    doc.save(`MergeScholars_Verification_${currentCert.name.replace(/\s+/g, '_')}.pdf`);
+  });
+
+  // Copy shareable link
+  copyLinkBtn.addEventListener('click', () => {
+    if (!currentCert) return;
+    const baseUrl = window.location.origin + window.location.pathname;
+    const certIdParam = encodeURIComponent(certInput.value.trim().toUpperCase());
+    const shareUrl = `${baseUrl}?cert=${certIdParam}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast('Shareable link copied to clipboard!');
+    });
+  });
+
+  // Auto-verify if URL has cert param
+  window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const certParam = urlParams.get('cert');
+    if (certParam) {
+      certInput.value = certParam.toUpperCase();
+      verifyCertificate();
+    }
+  });
+
+  // WhatsApp support button
+  whatsappBtn.addEventListener('click', () => {
+    const idText = certInput.value.trim() || '';
+    const msg = encodeURIComponent(`Hello MergeScholars! I need help verifying my certificate. My certificate ID is ${idText}`);
+    const url = `https://wa.me/8801577256859?text=${msg}`;
+    window.open(url, '_blank');
+  });
+
+  // 3D Earth setup
+  function createEarth() {
+    const container = document.getElementById('earth-container');
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+
+    // Detailed Earth textures
+    const textureLoader = new THREE.TextureLoader();
+    const earthTexture = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthmap4k.jpg'); 
+    const bumpMap = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthbump4k.jpg');
+    const specularMap = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthspec4k.jpg');
+
+    const geometry = new THREE.SphereGeometry(1, 128, 128);
+    const material = new THREE.MeshPhongMaterial({
+      map: earthTexture,
+      bumpMap: bumpMap,
+      bumpScale: 0.05,
+      specularMap: specularMap,
+      specular: new THREE.Color('grey'),
+      shininess: 10,
+    });
+
+    const earth = new THREE.Mesh(geometry, material);
+    scene.add(earth);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 3, 5);
+    scene.add(directionalLight);
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+    scene.add(ambientLight);
+
+    let rotation = { x: 0, y: 0 };
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    container.style.cursor = 'grab';
+
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+      container.style.cursor = 'grabbing';
+    });
+
+    container.addEventListener('mouseup', () => {
+      isDragging = false;
+      container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mouseleave', () => {
+      isDragging = false;
+      container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const deltaMove = {
+          x: e.clientX - previousMousePosition.x,
+          y: e.clientY - previousMousePosition.y,
+        };
+        rotation.y += deltaMove.x * 0.005;
+        rotation.x += deltaMove.y * 0.005;
+        rotation.x = Math.min(Math.max(rotation.x, -Math.PI / 2), Math.PI / 2);
+
+        earth.rotation.y = rotation.y;
+        earth.rotation.x = rotation.x;
+
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      }
+    });
+
+    container.addEventListener('wheel', e => {
+      e.preventDefault();
+      camera.position.z += e.deltaY * 0.0025;
+      camera.position.z = Math.min(Math.max(camera.position.z, 1.5), 5);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      earth.rotation.y += 0.0004; // slow continuous rotation
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      const widthNew = container.clientWidth;
+      const heightNew = container.clientHeight;
+      renderer.setSize(widthNew, heightNew);
+      camera.aspect = widthNew / heightNew;
+      camera.updateProjectionMatrix();
+    });
+  }
+
+  // THEME TOGGLE LOGIC
+  const themeButtons = document.querySelectorAll('#theme-toggle-container button');
+
+  function setTheme(themeName) {
+    document.body.classList.remove('bonita', 'sunora', 'luna');
+    document.body.classList.add(themeName);
+
+    // Update aria-pressed attributes for accessibility
+    themeButtons.forEach(btn => {
+      btn.setAttribute('aria-pressed', btn.dataset.theme === themeName ? 'true' : 'false');
+    });
+
+    showToast(`Theme changed to ${themeName.replace(/^\w/, c => c.toUpperCase())}`);
+  }
+
+  themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      setTheme(button.dataset.theme);
+    });
+  });
+
+
+
+</script>
+
+</body>
+</html>
