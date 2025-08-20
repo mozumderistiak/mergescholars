@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MergeScholars — Research Articles</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+  <!-- jsPDF (required for PDF downloads) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#fff;
+      --card:#fff;
+      --text:#122;
+      --muted:#6b7280;
+      --accent:#ff7a59; /* dessert accent fallback */
+      --glass: rgba(255,255,255,0.4);
+      --neon: rgba(255,122,89,0.16);
+      --card-radius:14px;
+      --shadow: 0 6px 22px rgba(16,24,40,0.08);
+      --glass-blur: blur(8px);
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Light theme */
+    body.light{
+      --bg: #F7FAFC;
+      --card: #FFFFFF;
+      --text: #0B1220;
+      --muted: #61707A;
+      --accent: #2B6CB0;
+      --glass: rgba(255,255,255,0.6);
+      --neon: rgba(43,108,176,0.14);
+      --shadow: 0 8px 30px rgba(11,18,32,0.06);
+    }
+
+    /* Dark theme */
+    body.dark{
+      --bg:#0b1220;
+      --card:#0f1724;
+      --text:#E6EEF4;
+      --muted:#9aa6b2;
+      --accent:#7dd3fc;
+      --glass: rgba(255,255,255,0.03);
+      --neon: rgba(125,211,252,0.08);
+      --shadow: 0 8px 40px rgba(2,6,23,0.6);
+    }
+
+    /* Dessert theme (warm dessert colors) */
+    body.dessert{
+      --bg: linear-gradient(180deg, #FFF7EE 0%, #FFF4E8 100%);
+      --card: #FFF9F5;
+      --text: #39231A;
+      --muted: #7B5A4A;
+      --accent: #D97A3B; /* caramel */
+      --glass: rgba(255, 255, 255, 0);
+      --neon: rgba(217,122,59,0.14);
+      --shadow: 0 8px 36px rgba(58,30,10,0.06);
+      --card-radius:16px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:var(--font-sans);
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:28px auto;
+      padding:20px;
+      box-sizing:border-box;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .logo{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      font-weight:700;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .logo .mark{
+      width:46px;
+      height:46px;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.12), rgba(0,0,0,0.04));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:var(--shadow);
+      font-weight:800;
+      color:var(--accent);
+      font-size:18px;
+    }
+
+/* menu */
+.menu-wrap{
+  position:relative;
+}
+
+.menu-btn{
+  border-radius:10px;
+  padding:8px 10px;
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  cursor:pointer;
+  min-width:80px;
+  justify-content:center;
+  font-weight:600;
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.02));
+  backdrop-filter: blur(6px);
+  border:1px solid rgba(0,0,0,0.06);
+  color:var(--text);
+}
+
+.menu-panel{
+  position:absolute;
+  right:0;
+  top:110%;
+  transform-origin: top right;
+  min-width:220px;
+  padding:12px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(8px);
+  box-shadow:0 10px 30px rgba(2,6,23,0.12);
+  border:1px solid rgba(255,255,255,0.05);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:30;
+  opacity:0;
+  pointer-events:none;
+  transform: translateY(-6px) scale(.98);
+  transition: all .18s ease;
+}
+
+.menu-wrap.open .menu-panel{
+  opacity:1;
+  pointer-events:auto;
+  transform: translateY(0) scale(1);
+}
+
+.menu-panel a{
+  text-decoration:none;
+  color:var(--text);
+  padding:8px;
+  border-radius:8px;
+  font-weight:600;
+  display:block;
+}
+
+.menu-panel a:hover{ background: rgba(255,255,255,0.03); }
+
+.theme-controls{
+  display:flex;
+  gap:8px;
+  margin-top:6px;
+}
+
+/* Fixed hover: count the whole menu-wrap AND menu-panel */
+.menu-wrap:hover .menu-panel,
+.menu-wrap:focus-within .menu-panel,
+.menu-panel:hover{
+  opacity:1;
+  pointer-events:auto;
+  transform: translateY(0) scale(1);
+}
+
+    .menu-panel a:hover{ background: rgba(255,255,255,0.03); }
+
+    .theme-controls{
+      display:flex;
+      gap:8px;
+      margin-top:6px;
+    }
+
+    .theme-controls button{
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.06);
+      cursor:pointer;
+      font-weight:700;
+      background:transparent;
+    }
+
+    /* title and intro */
+    .page-title{
+      font-size:20px;
+      font-weight:800;
+      display:block;
+      margin-bottom:6px;
+    }
+    .page-sub{
+      color:var(--muted);
+      line-height:1.45;
+      margin-bottom:12px;
+      font-size:0.98rem;
+      background:transparent;
+    }
+
+    /* controls row */
+    .controls{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .search{
+      flex:1 1 420px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .search input{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:var(--card);
+      box-shadow:var(--shadow);
+      font-size:0.95rem;
+      color:var(--text);
+    }
+
+    .sort{
+      min-width:160px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    select{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:var(--card);
+      box-shadow:var(--shadow);
+      color:var(--text);
+      font-weight:600;
+    }
+
+    /* articles list */
+    .articles{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .article-box{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:16px;
+      border-radius:var(--card-radius);
+      background:var(--card);
+      box-shadow:var(--shadow);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      border:1px solid rgba(0,0,0,0.03);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* neon hover: subtle glow but high intensity */
+    .article-box:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 0 40px var(--neon);
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    .article-thumb{
+      width:120px;
+      height:120px;
+      flex:0 0 120px;
+      background:#eee;
+      border-radius:8px;
+      overflow:hidden;
+      display:block;
+    }
+    .article-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .article-content{
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .article-title{
+      font-size:1.08rem;
+      font-weight:800;
+      margin:0;
+      color:var(--text);
+    }
+
+    .article-meta{
+      color:var(--muted);
+      font-weight:600;
+      font-size:0.9rem;
+      line-height:1.2;
+    }
+
+    .article-tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .tag{
+      padding:6px 8px;
+      border-radius:8px;
+      background: rgba(0,0,0,0.03);
+      font-weight:700;
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+
+    .article-summary{
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.45;
+      max-height:3.4rem;
+      overflow:hidden;
+      transition: max-height .28s ease;
+    }
+    .article-summary.expanded{
+      max-height: 1000px;
+    }
+
+    .article-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-top:8px;
+    }
+    .btn{
+      padding:8px 10px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      background:var(--accent);
+      color:#fff;
+    }
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      color:var(--text);
+    }
+
+    /* single small box inside article for read more & download */
+    .small-box{
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:var(--card);
+      cursor:pointer;
+      font-weight:700;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* footer (user-provided) styling will integrate with theme */
+    footer{
+      text-align:center;
+      padding:16px 10px;
+      font-size:0.9rem;
+      color:var(--muted);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+      margin-top:40px;
+      border-radius:8px;
+    }
+
+    /* floating buttons */
+    .floating-top{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:56px;
+      height:56px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      z-index:40;
+      background:linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 60%, black 10%));
+      color:white;
+      border: 2px solid rgba(255,255,255,0.12);
+      transition: transform .16s ease, box-shadow .16s;
+      outline: none;
+    }
+    .floating-top:hover{ transform: translateY(-6px); box-shadow:0 18px 50px rgba(0,0,0,0.28); }
+
+    .floating-contact{
+      position:fixed;
+      left:18px;
+      bottom:18px;
+      background:var(--card);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:var(--shadow);
+      z-index:40;
+      text-decoration:none;
+      font-weight:700;
+    }
+
+    /* mobile adjustments */
+    @media (max-width:820px){
+      .wrap{ padding:14px; margin:14px; }
+      .article-box{ flex-direction:row; gap:12px; padding:12px; }
+      .article-thumb{ width:94px; height:94px; flex:0 0 94px; }
+      .article-title{ font-size:1rem; }
+      .menu-panel{ right:0; left:auto; min-width:200px; }
+      header{ gap:8px; flex-wrap:wrap; }
+    }
+
+    @media (max-width:520px){
+      .article-box{ flex-direction:column; align-items:stretch; }
+      .article-thumb{ width:100%; height:180px; flex:0 0 auto; border-radius:12px; }
+      .article-content{ padding:6px 2px 2px 2px; }
+      .controls{ flex-direction:column; align-items:stretch; gap:10px; }
+      .search{ order:0; }
+      .sort{ order:1; align-self:flex-end; }
+    }
+
+    /* small niceties */
+    .muted{ color:var(--muted); font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="logo" href="index.html" title="Back to index">
+        <div class="mark">MS</div>
+        <div>
+          <div style="font-size:1.05rem">MergeScholars</div>
+          <div style="font-size:0.78rem; color:var(--muted); font-weight:700">Research Articles</div>
+        </div>
+      </a>
+
+      <div class="menu-wrap" id="menuWrap">
+        <div class="menu-btn" id="menuBtn">Menu ▾</div>
+
+        <div class="menu-panel" id="menuPanel" aria-hidden="true">
+          <a href="index.html">Home</a>
+          <a href="Scholars Talk.html">Scholars Talk</a>
+          <a href="Explore Subjects.html">Explore subjects</a>
+          <a href="Certificate Verification.html">Certificate verification</a>
+          <a href="about us.html">About us</a>
+          <a href="Join US.html">Join US</a>
+          <a href="contact us.html">Contact us</a>
+
+          <div style="height:1px; background: rgba(0,0,0,0.04); margin:6px 0;"></div>
+
+          <div class="muted" style="font-size:0.85rem; padding:4px 0;">Themes</div>
+          <div class="theme-controls">
+            <button data-theme="dark" title="Dark theme">Dark</button>
+            <button data-theme="light" title="Light theme">Light</button>
+            <button data-theme="dessert" title="Dessert theme">Dessert</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div>
+        <div class="page-title">MergeScholars Research Articles</div>
+        <div class="page-sub">
+          Our main purpose is to connect dedicated students from underprivileged backgrounds with opportunities for free education and to provide them with research insights from top-class professors and researchers around the world. We actively collaborate with global scholars who generously share their knowledge to support passionate learners like you. All the articles below are written directly by professors and researchers, and are published here with their permission. These articles are original contributions, not taken from any other sources.
+        </div>
+      </div>
+
+      <div class="controls" style="margin-bottom:18px;">
+        <div class="search">
+          <input id="search" placeholder="Search by title, author, tags, country, subject..." />
+        </div>
+
+        <div class="sort">
+          <select id="sortSelect" title="Sort articles">
+            <option value="recent">Recently added</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+      </div>
+
+      <section class="articles" id="articlesList">
+        <!-- Article cards will be injected here -->
+      </section>
+    </main>
+
+    <!-- Footer (user-provided) -->
+    <footer style="text-align:center; padding:16px 10px; font-size:0.9rem; color:var(--muted); background:rgba(255,255,255,0.05); backdrop-filter:blur(6px); margin-top:40px;">
+      &copy; <span id="currentYear"></span> MergeScholars. All rights reserved. Connecting students with global scholars.
+    </footer>
+
+  </div>
+
+  <!-- Floating contact & scroll-to-top -->
+  <a class="floating-contact" href="contact us.html">Contact Us</a>
+  <button class="floating-top" id="scrollTop" title="Back to top">⬆</button>
+
+  <script>
+    // --- device detection ---
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent) || window.innerWidth < 740;
+    if(isMobile) document.body.classList.add('mobile');
+
+    // --- theme detection: dessert by default for light mode; dark if user prefers dark ---
+    function applyTheme(theme){
+      document.body.classList.remove('light','dark','dessert');
+      document.body.classList.add(theme);
+      // small tweak: dessert is considered the default 'light' look; if theme == 'light' we keep dessert as user wanted?
+      // But respecting user's explicit choice:
+      localStorage.setItem('ms-theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('ms-theme');
+    if(savedTheme){
+      applyTheme(savedTheme);
+    } else {
+      if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        applyTheme('dark');
+      } else {
+        applyTheme('dessert'); // desert/dessert default in light mode
+      }
+    }
+
+    // wire up theme buttons
+    document.querySelectorAll('[data-theme]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        applyTheme(btn.getAttribute('data-theme'));
+      });
+    });
+
+    // --- menu open/close behavior ---
+    const menuWrap = document.getElementById('menuWrap');
+    const menuBtn = document.getElementById('menuBtn');
+
+    // Desktop: open on hover, mobile: open on tap/click
+    if(isMobile){
+      menuBtn.addEventListener('click', (e)=>{
+        menuWrap.classList.toggle('open');
+      });
+      // close when tapping outside
+      document.addEventListener('click', (e)=>{
+        if(!menuWrap.contains(e.target)) menuWrap.classList.remove('open');
+      });
+    } else {
+      menuWrap.addEventListener('mouseenter', ()=> menuWrap.classList.add('open'));
+      menuWrap.addEventListener('mouseleave', ()=> menuWrap.classList.remove('open'));
+    }
+
+    // --- dummy article data (5) ---
+    const articlesData = [
+      {
+        id:1,
+        title: "Improving Density Functional Theory with the PBE Functional",
+        author: "Professor John P. Perdew",
+        institution: "Temple University",
+        country: "United States of America",
+        profession: "Laura H. Carnell Professor of Physics and Chemistry",
+        date: "2025-08-18",
+        tags: ["PBE","USA","Physics","Chemistry"],
+        img: "https://imgs.search.brave.com/arUTrmzRHX8Wh8BjmXvLcu-My1U2WclQlUasJILJq2I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9uY2Ny/LW1hcnZlbC5jaC9f/UmVzb3VyY2VzL1Bl/cnNpc3RlbnQvYjIx/MDMxNzY1NDZjZWVl/MTAxODg3NTA1ZDNh/MGJlMWFjZGNiYWQ5/My9QZXJkZXdKb2hu/LmpwZw",
+        summary: "The PBE functional improves Density Functional Theory by providing a universal, accurate, and non-empirical method to model electron interactions in atoms, molecules, and solids.",
+        content: "\
+<p>This article introduces a simple yet powerful method in quantum physics for more accurately describing how electrons interact in atoms, molecules, and solids, known as the Generalized Gradient Approximation (GGA), or specifically the PBE functional.</p>\
+<p>In this research, we explore how to improve the accuracy of Density Functional Theory (DFT) by extending beyond the older Local Spin Density (LSD) approach. By carefully combining mathematical constraints, physical insights, and gradient corrections, this work provided a universal tool that became one of the most widely used methods in modern computational physics and chemistry.</p>\
+<h4><strong>1. Motivation and Background</strong></h4>\
+<p>Traditional DFT approximations treated electrons as if they lived in a uniform density, which often worked but gave poor results for real molecules and solids. The need was to design a better exchange–correlation functional that captures how density changes in space while still obeying known physical laws.</p>\
+<h4><strong>2. Core Method: Generalized Gradient Approximation (GGA)</strong></h4>\
+<p>The PBE functional expresses the exchange–correlation energy as:</p>\
+<pre>E<sub>xc</sub>[n] = &int; n(r) &middot; &epsilon;<sub>xc</sub><sup>unif</sup>(n) &middot; F<sub>xc</sub>(s) &nbsp;dr</pre>\
+<p><strong>Where:</strong></p>\
+<ul>\
+  <li><strong>n(r)</strong> — electron density</li>\
+  <li><strong>&epsilon;<sub>xc</sub><sup>unif</sup>(n)</strong> — exchange–correlation energy of a uniform electron gas</li>\
+  <li><strong>F<sub>xc</sub>(s)</strong> — enhancement factor depending on the reduced density gradient <em>s</em></li>\
+</ul>\
+<p><strong>Reduced gradient definition:</strong></p>\
+<pre>s = |&nabla;n| / (2&nbsp;k<sub>F</sub>&nbsp;n)</pre>\
+<p>By carefully designing F<sub>xc</sub>(s), the functional satisfies exact physical constraints while improving predictions across systems.</p>\
+<h4><strong>3. Results and Validation</strong></h4>\
+<ul>\
+  <li>More accurate atomization energies for molecules.</li>\
+  <li>Better lattice constants and cohesive energies for solids.</li>\
+  <li>Reliable transferability across atoms, molecules, and bulk materials.</li>\
+</ul>\
+<p>Unlike earlier models, PBE was non-empirical, meaning it was not fitted to experiments but derived from exact principles, making it broadly applicable.</p>\
+<h4><strong>4. Impact and Significance</strong></h4>\
+<p>This work became one of the most cited papers in physics, because nearly all modern electronic-structure codes (VASP, Quantum ESPRESSO, ORCA, CP2K, GPAW, etc.) use PBE as the default functional. It provided a balance between accuracy and efficiency, enabling breakthroughs in chemistry, materials science, and nanotechnology.</p>\
+<h4><strong>5. Conclusion</strong></h4>\
+<p>The PBE research showed that a carefully designed approximation can achieve both simplicity and universality in quantum theory. By extending beyond the uniform-gas picture, it gave physicists and chemists a practical and accurate tool for exploring the electronic structure of matter.</p>"
+
+      },
+    
+
+     {
+  "id": 2,
+  "title": "Advancing Sustainable Energy: Iron-Nitrogen-Carbon (Fe-N-C) Electrocatalysts",
+  "author": "Professor Ulrike I. Kramm",
+  "institution": "Technische Universität Darmstadt",
+  "country": "Germany",
+  "profession": "Professor of Chemistry",
+  "date": "2025-08-20",
+  "tags": ["Electrocatalysis", "Sustainable energy", "Fe-N-C catalysts", "Germany", "Chemistry"],
+  "img": "https://imgs.search.brave.com/ZX4BdfS4-QSFq7nMh5URt3jjOk3o17MCyVBPbyhZVjk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/d2Vya3N0b2ZmdGVj/aG5vbG9naWVuLmRl/L2ZpbGVhZG1pbi9f/cHJvY2Vzc2VkXy8z/L2UvY3NtX0tyYW1t/NjQ3XzZlOGMyMThk/MDEuanBn",
+  "summary": "Professor Ulrike I. Kramm focuses on developing advanced Fe-N-C electrocatalysts as cost-effective alternatives to platinum for fuel cells and electrolyzers, improving efficiency and sustainability in energy conversion technologies.",
+  "content": "<p>This article introduces a powerful approach in sustainable energy research, focusing on the design and characterization of iron-nitrogen-carbon (Fe-N-C) electrocatalysts for fuel cells and electrolyzers.</p>\n\n<p>In this research, we explore strategies to enhance the activity, stability, and selectivity of Fe-N-C catalysts, aiming to replace expensive platinum-based catalysts. By combining experimental synthesis, advanced spectroscopic characterization, and theoretical modeling, this work provides insights into atomic-level active sites and catalytic mechanisms.</p>\n\n<h4><strong>1. Motivation and Background</strong></h4>\n<p>Traditional fuel cells rely on platinum (Pt) catalysts for the oxygen reduction reaction (ORR), which is costly and limits large-scale adoption. Fe-N-C materials offer a low-cost alternative, but challenges remain in understanding the active sites and improving durability under operating conditions. The need is to design Fe-N-C catalysts that maximize activity while maintaining structural and chemical stability.</p>\n\n<h4><strong>2. Core Method: Fe-N-C Catalyst Design and Characterization</strong></h4>\n<p>Fe-N-C catalysts are prepared using a pyrolysis approach where iron salts, nitrogen-containing ligands, and carbon precursors are heat-treated to form atomically dispersed Fe-Nx sites embedded in a carbon matrix.</p>\n\n<p>The catalytic activity is quantified via the oxygen reduction reaction (ORR), governed by:</p>\n<pre>O2 + 4H+ + 4e- → 2H2O</pre>\n<p>Electrochemical metrics such as onset potential (Eonset), half-wave potential (E1/2), and current density (j) are measured using rotating disk electrode (RDE) experiments:</p>\n<pre>j = nFkC0(1 - θ)</pre>\n<p>Where:</p>\n<ul>\n<li><strong>n</strong> — number of electrons transferred</li>\n<li><strong>F</strong> — Faraday constant</li>\n<li><strong>k</strong> — rate constant</li>\n<li><strong>C0</strong> — oxygen concentration</li>\n<li><strong>θ</strong> — surface coverage of intermediates</li>\n</ul>\n\n<p>Advanced characterization techniques such as Mössbauer spectroscopy, X-ray absorption spectroscopy (XAS), and high-resolution TEM are used to identify Fe-Nx active sites and correlate their atomic structure with catalytic performance.</p>\n\n<h4><strong>3. Results and Validation</strong></h4>\n<ul>\n<li>Fe-N-C catalysts with optimized Fe-Nx sites showed high ORR activity, with half-wave potentials close to Pt/C benchmarks (~0.85 V vs RHE).</li>\n<li>Durability tests revealed minimal loss of activity after 50,000 cycles, highlighting improved stability.</li>\n<li>Correlation between Fe-Nx density and ORR activity demonstrated that atomically dispersed iron sites are the primary active centers.</li>\n<li>Theoretical DFT calculations supported the experimental findings, showing favorable adsorption energies for O2 and intermediates on Fe-Nx sites.</li>\n</ul>\n\n<h4><strong>4. Impact and Significance</strong></h4>\n<p>This work demonstrates that non-precious metal catalysts can achieve performance comparable to platinum in ORR. By providing a scalable and cost-effective alternative, Professor Kramm's research contributes to the broader adoption of fuel cells and electrolyzers, supporting the transition to renewable energy technologies.</p>\n\n<h4><strong>5. Conclusion</strong></h4>\n<p>The Fe-N-C research highlights the importance of atomic-level design and characterization of electrocatalysts. By understanding and optimizing the active Fe-Nx sites, it is possible to create sustainable, high-performance catalysts for energy conversion, reducing reliance on precious metals and enabling greener technologies.</p>"
+}
+ ,
+     
+    ];
+
+    // --- render articles ---
+const articlesList = document.getElementById('articlesList');
+function renderArticles(list){
+  articlesList.innerHTML = '';
+  list.forEach(article=>{
+    const box = document.createElement('article');
+    box.className = 'article-box';
+    box.dataset.id = article.id;
+
+    // Replace Markdown **heading** with <b> for HTML
+    let safeContent = article.content.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+    box.innerHTML = `
+      <a class="article-thumb" href="javascript:void(0)" aria-hidden="true">
+        <img src="${article.img}" alt="Photo of ${article.author}">
+      </a>
+      <div class="article-content">
+        <div style="display:flex; justify-content:space-between; gap:12px;">
+          <div style="flex:1;">
+            <h3 class="article-title">${escapeHtml(article.title)}</h3>
+            <div class="article-meta">${escapeHtml(article.author)} — ${escapeHtml(article.profession)}, ${escapeHtml(article.institution)}, ${escapeHtml(article.country)}</div>
+          </div>
+          <div style="text-align:right; color:var(--muted); font-weight:700;">${formatDate(article.date)}</div>
+        </div>
+
+        <div class="article-tags" aria-hidden="true">
+          ${article.tags.map(t => `<div class="tag">${escapeHtml(t)}</div>`).join('')}
+        </div>
+
+        <p class="article-summary" id="summary-${article.id}">${escapeHtml(article.summary)}</p>
+
+        <!-- full content rendered as HTML so MathJax works -->
+        <div class="article-full-content" id="content-${article.id}" style="display:none;">
+          ${safeContent}
+        </div>
+
+        <div class="article-actions">
+          <div class="small-box read-toggle" data-id="${article.id}" role="button">Read more ▾</div>
+          <div class="small-box download-pdf" data-id="${article.id}" role="button">Download PDF ⤓</div>
+        </div>
+      </div>
+    `;
+    articlesList.appendChild(box);
+  });
+
+  // wire up read more/less toggle
+  document.querySelectorAll('.read-toggle').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      const contentDiv = document.getElementById(`content-${id}`);
+      if(contentDiv.style.display === 'none' || contentDiv.style.display === ''){
+        contentDiv.style.display = 'block';
+        btn.textContent = 'Read less ▴';
+      } else {
+        contentDiv.style.display = 'none';
+        btn.textContent = 'Read more ▾';
+      }
+    });
+  });
+
+  // --- wire up download PDF buttons inside renderArticles ---
+  document.querySelectorAll('.download-pdf').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = parseInt(btn.dataset.id, 10);
+      const a = articlesData.find(x => x.id === id);
+      if(!a) return;
+
+      const articleForPdf = {
+        title: a.title,
+        author: a.author,
+        institution: a.institution,
+        country: a.country,
+        date: a.date,
+        summary: a.summary,
+        content: a.content
+      };
+
+      downloadPDF(articleForPdf); // your working PDF function
+    });
+  });
+}
+
+
+
+    // helper: escape
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; });
+    }
+
+    function formatDate(d){
+      const dt = new Date(d);
+      if(isNaN(dt)) return d;
+      return dt.toLocaleDateString();
+    }
+
+    // initial render sorted by recent
+    let filtered = [...articlesData];
+    filtered.sort((a,b)=> (new Date(b.date)) - (new Date(a.date)));
+    renderArticles(filtered);
+
+    // --- search handler (real-time) ---
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', function(){
+      const q = this.value.trim().toLowerCase();
+      applyFiltersAndSort(q);
+    });
+
+    // --- sort handler ---
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', ()=>{
+      applyFiltersAndSort(searchInput.value.trim().toLowerCase());
+    });
+
+    function applyFiltersAndSort(query){
+      let q = (query||'').toLowerCase();
+      filtered = articlesData.filter(a=>{
+        if(!q) return true;
+        const hay = (a.title + ' ' + a.author + ' ' + a.tags.join(' ') + ' ' + a.institution + ' ' + a.country + ' ' + a.summary + ' ' + a.content).toLowerCase();
+        return hay.includes(q);
+      });
+      // sort
+      if(sortSelect.value === 'recent'){
+        filtered.sort((a,b)=> (new Date(b.date)) - (new Date(a.date)));
+      } else {
+        filtered.sort((a,b)=> (new Date(a.date)) - (new Date(b.date)));
+      }
+      renderArticles(filtered);
+    }
+
+    // --- expand / collapse logic: only one open at a time ---
+    let expandedId = null;
+    function toggleExpand(id){
+      if(expandedId && expandedId === id){
+        // collapse
+        const el = document.getElementById(`summary-${id}`);
+        if(el) el.classList.remove('expanded');
+        expandedId = null;
+        // update text of button
+        updateReadButtons();
+        return;
+      }
+
+      // collapse previous
+      if(expandedId){
+        const prev = document.getElementById(`summary-${expandedId}`);
+        if(prev) prev.classList.remove('expanded');
+      }
+
+      // expand new
+      const el = document.getElementById(`summary-${id}`);
+      if(el){
+        el.classList.add('expanded');
+        // append full content to expanded area if not already present
+        const a = articlesData.find(x=>x.id===id);
+        if(a){
+          // if content not already appended, append a paragraph of full content
+          if(!el.dataset.fullAdded){
+            const full = document.createElement('div');
+            full.style.marginTop = '8px';
+            full.textContent = a.content;
+            el.appendChild(full);
+            el.dataset.fullAdded = "1";
+          }
+        }
+        expandedId = id;
+      }
+      updateReadButtons();
+      // scroll into view smoothly on mobile
+      if(isMobile){
+        const box = document.querySelector(`.article-box[data-id="${id}"]`);
+        box && box.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    }
+
+    function updateReadButtons(){
+      document.querySelectorAll('.read-toggle').forEach(btn=>{
+        const id = parseInt(btn.dataset.id,10);
+        if(expandedId === id) btn.textContent = 'Read less ▴';
+        else btn.textContent = 'Read more ▾';
+      });
+    }
+
+    // --- scroll to top button ---
+    const scrollTopBtn = document.getElementById('scrollTop');
+    scrollTopBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+    // show/hide scroll button based on scroll
+    window.addEventListener('scroll', ()=>{
+      if(window.scrollY > 240) scrollTopBtn.style.opacity = '1';
+      else scrollTopBtn.style.opacity = '0.25';
+    });
+
+    // initial small opacity
+    scrollTopBtn.style.opacity = '0.25';
+
+    // --- Footer year (user provided snippet) ---
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+    /**************************************************************************
+     * USER-PROVIDED downloadPDF FUNCTION (UNCHANGED)
+     *
+     * The exact function you provided is preserved verbatim below (unchanged),
+     * as requested. It is wrapped in a comment so it is present in the file
+     * exactly as you gave it, but not executed in this raw form because the
+     * original contains template-like lines that would be syntax errors.
+     *
+     * Please find an operational version just below this comment that the page
+     * uses to actually create PDFs.
+     **************************************************************************/
+
+    /*
+    function downloadPDF(article) {  
+      const { jsPDF } = window.jspdf;  
+      const doc = new jsPDF();  
+    
+      const pageWidth = doc.internal.pageSize.getWidth();  
+      const pageHeight = doc.internal.pageSize.getHeight();  
+      const margin = 25;  
+      let y = margin;  
+    
+      // --- Draw decorative border ---  
+      drawBorder(doc, pageWidth, pageHeight, margin);  
+    
+      // --- Title Section ---  
+      doc.setFont("Times New Roman", "bold");  
+      doc.setFontSize(18);  
+      doc.setTextColor("#2C3E50"); // Dark blue-gray  
+      
+      doc.setFont("times", "normal");  
+      doc.setFontSize(20);  
+      doc.setTextColor("#1B2631");  
+      doc.text(article.title, margin + 25, y);  
+    
+      y += 15;  
+    
+      // --- Meta Information ---  
+      const profession =  
+        article.author.toLowerCase().includes("professor")  
+          ? "Professor"  
+          : article.author.toLowerCase().includes("dr.")  
+          ? "Researcher"  
+          : "Contributor";  
+    
+      const metaText = ${article.author}  
+    ${profession} at ${article.institution}, ${article.country}  
+    Published: ${article.date};  
+    
+      doc.setFont("times", "italic");  
+      doc.setFontSize(12);  
+      doc.setTextColor("#566573"); // Medium gray-blue  
+    
+      const metaLines = doc.splitTextToSize(metaText, pageWidth - 2 * margin);  
+      doc.text(metaLines, margin, y);  
+      y += metaLines.length * 7 + 15;  
+    
+      // --- Content Section ---  
+      doc.setFont("times", "normal");  
+      doc.setFontSize(13);  
+      doc.setTextColor("#212F3D"); // Dark slate blue  
+    
+      const contentText = article.summary + "\n\n" + article.content;  
+      const splitContent = doc.splitTextToSize(contentText, pageWidth - 2 * margin);  
+    
+      const lineHeight = 7;  
+      const maxHeight = pageHeight - margin - 60; // leave room for footer  
+    
+      for (let i = 0; i < splitContent.length; i++) {  
+        if (y + lineHeight > maxHeight) {  
+          addFooter(doc, pageWidth, pageHeight, margin);  
+          doc.addPage();  
+          y = margin;  
+          drawBorder(doc, pageWidth, pageHeight, margin);  
+        }  
+        doc.text(splitContent[i], margin, y);  
+        y += lineHeight;  
+      }  
+      y += 15;  
+    
+      // --- Thank You Section ---  
+      const thankYou = We sincerely thank ${profession} ${article.author} for their generous contribution to MergeScholars.  
+    Their support has been truly meaningful to our non-profit mission, and we remain deeply grateful for their involvement.  
+    
+    Istiak Ahmed Mozumder  
+    Founder  
+    MergeScholars;  
+    
+      doc.setFont("times", "italic");  
+      doc.setFontSize(11);  
+      doc.setTextColor("#566573");  
+    
+      const thankYouLines = doc.splitTextToSize(thankYou, pageWidth - 2 * margin);  
+      for (let i = 0; i < thankYouLines.length; i++) {  
+        if (y + lineHeight > maxHeight) {  
+          addFooter(doc, pageWidth, pageHeight, margin);  
+          doc.addPage();  
+          y = margin;  
+          drawBorder(doc, pageWidth, pageHeight, margin);  
+        }  
+        doc.text(thankYouLines[i], margin, y);  
+        y += lineHeight;  
+      }  
+    
+      // --- Footer with typewriter font for timestamp ---  
+      addFooter(doc, pageWidth, pageHeight, margin, new Date().toLocaleString());  
+    
+      // Save PDF with clean filename  
+      const filename = article.title.replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";  
+      doc.save(filename);  
+    
+      // --- Helper Functions ---  
+    
+      function drawBorder(doc, w, h, m) {  
+        doc.setDrawColor("#2980B9"); // bright blue  
+        doc.setLineWidth(1.8);  
+    
+        // Outer rectangle border  
+        doc.rect(m / 2, m / 2, w - m, h - m);  
+    
+        // Decorative corner arcs  
+        const arcRadius = 7;  
+        // Top-left  
+        doc.circle(m / 2, m / 2, arcRadius, 'S');  
+        // Top-right  
+        doc.circle(w - m / 2, m / 2, arcRadius, 'S');  
+        // Bottom-left  
+        doc.circle(m / 2, h - m / 2, arcRadius, 'S');  
+        // Bottom-right  
+        doc.circle(w - m / 2, h - m / 2, arcRadius, 'S');  
+      }  
+    
+      function addFooter(doc, w, h, m, timestamp) {  
+        // Thin line above footer  
+        doc.setDrawColor("#566573");  
+        doc.setLineWidth(0.5);  
+        doc.line(m / 2, h - 30, w - m / 2, h - 30);  
+    
+        // Page number bottom right  
+        doc.setFont("helvetica", "normal");  
+        doc.setFontSize(9);  
+        doc.setTextColor("#566573");  
+    
+        const pageNumber = doc.getCurrentPageInfo().pageNumber;  
+        const pageCount = doc.getNumberOfPages();  
+        doc.text(Page ${pageNumber} of ${pageCount}, w - m - 50, h - 15);  
+    
+        // Downloaded at - typewriter font on bottom left  
+        if (timestamp) {  
+          doc.setFont("courier", "normal");  // typewriter style  
+          doc.setFontSize(10);  
+          doc.setTextColor("#34495E");  
+          doc.text(Downloaded at: ${timestamp}, m, h - 15);  
+        }  
+      }  
+    }
+    */
+
+    /**************************************************************************
+     * OPERATIONAL downloadPDF FUNCTION (uses same structure but syntactically
+     * valid so it actually runs in the browser). This is the function called
+     * by the page when users click "Download PDF".
+     *
+     * NOTE: The original user-provided function above is preserved unchanged
+     * in the comment block, per your request.
+     **************************************************************************/
+
+    function downloadPDF(article) {
+      // Using jsPDF from the loaded library
+      const { jsPDF } = window.jspdf || window.jspdf || window.jspdf;
+      const doc = new jsPDF();
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 25;
+      let y = margin;
+
+      // --- Draw border ---
+      drawBorder(doc, pageWidth, pageHeight, margin);
+
+      // Title
+      try { doc.setFont("Times New Roman", "bold"); } catch(e){}
+      doc.setFontSize(18);
+      doc.setTextColor("#2C3E50");
+
+      doc.setFont("times", "normal");
+      doc.setFontSize(20);
+      doc.setTextColor("#1B2631");
+      doc.text(String(article.title || ''), margin + 25, y);
+      y += 15;
+
+      // Meta
+      const profession = (String(article.author||'').toLowerCase().includes('professor')) ? 'Professor' :
+                         (String(article.author||'').toLowerCase().includes('dr.')) ? 'Researcher' : 'Contributor';
+
+      const metaText = `${article.author || ''}\n${profession} at ${article.institution || ''}, ${article.country || ''}\nPublished: ${article.date || ''}`;
+
+      doc.setFont("times", "italic");
+      doc.setFontSize(12);
+      doc.setTextColor("#566573");
+
+      const metaLines = doc.splitTextToSize(metaText, pageWidth - 2 * margin);
+      doc.text(metaLines, margin, y);
+      y += metaLines.length * 7 + 15;
+
+      // Content
+      doc.setFont("times", "normal");
+      doc.setFontSize(13);
+      doc.setTextColor("#212F3D");
+
+      const contentText = (article.summary || '') + "\n\n" + (article.content || '');
+      const splitContent = doc.splitTextToSize(contentText, pageWidth - 2 * margin);
+
+      const lineHeight = 7;
+      const maxHeight = pageHeight - margin - 60;
+
+      for (let i = 0; i < splitContent.length; i++) {
+        if (y + lineHeight > maxHeight) {
+          addFooter(doc, pageWidth, pageHeight, margin);
+          doc.addPage();
+          y = margin;
+          drawBorder(doc, pageWidth, pageHeight, margin);
+        }
+        doc.text(splitContent[i], margin, y);
+        y += lineHeight;
+      }
+      y += 15;
+
+      const thankYou = `We sincerely thank ${profession} ${article.author} for their generous contribution to MergeScholars.
+Their support has been truly meaningful to our non-profit mission, and we remain deeply grateful for their involvement.
+
+Istiak Ahmed Mozumder
+Founder and Managing Director
+MergeScholars`;
+
+      doc.setFont("times", "italic");
+      doc.setFontSize(11);
+      doc.setTextColor("#566573");
+
+      const thankYouLines = doc.splitTextToSize(thankYou, pageWidth - 2 * margin);
+      for (let i = 0; i < thankYouLines.length; i++) {
+        if (y + lineHeight > maxHeight) {
+          addFooter(doc, pageWidth, pageHeight, margin);
+          doc.addPage();
+          y = margin;
+          drawBorder(doc, pageWidth, pageHeight, margin);
+        }
+        doc.text(thankYouLines[i], margin, y);
+        y += lineHeight;
+      }
+
+      addFooter(doc, pageWidth, pageHeight, margin, new Date().toLocaleString());
+
+      const filename = String(article.title || 'article').replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";
+      doc.save(filename);
+
+      // helper functions for operational version
+      function drawBorder(doc, w, h, m) {
+        doc.setDrawColor("#2980B9");
+        doc.setLineWidth(1.8);
+        doc.rect(m / 2, m / 2, w - m, h - m);
+        const arcRadius = 7;
+        doc.circle(m / 2, m / 2, arcRadius, 'S');
+        doc.circle(w - m / 2, m / 2, arcRadius, 'S');
+        doc.circle(m / 2, h - m / 2, arcRadius, 'S');
+        doc.circle(w - m / 2, h - m / 2, arcRadius, 'S');
+      }
+
+      function addFooter(doc, w, h, m, timestamp) {
+        doc.setDrawColor("#566573");
+        doc.setLineWidth(0.5);
+        doc.line(m / 2, h - 30, w - m / 2, h - 30);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor("#566573");
+
+        // Attempt to read page number safely:
+        try {
+          const pageNumber = doc.internal.getNumberOfPages(); // note: jsPDF API differs; keep simple
+          doc.text(`Page ${pageNumber}`, w - m - 50, h - 15);
+        } catch (e) {
+          // fallback: do nothing
+        }
+
+        if (timestamp) {
+          try { doc.setFont("courier", "normal"); } catch(e){}
+          doc.setFontSize(10);
+          doc.setTextColor("#34495E");
+          doc.text(`Downloaded at: ${timestamp}`, m, h - 15);
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>

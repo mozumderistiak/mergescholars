@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About Us — MergeScholars</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Desert (default) variables */
+    --bg: #e7c399;
+    --card: #9f1818ad;
+    --muted: #6b6b6b;
+    --accent: #c47a2a;
+    --neon: rgba(196,122,42,0.18);
+    --glass: rgba(255,255,255,0.12);
+    --text: #1f1f1f;
+    --glass-border: rgba(0,0,0,0.06);
+    --shadow: 0 8px 30px rgba(21,21,21,0.06);
+    --panel-bg: rgba(255,255,255,0.94);
+    --panel-alpha: 0.94;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --font-heading: "Playfair Display", serif;
+    --glass-blur: 8px;
+  }
+
+  /* Desert theme class (explicit) */
+  .theme-desert{
+    --bg: #a57a48;
+    --card: #ffffff;
+    --muted: #6b6b6b;
+    --accent: #c47a2a;
+    --neon: rgba(196,122,42,0.18);
+    --text: #1f1f1f;
+    --panel-bg: rgba(255,255,255,0.94);
+    --glass-border: rgba(0,0,0,0.06);
+    --shadow: 0 8px 30px rgba(21,21,21,0.06);
+  }
+
+  /* Light theme */
+  .theme-light{
+    --bg: #ffffff;
+    --card: #ffffff;
+    --muted: #666;
+    --accent: #2c7be5;
+    --neon: rgba(44,123,229,0.12);
+    --text: #111827;
+    --panel-bg: rgba(255,255,255,0.96);
+    --glass-border: rgba(0,0,0,0.06);
+    --shadow: 0 8px 24px rgba(20,20,20,0.06);
+  }
+
+  /* Dark theme */
+  .theme-dark{
+    --bg: #0e0f12;
+    --card: #111214;
+    --muted: #9aa0a6;
+    --accent: #4aa3ff;
+    --neon: rgba(74,163,255,0.12);
+    --text: #e8eef8;
+    --panel-bg: rgba(17,18,20,0.96);
+    --glass-border: rgba(255,255,255,0.04);
+    --shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--font-sans);
+    background: linear-gradient(180deg,var(--bg), #efe6d7 160%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    padding:10px;
+  }
+
+  .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:18px;
+    position:relative;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:18px;
+    position:relative;
+    z-index:1200; /* keep header above content */
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    text-decoration:none;
+    color:var(--text);
+  }
+  .brand img{
+    width:100px;height:100px;border-radius:10px;object-fit:cover;box-shadow:var(--shadow);
+  }
+  .brand h1{
+    font-family:var(--font-heading);
+    font-size:35px;margin:0;
+    letter-spacing:0.2px;
+  }
+  .brand small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* Menu */
+  .menu-btn{position:relative}
+  .menu-toggle{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--glass-border);
+    padding:8px 12px;border-radius:12px;
+    backdrop-filter: blur(var(--glass-blur));
+    cursor:pointer; display:flex; gap:10px; align-items:center;
+  }
+  .menu-toggle svg{stroke:currentColor}
+
+  .menu-panel{
+    position:absolute;
+    right:0;
+    top:calc(100% + 10px);
+    width:280px;
+    background:var(--panel-bg);
+    border:1px solid var(--glass-border);
+    border-radius:14px;
+    padding:12px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.16);
+    z-index:2000;
+    color:var(--text);
+    transition:transform .22s cubic-bezier(.2,.9,.2,1),opacity .18s;
+    transform-origin:top right;
+    /* hidden state */
+    opacity:0;
+    transform: translateY(-6px) scale(.98);
+    pointer-events:none;
+    backdrop-filter: blur(6px);
+  }
+  .menu-panel.open{
+    opacity:1;
+    transform: translateY(0) scale(1);
+    pointer-events:auto;
+  }
+
+  .menu-item{padding:8px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .menu-item a{color:var(--text); text-decoration:none; width:100%;}
+  .menu-item:hover{background:var(--neon)}
+
+  .theme-picker{display:flex;gap:8px;padding:8px 6px}
+  .theme-button{
+    flex:1;padding:8px;border-radius:8px;border:1px solid var(--glass-border);cursor:pointer;text-align:center;font-size:13px;background:transparent;color:var(--text);
+  }
+  .theme-button.active{box-shadow:0 8px 24px rgba(0,0,0,0.08);transform:translateY(-3px)}
+
+  /* Grid layout */
+  .grid{
+    display:grid;
+    grid-template-columns: minmax(260px,360px) 1fr;
+    gap:28px;
+    align-items:start;
+  }
+
+  .profile{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--glass-border);
+    position:sticky; top:28px;
+  }
+  .profile .photo{display:flex;align-items:center;gap:12px}
+  .photo img{width:96px;height:96px;border-radius:14px;object-fit:cover;border:1px solid rgba(0,0,0,0.06)}
+  .name h2{margin:0;font-family:var(--font-heading);font-size:20px}
+  .tag{display:inline-block;margin-top:6px;padding:6px 8px;border-radius:8px;font-size:12px;background:linear-gradient(90deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));border:1px solid var(--glass-border)}
+  .bio{margin-top:12px;color:var(--muted);font-size:14px}
+  .socials{display:flex;gap:8px;margin-top:14px}
+
+  .contact-btn{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;border:1px solid var(--glass-border);cursor:pointer;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008)); color:var(--text); text-decoration:none}
+
+  .content{display:flex;flex-direction:column;gap:20px}
+  .section{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--glass-border);box-shadow:var(--shadow);overflow:hidden}
+  .section h3{margin:0 0 10px 0;font-family:var(--font-heading)}
+  .muted{color:var(--muted);font-size:14px}
+
+  .grid-cards{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
+  .card{border-radius:12px;padding:12px;background:linear-gradient(180deg, var(--card), rgba(255,255,255,0.02));border:1px solid var(--glass-border);transition:transform .28s, box-shadow .25s;display:flex;gap:12px;align-items:center}
+  .card:hover{transform:translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.08)}
+  .thumb{width:60px;height:60px;border-radius:10px;object-fit:cover;border:1px solid rgba(0,0,0,0.06)}
+  .card h4{margin:0;font-size:15px}
+  .card p{margin:0;color:var(--muted);font-size:13px}
+
+  .glow{position:relative;overflow:visible}
+  .glow::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 8px 40px var(--neon);opacity:0;transition:opacity .25s;pointer-events:none}
+  .glow:hover::after{opacity:1}
+
+  .swipe-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+  .swipe-row .card{min-width:220px;flex:0 0 auto;scroll-snap-align:center}
+
+  .mv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mv p{margin:8px 0;color:var(--muted)}
+
+  footer{margin-top:22px;text-align:center;color:var(--muted);font-size:13px;padding:18px}
+
+  @media (max-width:980px){
+    .grid{grid-template-columns:1fr;}
+    .profile{position:relative; top:0}
+    .grid-cards{grid-template-columns:repeat(2,1fr)}
+    .menu-panel{right:10px;left:10px;width:auto}
+  }
+  @media (max-width:560px){
+    body{padding:12px}
+    .grid-cards{grid-template-columns:repeat(1,1fr)}
+    .mv{grid-template-columns:1fr}
+    .menu-panel{top:72px; right:12px; left:12px; width:auto}
+  }
+
+  .typed{white-space:pre-wrap; min-height:1.1em}
+  .small{font-size:13px;color:var(--muted)}
+  .link{color:var(--accent);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body class="theme-desert">
+
+<div class="wrap">
+  <header>
+    <a class="brand" href="index.html" title="MergeScholars - Home">
+      <img src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/535485857_122095319048992450_9149575485322143451_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=Hk4Iv-e6Qx4Q7kNvwHoD_91&_nc_oc=Adm_Wciqu-IFN8Dp3IyT7wNe5QTOsO1QQjxASBVSkwMHB-dunB2sOdRgCGcj7fnWEF8&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=cSO7TrIpUA3v2XjpdY6V2A&oh=00_AfVnYjXyHLPzkO6fgqHrlmqjq2eHixY6Bblz60FkROaxTQ&oe=68AB2E9E" alt="MergeScholars logo or owner">
+      <div>
+        <h1>MergeScholars</h1>
+        <small class="small">Bridging Students and Global scholars</small>
+      </div>
+    </a>
+
+    <div class="menu-btn" id="menuBtn">
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-haspopup="true">
+        <span class="small">Menu</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="menu-panel" id="menuPanel" role="menu" aria-hidden="true">
+        <div class="menu-item"><a href="index.html">Home</a></div>
+        <div class="menu-item"><a href="Explore Subjects.html">Explore Subjects</a></div>
+        <div class="menu-item"><a href="Articles.html">Articles</a>
+        <div class="menu-item"><a href="Certificate Verification.html">Verify Certificates</a></div>
+          <div class="menu-item"><a href="Join US.html">Join Us</a></div
+        <div class="menu-item"><a href="contactus.html"></a></div>
+        </select>
+        </div>
+
+        <div style="height:1px;background:var(--glass-border);margin:10px 0;border-radius:6px"></div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Theme</div>
+        <div class="theme-picker">
+          <button class="theme-button" data-theme="desert">Desert</button>
+          <button class="theme-button" data-theme="light">Light</button>
+          <button class="theme-button" data-theme="dark">Dark</button>
+        </div>
+
+        <div style="height:1px;background:var(--glass-border);margin:8px 0;border-radius:6px"></div>
+        <div class="small muted">Extras</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <a class="contact-btn glow" href="mailto:info.mergescholars@gmail.com">Email</a>
+          <a class="contact-btn glow" href="https://wa.me/8801577256859" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid" id="mainGrid">
+    <aside class="profile section" id="profileCard">
+      <div class="photo">
+        <img src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/536632897_122095317380992450_5313182675762045380_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=bl7OzHBuwigQ7kNvwHtl2aM&_nc_oc=AdmWY2Jz63J6peHEozLvSW-2v9v2FQX856KNtYG5CEjHiRKyu36Sio9554IMV_6zDwQ&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=fNE2rmxa7HEOt_SEWeoeYw&oh=00_AfVenSRRYHAPr0nMW9kDXoACoygg6yylZbhT3ws3QbZZZw&oe=68AB4872" alt="Istiak Ahmed Mozumder">
+        <div class="name">
+          <h2 id="ownerName" data-type> Istiak Ahmed Mozumder</h2>
+          <span class="tag">Founder &amp; Managing Director</span>
+        </div>
+      </div>
+
+      <div class="bio typed" data-type data-text="Hi, I’m Istiak. I founded MergeScholars, and I’m currently maintaining the platform together with a few of my friends. I realized that students in my country need more opportunities to learn beyond the classroom and academic textbooks. That’s what inspired me to start this journey and build this platform."></div>
+
+      <div class="socials">
+        <a class="contact-btn glow" href="https://www.linkedin.com/in/mozumderistiak" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="contact-btn glow" href="https://wa.me/8801577256859" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+
+      <div style="margin-top:12px" class="small muted">
+        <div>Email: <a class="link" href="mailto:info.mergescholars@gmail.com">info.mergescholars@gmail.com</a></div>
+        <div style="margin-top:8px">Role: <span class="small">Managing the website, handling articles, and communicating with scholars and researchers.</span></div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="section" id="aboutSection">
+        <h3 data-type>About Us</h3>
+        <div class="muted typed" data-type data-text="MergeScholars connects students, researchers, and educators through events, articles, and mentorship. We organize workshops, online sessions with professors, and run competitions to inspire learners across Bangladesh and beyond."></div>
+
+        <div class="mv" style="margin-top:12px">
+          <div class="section" style="padding:12px">
+            <h4 data-type>Mission</h4>
+            <p class="typed" data-type data-text="To empower students with the tools, mentorship, and community they need to pursue higher education and research globally."></p>
+          </div>
+          <div class="section" style="padding:12px">
+            <h4 data-type>Vision</h4>
+            <p class="typed" data-type data-text="To build an accessible platform where talented learners can get guidance, practice, and opportunity — regardless of background."></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 data-type>Top Contributors</h3>
+        <p class="muted" data-type>I’m deeply grateful to the top contributors of MergeScholars whose support and efforts keep this platform growing.</p>
+
+        <div class="grid-cards" id="contributorsGrid" style="margin-top:12px">
+          <div class="card glow"><img class="thumb" src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/537114680_122095317230992450_4044640481709313512_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=ERyhW5PSiU8Q7kNvwEQKLqh&_nc_oc=AdluHcVqbpt4NLxJJL6dobc5bAlJA3BM9IW_WcvwTEFztx_4dUoxMy0i7wWJaDV8jm4&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=OdkDD7uVUYD85Hh2uEjP1w&oh=00_AfXSYCrNbgyqm8dmCV9hZX5z36Q-Sw8pSrezWDECJkLZ5Q&oe=68AB3D41" alt="contributor"><div><h4 data-type>Jihad Zafar Nihal</h4><p>Developer</p></div></div>
+          <div class="card glow"><img class="thumb" src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/535332002_122095317428992450_2550800060271576242_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=nBiJaH8bQoEQ7kNvwGW-CpR&_nc_oc=AdnRB6KS55AsRLRrt5UhEHb3awUqCdJ3DwcrlIZnaYdDr0O3ysVr1Fn6TF4oqBu0UB8&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=luIsKIEpefBV8UMnDX7qyg&oh=00_AfWkAEz1e7f4e3M4ixBDT4WQ45G0Gh8hYVqep3T84VnJcQ&oe=68AB4221" alt="contributor"><div><h4 data-type>Nayeful Islam Rafi</h4><p>Event Organizer</p></div></div>
+          <div class="card glow"><img class="thumb" src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/535436255_122095317476992450_7130081073256084190_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=2SEkP3xxK6IQ7kNvwFJk6K6&_nc_oc=AdkhQ7vchKBzDLP2NLfFsT3i6h-szPprY-cEAdZ6nYi7Ow4MR4wTQMj8BOu3O-EUb-Q&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=gfdnPNQI3YcE9dhsrZSR5g&oh=00_AfWZjoAZkFdbwH-pNmaQfII5cXLTgzhWk0_3tdL8Dn_YGg&oe=68AB3527" alt="contributor"><div><h4 data-type>Adnan Sami</h4><p>Volunteer Mentor</p></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 data-type>Event Promoters</h3>
+        <p class="muted">Thanks to all Promoters for always promoting our events.</p>
+        <div class="swipe-row" id="promotersRow" style="margin-top:12px">
+          <div class="card glow"><img class="thumb" src="https://imgs.search.brave.com/K3_o5COqfDedWMwaKk_VE1aqnWEXJhr09nb3HOb1-hQ/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zYWJp/bWFnZXMuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDI0LzA4/L0FuaW1lLWJveS1k/cDMwLmpwZw" alt=""><div><h4 data-type>Sazzadur Rahman Tanim</h4><p>Promoter</p></div></div>
+          <div class="card glow"><img class="thumb" src="https://scontent.fdac145-1.fna.fbcdn.net/v/t39.30808-6/536492185_122095317326992450_3915150502764443164_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-Nzmqqx_VJMQ7kNvwGPE0wz&_nc_oc=AdnPIdxAS0CBwirGcgn7Y2ZBs1T8PEh6jC_p-2tSUN-BCVa9z6jjYanaowoqSiOVkLE&_nc_zt=23&_nc_ht=scontent.fdac145-1.fna&_nc_gid=9ClDV_fGWFOxLGfABSc4kw&oh=00_AfWybvwWT_rhVe1DQM28wASLD2xGSY8C6nfR9wjP7DhfPw&oe=68AB4268" alt=""><div><h4 data-type>Nowroze Husnam Nuhash</h4><p>Promoter</p></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 data-type>More</h3>
+        <p class="muted typed" data-type data-text="Become a part of MergeScholars and help bring higher-level education beyond the classroom to the world. You can also verify your contribution certificate here using the unique code provided on it."></p>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <a href="certificate verification.html">
+  <button class="contact-btn glow">Verify Certificate</button>
+</a>
+
+<a href="join us.html">
+  <button class="contact-btn glow">Become a Contributor</button>
+</a>
+
+<a href="join us.html">
+  <button class="contact-btn glow">Volunteer</button>
+</a>
+
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <div class="small muted">© <span id="year"></span> MergeScholars — All rights reserved</div>
+  </footer>
+
+</div>
+
+<script>
+/* Theme handling: ensure exactly one theme class is present. */
+(function(){
+  const body = document.body;
+  const themeButtons = document.querySelectorAll('.theme-button');
+  const stored = localStorage.getItem('ms-theme') || 'desert';
+  function applyTheme(name){
+    body.classList.remove('theme-desert','theme-light','theme-dark');
+    body.classList.add('theme-' + name);
+    localStorage.setItem('ms-theme', name);
+    themeButtons.forEach(b => b.classList.toggle('active', b.dataset.theme === name));
+  }
+  themeButtons.forEach(btn => btn.addEventListener('click', ()=> applyTheme(btn.dataset.theme)));
+  applyTheme(stored);
+})();
+
+/* Menu open/close: use opacity/transform to avoid layout jumps */
+(function(){
+  const menuBtn = document.getElementById('menuBtn');
+  const menuToggle = document.getElementById('menuToggle');
+  const menuPanel = document.getElementById('menuPanel');
+
+  function openMenu(){ menuPanel.classList.add('open'); menuPanel.setAttribute('aria-hidden','false'); menuToggle.setAttribute('aria-expanded','true'); }
+  function closeMenu(){ menuPanel.classList.remove('open'); menuPanel.setAttribute('aria-hidden','true'); menuToggle.setAttribute('aria-expanded','false'); }
+
+  menuToggle.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(menuPanel.classList.contains('open')) closeMenu(); else openMenu();
+  });
+  document.addEventListener('click', (e)=>{ if(!menuBtn.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown',(e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+  // ensure menu accessible on mobile and won't overlap header badly
+  window.addEventListener('resize', ()=> { if(window.innerWidth < 560) { menuPanel.style.top = '72px'; } else { menuPanel.style.top = 'calc(100% + 10px)'; } });
+})();
+
+/* Dynamic year */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* simple device class for small layout tweaks */
+(function(){
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  if(/android|iphone|ipod|ipad|tablet/i.test(ua)) { document.body.classList.add('is-mobile'); }
+  else document.body.classList.add('is-desktop');
+})();
+
+/* Intersection reveal for cards */
+(function(){
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.style.transform='translateY(0)';
+        entry.target.style.opacity=1;
+        entry.target.style.transition='transform .6s cubic-bezier(.2,.9,.3,1), opacity .5s';
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.12});
+
+  document.querySelectorAll('.card').forEach((c)=>{
+    c.style.transform='translateY(20px)';
+    c.style.opacity=0;
+    observer.observe(c);
+  });
+})();
+
+/* Horizontal swipe */
+(function(){
+  const row = document.getElementById('promotersRow');
+  if(!row) return;
+  let isDown=false, startX=0, scrollLeft=0;
+  row.addEventListener('pointerdown', (e)=>{ isDown=true; row.setPointerCapture(e.pointerId); startX = e.clientX; scrollLeft = row.scrollLeft; });
+  row.addEventListener('pointermove', (e)=>{ if(!isDown) return; const walk = (startX - e.clientX); row.scrollLeft = scrollLeft + walk; });
+  row.addEventListener('pointerup', (e)=>{ isDown=false; try{ row.releasePointerCapture(e.pointerId);}catch(_){} });
+  row.addEventListener('pointerleave', ()=> isDown=false);
+})();
+
+/* Typed animation finishing overall in ~4000ms */
+(function(){
+  const TOTAL_MS = 4000;
+  const typedNodes = Array.from(document.querySelectorAll('[data-type]'));
+  const nodes = typedNodes.map(node=>{
+    let text = node.getAttribute('data-text');
+    if(!text) text = node.textContent.trim();
+    node.dataset._final = text;
+    node.textContent = '';
+    return {node, text};
+  }).filter(o => o.text && o.text.length>0);
+
+  const totalChars = nodes.reduce((s,o)=> s + o.text.length, 0) || 1;
+  nodes.forEach((o, idx) => {
+    const dur = Math.max(220, Math.round((o.text.length/totalChars) * TOTAL_MS));
+    const interval = dur / Math.max(1, o.text.length);
+    let i = 0;
+    function tick(){
+      if(i >= o.text.length) return;
+      o.node.textContent += o.text[i++];
+      setTimeout(tick, interval);
+    }
+    setTimeout(tick, idx * 60);
+  });
+})();
+
+/* small UX */
+(function(){
+  const sel = document.getElementById('articlesSelect');
+  sel.addEventListener('change', ()=> { alert('Opening: ' + sel.value + ' (dummy)'); });
+
+  const owner = document.getElementById('ownerName');
+  owner.addEventListener('click', ()=> navigator.clipboard?.writeText('Istiak Ahmed Mozumder').catch(()=>{}));
+})();
+</script>
+</body>
+</html>

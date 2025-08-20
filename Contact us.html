@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - MergeScholars</title>
+<style>
+  body {
+    background-color: #0d0d0d;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .contact-container {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    max-width: 420px;
+    width: 100%;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background: #1a1a1a;
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s ease;
+  }
+
+  /* Neon hover/focus for inputs */
+  input:hover, textarea:hover {
+    border-color: #00e6b8;
+    box-shadow: 0 0 8px #00e6b8;
+  }
+  input:focus, textarea:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 12px #00ffcc;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #00ffcc;
+    border: none;
+    border-radius: 8px;
+    color: #111;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 5px #00ffcc;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    background: #00e6b8;
+    box-shadow: 0 0 15px #00ffcc;
+  }
+
+  /* Thank You Message Styles */
+  .thank-you {
+    display: none;
+    text-align: center;
+    animation: fadeInScale 0.5s ease forwards;
+  }
+
+  .thank-you h3 {
+    color: #00ffcc;
+    text-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 10px;
+  }
+
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Urgent Contact Note */
+  .urgent-note {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #ccc;
+  }
+  .urgent-note a {
+    color: #00ffcc;
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ffcc;
+  }
+  .urgent-note a:hover {
+    color: #00e6b8;
+    text-shadow: 0 0 8px #00e6b8;
+  }
+</style>
+</head>
+<body>
+
+<div class="contact-container">
+  <form id="contactForm">
+    <h2>Contact Us</h2>
+
+    <input type="hidden" name="access_key" value="fcf322f0-dd9f-4174-86b3-79c70d70f420">
+    <input type="hidden" name="subject" value="New Contact Message from MergeScholars">
+    <input type="hidden" name="from_name" value="MergeScholars Website">
+    <input type="checkbox" name="botcheck" style="display:none;">
+
+    <label>Email</label>
+    <input type="email" name="email" required>
+
+    <label>First Name</label>
+    <input type="text" name="First Name" required>
+
+    <label>Phone Number</label>
+    <input type="text" name="Phone Number" required>
+
+    <label>Message</label>
+    <textarea name="message" rows="5" required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+
+  <div class="thank-you" id="thankYouMessage">
+    <h3>✅ Message Sent!</h3>
+    <p>Thanks for reaching out. We'll get back to you soon.</p>
+  </div>
+
+  <p class="urgent-note">
+    For urgent interactive contact please contact us via 
+    <a href="https://wa.me/8801577256859" target="_blank">WhatsApp</a>.
+  </p>
+</div>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      form.style.display = 'none';
+      document.getElementById('thankYouMessage').style.display = 'block';
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  })
+  .catch(error => {
+    alert("Error: " + error.message);
+  });
+});
+</script>
+
+</body>
+</html>

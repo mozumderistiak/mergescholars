@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Explore Subjects - MergeScholars</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.5s, color 0.5s;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Header */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    background: rgba(255 255 255 / 0.15);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255 255 255 / 0.2);
+    z-index: 20;
+    transition: background-color 0.5s, border-color 0.5s;
+  }
+
+  header .logo {
+    font-weight: 700;
+    font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Menu Button */
+  #menu-button {
+    background: rgba(255 255 255 / 0.2);
+    border: 1.5px solid rgba(255 255 255 / 0.5);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: inherit;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* Menu Container */
+  nav.menu {
+    position: fixed;
+    top: 60px; right: 15px;
+    background: rgba(255 255 255 / 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    border: 1px solid rgba(255 255 255 / 0.3);
+    box-shadow: 0 0 10px rgba(0 0 0 / 0.2);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    width: 220px;
+    z-index: 21;
+    color: inherit;
+  }
+  nav.menu.open {
+    max-height: 600px; /* enough to show all links and theme */
+  }
+  nav.menu a {
+    display: block;
+    padding: 12px 15px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255 255 255 / 0.3);
+    transition: background-color 0.3s;
+  }
+  nav.menu a:last-child {
+    border-bottom: none;
+  }
+  nav.menu a:hover,
+  nav.menu a:focus {
+    background-color: rgba(255 255 255 / 0.25);
+    outline: none;
+  }
+
+  /* Theme Selector inside menu */
+  .theme-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid rgba(255 255 255 / 0.3);
+  }
+  .theme-selector label {
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .theme-selector input[type="radio"] {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Page container */
+  main {
+    padding: 90px 20px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  h1.page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-shadow: 0 0 8px rgba(255 255 255 / 0.6);
+  }
+
+  /* Subject Boxes Grid */
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  /* Subject Box */
+  .subject-box {
+    position: relative;
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 15px;
+    padding: 25px 20px 20px;
+    color: inherit;
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+    transition:
+      background-color 0.5s,
+      box-shadow 0.3s,
+      transform 0.3s;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .subject-box:hover,
+  .subject-box.expanded {
+    background-color: rgba(255 255 255 / 0.3);
+    box-shadow: 0 0 15px var(--neon-color);
+    transform: scale(1.05);
+    z-index: 5;
+  }
+
+  /* Neon colors for each subject */
+  .subject-box.english {
+    --neon-color: #33ccff; /* light blue */
+  }
+  .subject-box.physics {
+    --neon-color: #ff3333; /* red */
+  }
+  .subject-box.chemistry {
+    --neon-color: #33ff77; /* green */
+  }
+  .subject-box.biology {
+    --neon-color: #ffcc33; /* yellow */
+  }
+  .subject-box.math {
+    --neon-color: #cc33ff; /* purple */
+  }
+  .subject-box.cs {
+    --neon-color: #ff66cc; /* pink */
+  }
+
+  /* Subject Title */
+  .subject-box .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--neon-color);
+  }
+
+  /* Hidden Buttons Container */
+  .subject-buttons {
+    display: none;
+    gap: 12px;
+  }
+
+  /* Buttons inside box */
+  .subject-buttons button {
+    background: transparent;
+    border: 2px solid var(--neon-color);
+    color: var(--neon-color);
+    padding: 6px 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      box-shadow 0.4s;
+  }
+  .subject-buttons button:hover,
+  .subject-buttons button:focus {
+    background-color: var(--neon-color);
+    color: #000;
+    box-shadow: 0 0 10px var(--neon-color);
+    outline: none;
+  }
+
+  /* Show buttons when box expanded */
+  .subject-box.expanded .subject-buttons {
+    display: flex;
+  }
+
+  /* Theme colors */
+
+  /* Light Theme */
+  body.theme-light {
+    background-color: #e0e7ff;
+    color: #222;
+  }
+  body.theme-light header {
+    background: rgba(255 255 255 / 0.5);
+    border-color: rgba(200 200 255 / 0.5);
+  }
+
+  /* Dark Theme */
+  body.theme-dark {
+    background-color: #121212;
+    color: #eee;
+  }
+  body.theme-dark header {
+    background: rgba(20 20 20 / 0.7);
+    border-color: rgba(100 100 100 / 0.6);
+  }
+
+  /* Dessert Theme */
+  body.theme-dessert {
+    background-color: #f3dcc3;
+    color: #5a3e1b;
+  }
+  body.theme-dessert header {
+    background: rgba(243 220 195 / 0.4);
+    border-color: rgba(150 110 60 / 0.4);
+  }
+
+  /* Theme Selector text color adjustment */
+  body.theme-dark .theme-selector label {
+    color: #ccc;
+  }
+  body.theme-dessert .theme-selector label {
+    color: #7a5a2a;
+  }
+
+  /* Responsive */
+
+  @media (max-width: 767px) {
+    .subjects-grid {
+      grid-template-columns: 1fr;
+      padding: 0 10px;
+    }
+    header {
+      padding: 0 10px;
+    }
+    nav.menu {
+      width: 90vw;
+      right: 5vw;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Canvas for solar system background -->
+<canvas id="solar-bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></canvas>
+
+<header role="banner">
+  <a href="index.html" class="logo" aria-label="Go to home page">MergeScholars</a>
+  <button id="menu-button" aria-haspopup="true" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav id="menu" class="menu" role="menu" aria-label="Main navigation menu">
+    <a href="index.html" role="menuitem" tabindex="0">Home</a>
+    <a href="Articles.html" role="menuitem" tabindex="0">Articles</a>
+    <a href="Scholars Talk.html" role="menuitem" tabindex="0">Scholars Talk</a>
+    <a href="Certificate Verification.html" role="menuitem" tabindex="0">Verify Certificates</a>
+    <a href="about us.html" role="menuitem" tabindex="0">About Us</a>
+    <a href="Join us.html" role="menuitem" tabindex="0">Join Us</a>
+    <a href="Contact us.html" role="menuitem" tabindex="0">Contact Us</a>
+
+    <div class="theme-selector" role="group" aria-label="Select theme">
+      <label><input type="radio" name="theme" value="light" /> Light</label>
+      <label><input type="radio" name="theme" value="dark" /> Dark</label>
+      <label><input type="radio" name="theme" value="dessert" /> Dessert</label>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">Explore Subjects</h1>
+  <div class="subjects-grid" role="list">
+
+    <div class="subject-box english" role="listitem" tabindex="0" aria-expanded="false" aria-label="English subject box">
+      <div class="title">English</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+        <button onclick="location.href='#'">Take Quizzes</button>
+      </div>
+    </div>
+
+    <div class="subject-box physics" role="listitem" tabindex="0" aria-expanded="false" aria-label="Physics subject box">
+      <div class="title">Physics</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+       <a href="Subjects/Quizes/Physics Module 1 Quiz.html">
+  <button onclick="location.href='physics module 1 quiz.html'">Take Quizzes</button>
+</a>
+
+      </div>
+    </div>
+
+    <div class="subject-box chemistry" role="listitem" tabindex="0" aria-expanded="false" aria-label="Chemistry subject box">
+      <div class="title">Chemistry</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+        <button onclick="location.href='#'">Take Quizzes</button>
+      </div>
+    </div>
+
+    <div class="subject-box biology" role="listitem" tabindex="0" aria-expanded="false" aria-label="Biology subject box">
+      <div class="title">Biology</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+        <button onclick="location.href='#'">Take Quizzes</button>
+      </div>
+    </div>
+
+    <div class="subject-box math" role="listitem" tabindex="0" aria-expanded="false" aria-label="Math subject box">
+      <div class="title">Math</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+        <button onclick="location.href='#'">Take Quizzes</button>
+      </div>
+    </div>
+
+    <div class="subject-box cs" role="listitem" tabindex="0" aria-expanded="false" aria-label="Computer Science subject box">
+      <div class="title">Computer Science</div>
+      <div class="subject-buttons">
+        <button onclick="location.href='#'">Learn</button>
+        <button onclick="location.href='#'">Take Quizzes</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // MENU TOGGLE
+  const menuButton = document.getElementById('menu-button');
+  const menu = document.getElementById('menu');
+
+  menuButton.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    menuButton.setAttribute('aria-expanded', isOpen);
+  });
+
+  // THEME SWITCHING
+  const themeRadios = document.querySelectorAll('input[name="theme"]');
+
+  function loadTheme() {
+    const savedTheme = localStorage.getItem('mergescholars-theme');
+    const defaultTheme = savedTheme || 'light';
+
+    document.body.classList.remove('theme-light', 'theme-dark', 'theme-dessert');
+    document.body.classList.add('theme-' + defaultTheme);
+
+    themeRadios.forEach(r => {
+      r.checked = (r.value === defaultTheme);
+    });
+  }
+  loadTheme();
+
+  themeRadios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const theme = e.target.value;
+      document.body.classList.remove('theme-light', 'theme-dark', 'theme-dessert');
+      document.body.classList.add('theme-' + theme);
+      localStorage.setItem('mergescholars-theme', theme);
+    });
+  });
+
+  // DEVICE DETECTION - boxes expand on click (mobile) or hover (desktop)
+  function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  const subjectBoxes = document.querySelectorAll('.subject-box');
+
+  if (isMobileDevice()) {
+    subjectBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        const isExpanded = box.classList.contains('expanded');
+        subjectBoxes.forEach(b => {
+          b.classList.remove('expanded');
+          b.setAttribute('aria-expanded', 'false');
+        });
+        if (!isExpanded) {
+          box.classList.add('expanded');
+          box.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.subject-box')) {
+        subjectBoxes.forEach(b => {
+          b.classList.remove('expanded');
+          b.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  } else {
+    subjectBoxes.forEach(box => {
+      box.addEventListener('mouseenter', () => {
+        box.classList.add('expanded');
+        box.setAttribute('aria-expanded', 'true');
+      });
+      box.addEventListener('mouseleave', () => {
+        box.classList.remove('expanded');
+        box.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Solar System Canvas Background
+  const canvas = document.getElementById('solar-bg');
+  const ctx = canvas.getContext('2d');
+
+  let width, height, cx, cy;
+  let mouseX = 0, mouseY = 0;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    cx = width / 2;
+    cy = height / 2;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Planets data: radius, orbitRadius, color, speed (radians per frame)
+  const planets = [
+    { name: 'Mercury', radius: 6, orbitRadius: 60, color: '#b1b1b1', speed: 0.03, angle: Math.random() * Math.PI * 2 },
+    { name: 'Venus', radius: 10, orbitRadius: 90, color: '#e3c197', speed: 0.02, angle: Math.random() * Math.PI * 2 },
+    { name: 'Earth', radius: 12, orbitRadius: 130, color: '#4d85c4', speed: 0.015, angle: Math.random() * Math.PI * 2 },
+    { name: 'Mars', radius: 9, orbitRadius: 170, color: '#d14a3f', speed: 0.012, angle: Math.random() * Math.PI * 2 },
+    { name: 'Jupiter', radius: 22, orbitRadius: 220, color: '#deb887', speed: 0.008, angle: Math.random() * Math.PI * 2 },
+    { name: 'Saturn', radius: 18, orbitRadius: 280, color: '#f3e1b3', speed: 0.006, angle: Math.random() * Math.PI * 2 },
+  ];
+
+  // Sun
+  const sun = {
+    radius: 30,
+    color: '#ffdd00',
+  };
+
+  function drawSun() {
+    ctx.beginPath();
+    const sunX = cx + (mouseX - cx) * 0.05;
+    const sunY = cy + (mouseY - cy) * 0.05;
+    ctx.shadowColor = '#ffdd0055';
+    ctx.shadowBlur = 20;
+    ctx.fillStyle = sun.color;
+    ctx.arc(sunX, sunY, sun.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawOrbit(orbitRadius) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255 255 255 / 0.1)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 10]);
+    const offsetX = (mouseX - cx) * 0.03;
+    const offsetY = (mouseY - cy) * 0.03;
+    ctx.arc(cx + offsetX, cy + offsetY, orbitRadius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawPlanet(planet) {
+    ctx.beginPath();
+    const offsetX = (mouseX - cx) * 0.03;
+    const offsetY = (mouseY - cy) * 0.03;
+    const x = cx + offsetX + planet.orbitRadius * Math.cos(planet.angle);
+    const y = cy + offsetY + planet.orbitRadius * Math.sin(planet.angle);
+    ctx.shadowColor = planet.color + '88';
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = planet.color;
+    ctx.arc(x, y, planet.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Optional: draw planet name (small and subtle)
+    // ctx.fillStyle = 'rgba(255 255 255 / 0.3)';
+    // ctx.font = '10px sans-serif';
+    // ctx.fillText(planet.name, x + planet.radius + 3, y);
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    drawSun();
+
+    planets.forEach(planet => {
+      drawOrbit(planet.orbitRadius);
+    });
+
+    planets.forEach(planet => {
+      drawPlanet(planet);
+      planet.angle += planet.speed;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Mouse move for parallax effect
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // On touch devices, reset mouse to center
+  window.addEventListener('touchmove', e => {
+    if (e.touches.length > 0) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+    }
+  });
+</script>
+
+</body>
+</html>

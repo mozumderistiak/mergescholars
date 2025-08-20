@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<a href="index.html" style="
+  font-weight: 700; 
+  font-size: 1.5rem; 
+  color: black; 
+  text-decoration: none; 
+  user-select: none; 
+  transition: color 0.3s ease;
+" 
+onmouseover="this.style.color='#000000'; this.style.textShadow='0 0 8px #000000';" 
+onmouseout="this.style.color='black'; this.style.textShadow='none';">
+     MergeScholars
+</a>
+<title>MergeScholars - Online Sessions with Global Scholars</title>  
+
+
+
+
+<style>
+  /* === CSS Variables for themes === */
+  :root {
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition-duration: 0.4s;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  /* Dark theme colors */
+  [data-theme="dark"] {
+    --bg-color: #211e1e;
+    --text-color: #e0f7fa;
+    --subtext-color: #b2ebf2;
+    --highlight-color: #00ffff;
+    --card-bg: rgba(10, 30, 40, 0.8);
+    --card-border: #eeff00f8;
+    --hover-glow: #ff0000;
+    --search-bg: #222;
+    --footer-bg: rgba(10,10,10,0.85);
+  }
+
+  /* Light theme colors */
+  [data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #00050a;
+    --subtext-color: #ffffff;
+    --highlight-color: #a0f90758;
+    --card-bg: rgb(38, 47, 173);
+    --card-border: #3a86ff66;
+    --hover-glow: #3a86ff88;
+    --search-bg: #eee;
+    --footer-bg: rgba(245,245,245,0.9);
+  }
+
+  /* Dessert theme colors */
+  [data-theme="dessert"] {
+    --bg-color: #d6e096;
+    --text-color: #5a341b;
+    --subtext-color: #ff914d;
+    --highlight-color: #ff914d;
+    --card-bg: rgba(255, 242, 224, 0.85);
+    --card-border: #ff914d66;
+    --hover-glow: #c3682ff8;
+    --search-bg: #fff5eb;
+    --footer-bg: rgba(255, 240, 220, 0.9);
+  }
+
+  /* Reset and basics */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  a {
+    color: var(--highlight-color);
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    text-decoration: underline;
+  }
+  main {
+    flex-grow: 1;
+    padding: 1rem 1.5rem 4rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  h1.page-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    text-align: center;
+    margin: 1.5rem 0 0.5rem 0;
+    text-shadow: 0 0 10px var(--highlight-color);
+    user-select: none;
+  }
+  p.mission-statement {
+    max-width: 560px;
+    margin: 0 auto 2rem auto;
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    color: var(--subtext-color);
+    backdrop-filter: blur(5px);
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 0.9rem 1rem;
+    box-shadow: 0 0 10px var(--highlight-color);
+  }
+
+  /* Search Box */
+  .search-container {
+    max-width: 450px;
+    margin: 1rem auto 2rem auto;
+    position: relative;
+  }
+  #professor-search {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--highlight-color);
+    border-radius: var(--border-radius);
+    background-color: var(--search-bg);
+    color: var(--text-color);
+    transition: border-color var(--transition-duration);
+  }
+  #professor-search:focus {
+    outline: none;
+    border-color: var(--hover-glow);
+    box-shadow: 0 0 10px var(--hover-glow);
+    background-color: var(--card-bg);
+  }
+
+  /* Session Sections */
+  .sessions-section {
+    margin-bottom: 3rem;
+  }
+  .sessions-section h2 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 100px var(--highlight-color);
+    user-select: none;
+  }
+
+  /* Cards Container */
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  /* Session Card */
+  .session-card {
+    display: flex;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 5px solid var(--card-border);
+    padding: 1rem 1.25rem;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease,
+      box-shadow 0.3s ease;
+    min-height: 130px;
+  }
+  .session-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .session-card:hover,
+  .session-card:focus-within {
+    box-shadow: 0 0 20px var(--hover-glow);
+    border-color: var(--hover-glow);
+  }
+
+  /* Profile photo */
+  .professor-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 3px solid var(--highlight-color);
+    box-shadow: 0 0 8px var(--highlight-color);
+  }
+
+  /* Info Container */
+  .session-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: var(--text-color);
+  }
+
+  /* Name */
+  .professor-name {
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin: 0;
+    user-select: text;
+  }
+
+  /* Profession */
+  .professor-profession {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--subtext-color);
+    margin: 0;
+    user-select: text;
+  }
+
+  /* Details row */
+  .professor-details {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .subject-tag {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    user-select: none;
+    box-shadow: 0 0 5px var(--highlight-color);
+  }
+  .university-name {
+    background-color: var(--highlight-color);
+    font-weight: 600;
+     padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    user-select: text;
+     box-shadow: 0 0 5px var(--highlight-color);
+  }
+  .country-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--subtext-color);
+    font-style: Normal;
+    user-select: text;
+  }
+
+  /* Session date/time box */
+  .session-datetime {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    max-width: 320px;
+  }
+  .countdown-timer {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--highlight-color);
+    font-weight: 900;
+    user-select: none;
+  }
+
+  /* Join meeting button */
+  .join-box {
+    margin-top: 0.6rem;
+  }
+  .join-button {
+    display: inline-block;
+    padding: 0.45rem 1.1rem;
+    background: transparent;
+    border: 2px solid var(--highlight-color);
+    color: var(--highlight-color);
+    font-weight: 700;
+    border-radius: 28px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease;
+    box-shadow: 0 0 10px var(--highlight-color);
+  }
+  .join-button:hover,
+  .join-button:focus {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--hover-glow);
+    outline: none;
+  }
+
+  /* Past sessions extras */
+  .past-session-date {
+    font-style: italic;
+    color: var(--subtext-color);
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    user-select: text;
+  }
+  .youtube-link {
+    margin-top: 0.5rem;
+    display: inline-block;
+    color: var(--highlight-color);
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    user-select: none;
+  }
+  .youtube-link:hover,
+  .youtube-link:focus {
+    border-color: var(--highlight-color);
+    outline: none;
+  }
+
+  /* Highlight for search matches */
+  mark.highlight {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    font-weight: 900;
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  /* No results text */
+  .no-results {
+    color: var(--subtext-color);
+    font-style: italic;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1rem;
+    user-select: none;
+  }
+
+  /* Header & Menu */
+  header {
+    position: sticky;
+    top: 0;
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--card-border);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  #menu-toggle {
+    background: none;
+    border: 2px solid var(--highlight-color);
+    padding: 0.4rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--highlight-color);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease;
+  }
+  #menu-toggle:hover,
+  #menu-toggle:focus {
+    background-color: var(--hover-glow);
+    color: var(--bg-color);
+    box-shadow: 0 0 12px var(--hover-glow);
+    outline: none;
+  }
+
+  /* Floating glassmorphic menu panel */
+  #floating-menu {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(18px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 3rem 1rem 1rem 1rem;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+    z-index: 1500;
+  }
+  #floating-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  #floating-menu a {
+    font-size: 1.3rem;
+    color: var(--highlight-color);
+    font-weight: 700;
+    user-select: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--border-radius);
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  #floating-menu a:hover,
+  #floating-menu a:focus {
+    background-color: var(--hover-glow);
+    color: var(--bg-color);
+    box-shadow: 0 0 14px var(--hover-glow);
+    outline: none;
+  }
+
+  /* Theme selector boxes */
+  .theme-selectors {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .theme-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 6px transparent;
+    border: 2px solid transparent;
+    transition:
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .theme-box.dark {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  }
+  .theme-box.light {
+    background: linear-gradient(135deg, #e0f7fa, #a7c7e7);
+  }
+  .theme-box.dessert {
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+  }
+  .theme-box:hover,
+  .theme-box:focus {
+    outline: none;
+    box-shadow: 0 0 14px var(--hover-glow);
+  }
+  .theme-box.selected {
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 18px var(--hover-glow);
+  }
+
+  /* Footer */
+  footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background-color: var(--footer-bg);
+    color: var(--text-color);
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.6rem 0;
+    user-select: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    main {
+      padding: 1rem 1rem 5rem 1rem;
+      max-width: 100%;
+    }
+    .session-card {
+      flex-direction: column;
+      min-height: auto;
+      padding: 1rem;
+      align-items: center;
+      text-align: center;
+    }
+    .professor-photo {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 1rem;
+    }
+    .session-info {
+      align-items: center;
+    }
+    .professor-details {
+      justify-content: center;
+    }
+    .session-datetime {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 100%;
+    }
+    .join-button {
+      padding: 0.5rem 1.4rem;
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<header>
+  <button id="menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="floating-menu">
+    Menu
+  </button>
+</header>
+
+<nav id="floating-menu" tabindex="-1" aria-label="Main menu" role="menu" aria-hidden="true">
+  <a href="index.html" role="menuitem" tabindex="0">Home</a>
+  <a href="Articles.html" role="menuitem" tabindex="0">Articles</a>
+  <a href="explore subjects.html" role="menuitem" tabindex="0">Explore Subjects</a>
+   <a href="Certificate Verification.html" role="menuitem" tabindex="0">Certificate Verification</a>
+  <a href="about us.html" role="menuitem" tabindex="0">About Us</a>
+  <a href="contact us.html" role="menuitem" tabindex="0">Contact Us</a>
+
+  <div class="theme-selectors" role="radiogroup" aria-label="Select theme">
+    <div class="theme-box dark" tabindex="0" role="radio" aria-checked="false" data-theme="dark" title="Dark Theme"></div>
+    <div class="theme-box light" tabindex="0" role="radio" aria-checked="false" data-theme="light" title="Light Theme"></div>
+    <div class="theme-box dessert" tabindex="0" role="radio" aria-checked="false" data-theme="dessert" title="Dessert Theme"></div>
+  </div>
+</nav>
+
+<main>
+  <h1 class="page-title" tabindex="0">Online Sessions with Global Scholars</h1>
+  <p class="mission-statement" tabindex="0">
+   Welcome to MergeScholars —
+a platform born from a simple dream: to connect curious students with inspiring scholars from around the world.
+Our mission is to build bridges between global knowledge and ambitious minds, 
+especially in places where access to higher education feels distant. 
+Thanks to the incredible generosity of professors and researchers who
+share their ideas, and the enthusiasm of students who believe in this vision, 
+MergeScholars is growing into something truly meaningful.
+Here, you’ll find links to upcoming and past online sessions with scholars
+from across the globe — all designed to spark curiosity, deepen understanding, and
+make education more accessible to all. 
+Thank you for being part of this journey.
+
+— Istiak Ahmed Mozumder
+Founder, MergeScholars
+  </p>
+
+  <div class="search-container" role="search" aria-label="Search sessions by professor name">
+    <input
+      type="search"
+      id="professor-search"
+      placeholder="Search by professor name..."
+      aria-label="Search by professor name"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
+
+  <section class="sessions-section" aria-label="Upcoming Zoom Sessions">
+    <h2 tabindex="0">Upcoming Zoom Sessions</h2>
+    <div id="upcoming-cards" class="cards-container" aria-live="polite" aria-relevant="additions removals" aria-atomic="true"></div>
+  </section>
+
+  <section class="sessions-section" aria-label="Past Online Sessions">
+    <h2 tabindex="0">Past Online Sessions</h2>
+    <div id="past-cards" class="cards-container" aria-live="polite" aria-relevant="additions removals" aria-atomic="true"></div>
+  </section>
+
+  <div id="no-results" class="no-results" aria-live="assertive" role="alert" hidden>No sessions found for that name.</div>
+
+</main>
+
+<footer>
+  © <span id="year">2025</span> MergeScholars. All rights reserved. Empowering students through global knowledge exchange.
+</footer>
+
+<script>
+  (() => {
+    'use strict';
+
+    // Sample dummy data for upcoming sessions
+    const upcomingSessions = [
+      {
+        id: 'p1',
+        photo: 'https://imgs.search.brave.com/rLSG3px4lsq1a-2ztNJ18aL2d5Windkaup4D0xhO6lA/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvcGh5c2ljcy10/ZXh0Ym9vay1zY2ll/bmNlLWZvcm11bGFz/LXNjaG9vbC1ib2Fy/ZF84MDcxLTUwMTAw/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA',
+        name: 'Professor Alan Paul',
+        profession: 'Assistant Professor',
+        subject: 'Applied Physics',
+        university: 'University of Michigan',
+        country: 'USA',
+        sessionStart: '2025-08-15T14:00:00Z',
+        zoomLink: 'https://zoom.us/j/12345678901',
+      },
+      {
+        id: 'p2',
+        photo: '',
+        name: 'Prof. Marie Curie',
+        profession: 'Physicist & Chemist',
+        subject: 'Radioactivity',
+        university: 'Sorbonne University',
+        country: 'France',
+        sessionStart: '2025-08-20T16:30:00Z',
+        zoomLink: 'https://zoom.us/j/10987654321',
+      },
+      {
+        id: 'p3',
+        photo: 'https://randomuser.me/api/portraits/men/33.jpg',
+        name: 'Dr. Chien-Shiung Wu',
+        profession: 'Experimental Physicist',
+        subject: 'Quantum Mechanics',
+        university: 'Columbia University',
+        country: 'USA',
+        sessionStart: '2025-08-25T19:00:00Z',
+        zoomLink: 'https://zoom.us/j/12398765432',
+      },
+      {
+        id: 'p4',
+        photo: 'https://randomuser.me/api/portraits/women/52.jpg',
+        name: 'Prof. Ada Lovelace',
+        profession: 'Mathematician',
+        subject: 'Algorithm Design',
+        university: 'University of London',
+        country: 'UK',
+        sessionStart: '2025-08-30T13:45:00Z',
+        zoomLink: 'https://zoom.us/j/98765432109',
+      },
+      {
+        id: 'p5',
+        photo: 'https://randomuser.me/api/portraits/men/21.jpg',
+        name: 'Dr. Richard Feynman',
+        profession: 'Theoretical Physicist',
+        subject: 'Particle Physics',
+        university: 'Caltech',
+        country: 'USA',
+        sessionStart: '2025-09-05T18:30:00Z',
+        zoomLink: 'https://zoom.us/j/19283746509',
+      }
+    ];
+
+    // Sample dummy data for past sessions
+    const pastSessions = [
+      {
+        id: 'past1',
+        photo: 'https://randomuser.me/api/portraits/women/44.jpg',
+        name: 'Prof. Rosalind Franklin',
+        profession: 'Chemist',
+        subject: 'DNA Structure',
+        university: 'King\'s College London',
+        country: 'UK',
+        sessionStart: '2025-07-10T14:00:00Z',
+        youtubeLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      },
+      {
+        id: 'past2',
+        photo: 'https://randomuser.me/api/portraits/men/29.jpg',
+        name: 'Dr. Niels Bohr',
+        profession: 'Physicist',
+        subject: 'Atomic Structure',
+        university: 'University of Copenhagen',
+        country: 'Denmark',
+        sessionStart: '2025-06-30T15:30:00Z',
+        youtubeLink: 'https://www.youtube.com/watch?v=9bZkp7q19f0',
+      },
+      {
+        id: 'past3',
+        photo: 'https://randomuser.me/api/portraits/women/38.jpg',
+        name: 'Prof. Emmy Noether',
+        profession: 'Mathematician',
+        subject: 'Abstract Algebra',
+        university: 'University of Göttingen',
+        country: 'Germany',
+        sessionStart: '2025-06-15T17:00:00Z',
+        youtubeLink: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
+      }
+    ];
+
+    const menuToggleBtn = document.getElementById('menu-toggle');
+    const floatingMenu = document.getElementById('floating-menu');
+    const themeBoxes = [...document.querySelectorAll('.theme-box')];
+    const professorSearchInput = document.getElementById('professor-search');
+    const upcomingCardsContainer = document.getElementById('upcoming-cards');
+    const pastCardsContainer = document.getElementById('past-cards');
+    const noResultsMsg = document.getElementById('no-results');
+
+    // Utility to create a countdown timer string
+    function getCountdown(targetTime) {
+      const now = new Date();
+      const diffMs = new Date(targetTime) - now;
+      if (diffMs <= 0) return 'Started';
+
+      const seconds = Math.floor(diffMs / 1000) % 60;
+      const minutes = Math.floor(diffMs / (1000 * 60)) % 60;
+      const hours = Math.floor(diffMs / (1000 * 60 * 60)) % 24;
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+      let result = '';
+      if(days > 0) result += `${days}d `;
+      result += `${hours.toString().padStart(2, '0')}h `;
+      result += `${minutes.toString().padStart(2, '0')}m `;
+      result += `${seconds.toString().padStart(2, '0')}s`;
+
+      return result;
+    }
+
+    // Highlight matched text in a string for search results
+    function highlightMatch(text, query) {
+      if (!query) return text;
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark class="highlight">$1</mark>');
+    }
+
+    // Render a single upcoming session card
+    function renderUpcomingCard(session, searchQuery = '') {
+      const countdownId = `countdown-${session.id}`;
+
+      const card = document.createElement('article');
+      card.className = 'session-card';
+      card.tabIndex = 0;
+      card.setAttribute('role', 'region');
+      card.setAttribute('aria-label', `Upcoming session with ${session.name}`);
+
+      card.innerHTML = `
+        <img
+          src="${session.photo}"
+          alt="Photo of ${session.name}"
+          class="professor-photo"
+          loading="lazy"
+        />
+        <div class="session-info">
+          <h3 class="professor-name">${highlightMatch(session.name, searchQuery)}</h3>
+          <p class="professor-profession">${highlightMatch(session.profession, searchQuery)}</p>
+          <div class="professor-details" aria-label="Session details">
+            <span class="subject-tag">${session.subject}</span>
+            <span class="university-name">${session.university}</span>
+            <span class="country-name">${session.country}</span>
+          </div>
+          <div class="session-datetime">
+            <time datetime="${session.sessionStart}">${new Date(session.sessionStart).toLocaleString(undefined, {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+              hour12: false
+            })}</time>
+            <span class="countdown-timer" id="${countdownId}"></span>
+          </div>
+          <div class="join-box">
+            <a href="${session.zoomLink}" target="_blank" rel="noopener noreferrer" class="join-button" aria-label="Join Zoom session with ${session.name}">Join Zoom</a>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    // Render a single past session card
+    function renderPastCard(session, searchQuery = '') {
+      const card = document.createElement('article');
+      card.className = 'session-card';
+      card.tabIndex = 0;
+      card.setAttribute('role', 'region');
+      card.setAttribute('aria-label', `Past session with ${session.name}`);
+
+      card.innerHTML = `
+        <img
+          src="${session.photo}"
+          alt="Photo of ${session.name}"
+          class="professor-photo"
+          loading="lazy"
+        />
+        <div class="session-info">
+          <h3 class="professor-name">${highlightMatch(session.name, searchQuery)}</h3>
+          <p class="professor-profession">${highlightMatch(session.profession, searchQuery)}</p>
+          <div class="professor-details" aria-label="Session details">
+            <span class="subject-tag">${session.subject}</span>
+            <span class="university-name">${session.university}</span>
+            <span class="country-name">${session.country}</span>
+          </div>
+          <time class="past-session-date" datetime="${session.sessionStart}">
+            ${new Date(session.sessionStart).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+          </time>
+          <a href="${session.youtubeLink}" target="_blank" rel="noopener noreferrer" class="youtube-link" aria-label="Watch YouTube recording of session with ${session.name}">
+            ▶ Watch Recording
+          </a>
+        </div>
+      `;
+      return card;
+    }
+
+    // Render all cards according to search filter
+    function renderCards(searchQuery = '') {
+      const normalizedQuery = searchQuery.trim().toLowerCase();
+
+      // Filter upcoming
+      const filteredUpcoming = upcomingSessions.filter(s =>
+        s.name.toLowerCase().includes(normalizedQuery)
+      );
+      // Filter past
+      const filteredPast = pastSessions.filter(s =>
+        s.name.toLowerCase().includes(normalizedQuery)
+      );
+
+      // Clear containers
+      upcomingCardsContainer.innerHTML = '';
+      pastCardsContainer.innerHTML = '';
+
+      if (filteredUpcoming.length === 0 && filteredPast.length === 0) {
+        noResultsMsg.hidden = false;
+      } else {
+        noResultsMsg.hidden = true;
+      }
+
+      // Append upcoming cards
+      filteredUpcoming.forEach(session => {
+        const card = renderUpcomingCard(session, searchQuery);
+        upcomingCardsContainer.appendChild(card);
+      });
+
+      // Append past cards
+      filteredPast.forEach(session => {
+        const card = renderPastCard(session, searchQuery);
+        pastCardsContainer.appendChild(card);
+      });
+
+      // After adding, initiate countdown and intersection animations
+      initCountdowns();
+      initScrollReveal();
+    }
+
+    // Initialize countdown timers for all upcoming sessions
+    function initCountdowns() {
+      const timers = document.querySelectorAll('.countdown-timer');
+      timers.forEach(timer => {
+        const id = timer.id.replace('countdown-', '');
+        const session = upcomingSessions.find(s => s.id === id);
+        if (!session) return;
+
+        function updateTimer() {
+          timer.textContent = getCountdown(session.sessionStart);
+          if (timer.textContent === 'Started') {
+            clearInterval(intervalId);
+          }
+        }
+        updateTimer();
+        const intervalId = setInterval(updateTimer, 1000);
+      });
+    }
+
+    // Scroll reveal using IntersectionObserver
+    function initScrollReveal() {
+      const cards = document.querySelectorAll('.session-card');
+
+      const options = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px',
+      };
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      cards.forEach(card => {
+        card.classList.remove('visible'); // reset so animation runs on each render
+        observer.observe(card);
+      });
+    }
+
+    // Theme management
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('mergeTheme', theme);
+
+      themeBoxes.forEach(box => {
+        const isSelected = box.dataset.theme === theme;
+        box.classList.toggle('selected', isSelected);
+        box.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      });
+    }
+
+    // Detect system theme on first load
+    function detectSystemTheme() {
+      const storedTheme = localStorage.getItem('mergeTheme');
+      if (storedTheme) {
+        setTheme(storedTheme);
+        return;
+      }
+      const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      if (darkQuery.matches) {
+        setTheme('dark');
+      } else {
+        // Default dessert if no dark preference
+        setTheme('dessert');
+      }
+    }
+
+    // Menu toggle logic
+    function toggleMenu(open) {
+      const isOpen = floatingMenu.classList.contains('open');
+      if (open === undefined) open = !isOpen;
+
+      if (open) {
+        floatingMenu.classList.add('open');
+        floatingMenu.setAttribute('aria-hidden', 'false');
+        menuToggleBtn.setAttribute('aria-expanded', 'true');
+        // Focus first link in menu for accessibility
+        const firstLink = floatingMenu.querySelector('a, .theme-box');
+        if (firstLink) firstLink.focus();
+        // Trap focus inside menu on tab key handled later
+      } else {
+        floatingMenu.classList.remove('open');
+        floatingMenu.setAttribute('aria-hidden', 'true');
+        menuToggleBtn.setAttribute('aria-expanded', 'false');
+        menuToggleBtn.focus();
+      }
+    }
+
+    // Event listeners
+
+    // Toggle menu button click
+    menuToggleBtn.addEventListener('click', () => {
+      toggleMenu();
+    });
+
+    // Close menu if clicked outside links or theme boxes (on backdrop)
+    floatingMenu.addEventListener('click', (e) => {
+      if (e.target === floatingMenu) {
+        toggleMenu(false);
+      }
+    });
+
+    // Theme box click and keyboard (space/enter)
+    themeBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        setTheme(box.dataset.theme);
+      });
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setTheme(box.dataset.theme);
+        }
+      });
+    });
+
+    // Keyboard trap in menu: cycle tab inside menu links and theme boxes
+    floatingMenu.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        const focusables = Array.from(floatingMenu.querySelectorAll('a, .theme-box')).filter(el => el.offsetParent !== null);
+        if (focusables.length === 0) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      } else if (e.key === 'Escape') {
+        toggleMenu(false);
+      }
+    });
+
+    // Search input event: filter cards live
+    professorSearchInput.addEventListener('input', () => {
+      renderCards(professorSearchInput.value);
+    });
+
+    // Set footer year dynamically
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialization
+    detectSystemTheme();
+    renderCards();
+
+  })();
+</script>
+<footer style="text-align:center; padding:16px 10px; font-size:0.9rem; color:var(--muted); background:rgba(255,255,255,0.05); backdrop-filter:blur(6px); margin-top:40px;">
+  &copy; <span id="currentYear"></span> MergeScholars. All rights reserved. Connecting students with global scholars.
+</footer>
+
+<script>
+  // Set current year dynamically
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
