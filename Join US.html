@@ -589,9 +589,13 @@
     <h1>Join MergeScholars</h1>
     <h2>Apply now to be part of the MergeScholars community.</h2>
 
-    <form id="joinForm" novalidate>
-      <label for="fullName">Full Name *</label>
-      <input type="text" id="fullName" name="fullName" autocomplete="name" required placeholder="Your full name" />
+   <form id="joinForm" action="https://api.web3forms.com/submit" method="POST" novalidate style="position: relative;">
+  <!-- Web3Forms hidden inputs -->
+  <input type="hidden" name="access_key" value="80f59af2-a4d5-4a21-b99b-5a6471185082" />
+  <input type="hidden" name="redirect" value="thankyou.html" />
+
+  <label for="fullName">Full Name *</label>
+  <input type="text" id="fullName" name="fullName" autocomplete="name" required placeholder="Your full name" />
 
       <label for="email">Email Address *</label>
       <input type="email" id="email" name="email" autocomplete="email" required placeholder="your.email@example.com" />
@@ -985,3 +989,4 @@
   </script>
 </body>
 </html>
+
