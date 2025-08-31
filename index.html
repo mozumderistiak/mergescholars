@@ -800,22 +800,118 @@ Because your dreams deserve nothing less.
     </div>
   </section>
 
-  <!-- Part 5 -->
-  <section id="part5" aria-label="Join notifications panel">
-    <h2>Join MergeScholars Notifications Panel</h2>
-    <div class="subtitle">Get new updates about MergeScholars before everyone else.</div>
-    <div id="form-box">
-      <form id="notify-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
-        <input type="hidden" name="access_key" value="80f59af2-a4d5-4a21-b99b-5a6471185082" />
-        <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="name" placeholder="Your full name" required autocomplete="name" />
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
-        <button type="submit" id="submit-btn">Get Started</button>
-      </form>
-    </div>
-  </section>
-</main>
+          
+<!-- Notifications Form -->
+<section id="part5" aria-label="Join notifications panel">
+  <h2>Join MergeScholars Notifications Panel</h2>
+  <div class="subtitle">Get new updates about MergeScholars before everyone else.</div>
+
+  <div id="form-box">
+    <form id="notify-form" action="https://getform.io/f/bpjzzmqb" method="POST" novalidate>
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="name" placeholder="Your full name" required autocomplete="name" />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+
+      <label for="message">Message (optional)</label>
+      <textarea id="message" name="message" placeholder="Your message"></textarea>
+
+      <button type="submit" id="submit-btn">Get Started</button>
+    </form>
+  </div>
+</section>
+
+<!-- Small Success Popup -->
+<div id="success-popup" style="
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#fff;
+  padding:20px 30px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  z-index:999;
+  text-align:center;
+">
+  <h3 style="margin-bottom:10px;">Congratulations!</h3>
+  <p>Your request has been submitted.</p>
+</div>
+
+<script>
+document.getElementById('notify-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+
+  // Ensure message is not empty
+  if (!formData.get('message')) formData.set('message', 'No message provided');
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (response.ok) {
+      // Show small popup
+      const popup = document.getElementById('success-popup');
+      popup.style.display = 'block';
+      form.reset();
+    } else {
+      alert('Submission failed. Please check your fields and try again.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Error submitting the form. Please check your internet and try again.');
+  }
+});
+
+// Close popup when clicking outside
+window.addEventListener('click', function(e){
+  const popup = document.getElementById('success-popup');
+  if (popup.style.display === 'block' && !popup.contains(e.target) && e.target.id !== 'submit-btn') {
+    popup.style.display = 'none';
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</script>
 
 <footer>
   &copy; <span id="year"></span> MergeScholars. All rights reserved.
@@ -982,41 +1078,6 @@ Because your dreams deserve nothing less.
   // Initial call so part2 might show if page is short
   revealOnScroll();
 
-</script>
-<script>
-  document.getElementById('notify-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formBox = document.getElementById('form-box');
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        form.style.display = 'none';
-        const thankYouMsg = document.createElement('div');
-        thankYouMsg.textContent = 'Form has been submitted, thank you!';
-        thankYouMsg.style.opacity = 0;
-        thankYouMsg.style.transition = 'opacity 1s ease-in-out';
-        thankYouMsg.style.marginTop = '20px';
-        thankYouMsg.style.fontWeight = 'bold';
-        thankYouMsg.style.fontSize = '1.2rem';
-        thankYouMsg.style.color = '#28a745';
-        formBox.appendChild(thankYouMsg);
-        requestAnimationFrame(() => { thankYouMsg.style.opacity = 1; });
-        form.reset();
-      } else {
-        alert('Submission failed. Please try again.');
-      }
-    } catch (err) {
-      alert('Error submitting the form. Please check your internet and try again.');
-    }
-  });
 </script>
 </body>
 </html>
