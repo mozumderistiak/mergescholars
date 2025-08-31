@@ -14,7 +14,7 @@ a{text-decoration:none;}
 /* ----- THEMES ----- */
 body.light-theme{background: linear-gradient(-45deg,#fefcea,#f1da36,#fff1f0,#fefcea); background-size:400% 400%; animation:gradientBG 15s ease infinite; color:#222;}
 body.dessert-theme{background: linear-gradient(-45deg,#FFE5B4,#FFCC99,#FFDAB9,#FFE4C4); background-size:400% 400%; animation:gradientBG 20s ease infinite; color:#333;}
-body.dark-theme{background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1b2735); background-size:400% 400%; animation:gradientBG 25s ease infinite; color:#bb7171;}
+body.dark-theme{background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1b2735); background-size:400% 400%; animation:gradientBG 25s ease infinite; color:#fff;}
 @keyframes gradientBG{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
 /* ----- HEADER ----- */
@@ -36,25 +36,28 @@ main{margin-top:140px; width:90%; max-width:850px; padding:35px; border-radius:1
 h1{text-align:center;font-size:40px;margin-bottom:15px;color:#ff6600;text-shadow:1px 1px 4px rgba(0,0,0,0.3);}
 p.subtitle{text-align:center;margin-bottom:35px;font-size:18px;color:#555;text-shadow:0 0 3px #fff;}
 form{display:flex; flex-direction:column; gap:18px;}
-input, select, textarea{padding:14px; font-size:16px; border-radius:8px; border:1px solid #ccc; width:100%; outline:none; background:rgba(255,255,255,0.9);}
+input, select, textarea{padding:14px; font-size:16px; border-radius:8px; border:1px solid #ccc; width:100%; outline:none; background:rgba(255,255,255,0.9); color:#333;}
+body.dark-theme input, body.dark-theme select, body.dark-theme textarea{background:rgba(0,0,0,0.6); color:#fff; border:1px solid #555;}
 input:focus, select:focus, textarea:focus{border-color:#ff9900; box-shadow:0 0 12px rgba(255,153,0,0.6);}
 .role-boxes{display:flex; flex-wrap:wrap; gap:12px; margin-top:5px;}
 .role-box{padding:12px 18px; border:1px solid #333; border-radius:10px; cursor:pointer; transition:0.3s; user-select:none; box-shadow:0 2px 5px rgba(0,0,0,0.2);}
 .role-box.selected{background:#ff9900; color:#fff; border-color:#ff9900; box-shadow:0 0 10px #ff9900;}
 .skills-input{margin-top:10px; display:none;}
 .terms-box{height:140px; overflow-y:auto; padding:12px; border:1px solid #ccc; border-radius:8px; background:#fff; font-size:14px; line-height:1.5; box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+body.dark-theme .terms-box{background:rgba(20,20,20,0.8); color:#fff; border:1px solid #555;}
 button.submit-btn{padding:16px; font-size:18px; border:none; border-radius:10px; cursor:pointer; background:#ff9900; color:#fff; box-shadow:0 8px 25px rgba(0,0,0,0.3);}
 button.submit-btn:hover{background:#e68a00; transform:scale(1.05); animation:btnSpark 0.6s linear infinite;}
 @keyframes btnSpark{0%,100%{box-shadow:0 8px 25px rgba(255,200,100,0.3);}50%{box-shadow:0 12px 35px rgba(255,255,255,0.6);}}
 
+/* ----- PARTICLES ----- */
 #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 #success-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#111; color:#fff; display:none; justify-content:center; align-items:center; flex-direction:column; z-index:999; overflow:hidden;}
 #success-screen h1{font-size:48px;margin-bottom:25px;text-shadow:0 0 15px #ffcc00;}
 canvas#fireworks{position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1;}
 
 /* ----- RESPONSIVE ----- */
-@media(max-width:768px){header{padding:15px 20px;} main{padding:25px;} h1{font-size:34px;}}
-@media(max-width:480px){header .menu-btn{padding:8px 12px; font-size:16px;} h1{font-size:28px;}}
+@media(max-width:768px){header{padding:15px 20px;} main{padding:25px;} h1{font-size:34px;} }
+@media(max-width:480px){header .menu-btn{padding:8px 12px; font-size:16px;} h1{font-size:28px;} }
 
 </style>
 </head>
@@ -85,212 +88,214 @@ canvas#fireworks{position:absolute; top:0; left:0; width:100%; height:100%; z-in
 <main>
   <h1>Join MergeScholars</h1>
   <p class="subtitle">Apply now to be part of the MergeScholars community</p>
-  <form id="mergeForm">
+
+  <form id="mergeForm" action="https://formsubmit.co/info.mergescholars@gmail.com" method="POST">
     <input type="text" name="fullName" placeholder="Full Name" required>
     <input type="email" name="email" placeholder="Email Address" required>
-    
+
     <!-- COUNTRY DROPDOWN -->
     <input list="countries-list" id="country" name="country" placeholder="Country of Residence" required>
     <datalist id="countries-list">
-      <option value="Afghanistan">
-      <option value="Albania">
-      <option value="Algeria">
-      <option value="Andorra">
-      <option value="Angola">
-      <option value="Antigua and Barbuda">
-      <option value="Argentina">
-      <option value="Armenia">
-      <option value="Australia">
-      <option value="Austria">
-      <option value="Azerbaijan">
-      <option value="Bahamas">
-      <option value="Bahrain">
-      <option value="Bangladesh">
-      <option value="Barbados">
-      <option value="Belarus">
-      <option value="Belgium">
-      <option value="Belize">
-      <option value="Benin">
-      <option value="Bhutan">
-      <option value="Bolivia">
-      <option value="Bosnia and Herzegovina">
-      <option value="Botswana">
-      <option value="Brazil">
-      <option value="Brunei">
-      <option value="Bulgaria">
-      <option value="Burkina Faso">
-      <option value="Burundi">
-      <option value="Cabo Verde">
-      <option value="Cambodia">
-      <option value="Cameroon">
-      <option value="Canada">
-      <option value="Central African Republic">
-      <option value="Chad">
-      <option value="Chile">
-      <option value="China">
-      <option value="Colombia">
-      <option value="Comoros">
-      <option value="Congo (Congo-Brazzaville)">
-      <option value="Costa Rica">
-      <option value="Croatia">
-      <option value="Cuba">
-      <option value="Cyprus">
-      <option value="Czechia">
-      <option value="Democratic Republic of the Congo">
-      <option value="Denmark">
-      <option value="Djibouti">
-      <option value="Dominica">
-      <option value="Dominican Republic">
-      <option value="Ecuador">
-      <option value="Egypt">
-      <option value="El Salvador">
-      <option value="Equatorial Guinea">
-      <option value="Eritrea">
-      <option value="Estonia">
-      <option value="Eswatini">
-      <option value="Ethiopia">
-      <option value="Fiji">
-      <option value="Finland">
-      <option value="France">
-      <option value="Gabon">
-      <option value="Gambia">
-      <option value="Georgia">
-      <option value="Germany">
-      <option value="Ghana">
-      <option value="Greece">
-      <option value="Grenada">
-      <option value="Guatemala">
-      <option value="Guinea">
-      <option value="Guinea-Bissau">
-      <option value="Guyana">
-      <option value="Haiti">
-      <option value="Holy See">
-      <option value="Honduras">
-      <option value="Hungary">
-      <option value="Iceland">
-      <option value="India">
-      <option value="Indonesia">
-      <option value="Iran">
-      <option value="Iraq">
-      <option value="Ireland">
-      <option value="Italy">
-      <option value="Jamaica">
-      <option value="Japan">
-      <option value="Jordan">
-      <option value="Kazakhstan">
-      <option value="Kenya">
-      <option value="Kiribati">
-      <option value="Kuwait">
-      <option value="Kyrgyzstan">
-      <option value="Laos">
-      <option value="Latvia">
-      <option value="Lebanon">
-      <option value="Lesotho">
-      <option value="Liberia">
-      <option value="Libya">
-      <option value="Liechtenstein">
-      <option value="Lithuania">
-      <option value="Luxembourg">
-      <option value="Madagascar">
-      <option value="Malawi">
-      <option value="Malaysia">
-      <option value="Maldives">
-      <option value="Mali">
-      <option value="Malta">
-      <option value="Marshall Islands">
-      <option value="Mauritania">
-      <option value="Mauritius">
-      <option value="Mexico">
-      <option value="Micronesia">
-      <option value="Moldova">
-      <option value="Monaco">
-      <option value="Mongolia">
-      <option value="Montenegro">
-      <option value="Morocco">
-      <option value="Mozambique">
-      <option value="Myanmar">
-      <option value="Namibia">
-      <option value="Nauru">
-      <option value="Nepal">
-      <option value="Netherlands">
-      <option value="New Zealand">
-      <option value="Nicaragua">
-      <option value="Niger">
-      <option value="Nigeria">
-      <option value="North Korea">
-      <option value="North Macedonia">
-      <option value="Norway">
-      <option value="Oman">
-      <option value="Pakistan">
-      <option value="Palau">
-      <option value="Palestine State">
-      <option value="Panama">
-      <option value="Papua New Guinea">
-      <option value="Paraguay">
-      <option value="Peru">
-      <option value="Philippines">
-      <option value="Poland">
-      <option value="Portugal">
-      <option value="Qatar">
-      <option value="Romania">
-      <option value="Russia">
-      <option value="Rwanda">
-      <option value="Saint Kitts and Nevis">
-      <option value="Saint Lucia">
-      <option value="Saint Vincent and the Grenadines">
-      <option value="Samoa">
-      <option value="San Marino">
-      <option value="Sao Tome and Principe">
-      <option value="Saudi Arabia">
-      <option value="Senegal">
-      <option value="Serbia">
-      <option value="Seychelles">
-      <option value="Sierra Leone">
-      <option value="Singapore">
-      <option value="Slovakia">
-      <option value="Slovenia">
-      <option value="Solomon Islands">
-      <option value="Somalia">
-      <option value="South Africa">
-      <option value="South Korea">
-      <option value="South Sudan">
-      <option value="Spain">
-      <option value="Sri Lanka">
-      <option value="Sudan">
-      <option value="Suriname">
-      <option value="Sweden">
-      <option value="Switzerland">
-      <option value="Syria">
-      <option value="Tajikistan">
-      <option value="Tanzania">
-      <option value="Thailand">
-      <option value="Timor-Leste">
-      <option value="Togo">
-      <option value="Tonga">
-      <option value="Trinidad and Tobago">
-      <option value="Tunisia">
-      <option value="Turkey">
-      <option value="Turkmenistan">
-      <option value="Tuvalu">
-      <option value="Uganda">
-      <option value="Ukraine">
-      <option value="United Arab Emirates">
-      <option value="United Kingdom">
-      <option value="United States of America">
-      <option value="Uruguay">
-      <option value="Uzbekistan">
-      <option value="Vanuatu">
-      <option value="Venezuela">
-      <option value="Vietnam">
-      <option value="Yemen">
-      <option value="Zambia">
-      <option value="Zimbabwe">
+     <option value="Afghanistan">
+<option value="Albania">
+<option value="Algeria">
+<option value="Andorra">
+<option value="Angola">
+<option value="Antigua and Barbuda">
+<option value="Argentina">
+<option value="Armenia">
+<option value="Australia">
+<option value="Austria">
+<option value="Azerbaijan">
+<option value="Bahamas">
+<option value="Bahrain">
+<option value="Bangladesh">
+<option value="Barbados">
+<option value="Belarus">
+<option value="Belgium">
+<option value="Belize">
+<option value="Benin">
+<option value="Bhutan">
+<option value="Bolivia">
+<option value="Bosnia and Herzegovina">
+<option value="Botswana">
+<option value="Brazil">
+<option value="Brunei">
+<option value="Bulgaria">
+<option value="Burkina Faso">
+<option value="Burundi">
+<option value="Cabo Verde">
+<option value="Cambodia">
+<option value="Cameroon">
+<option value="Canada">
+<option value="Central African Republic">
+<option value="Chad">
+<option value="Chile">
+<option value="China">
+<option value="Colombia">
+<option value="Comoros">
+<option value="Congo (Congo-Brazzaville)">
+<option value="Costa Rica">
+<option value="Croatia">
+<option value="Cuba">
+<option value="Cyprus">
+<option value="Czechia (Czech Republic)">
+<option value="Democratic Republic of the Congo">
+<option value="Denmark">
+<option value="Djibouti">
+<option value="Dominica">
+<option value="Dominican Republic">
+<option value="Ecuador">
+<option value="Egypt">
+<option value="El Salvador">
+<option value="Equatorial Guinea">
+<option value="Eritrea">
+<option value="Estonia">
+<option value="Eswatini (fmr. "Swaziland")">
+<option value="Ethiopia">
+<option value="Fiji">
+<option value="Finland">
+<option value="France">
+<option value="Gabon">
+<option value="Gambia">
+<option value="Georgia">
+<option value="Germany">
+<option value="Ghana">
+<option value="Greece">
+<option value="Grenada">
+<option value="Guatemala">
+<option value="Guinea">
+<option value="Guinea-Bissau">
+<option value="Guyana">
+<option value="Haiti">
+<option value="Holy See">
+<option value="Honduras">
+<option value="Hungary">
+<option value="Iceland">
+<option value="India">
+<option value="Indonesia">
+<option value="Iran">
+<option value="Iraq">
+<option value="Ireland">
+<option value="Italy">
+<option value="Jamaica">
+<option value="Japan">
+<option value="Jordan">
+<option value="Kazakhstan">
+<option value="Kenya">
+<option value="Kiribati">
+<option value="Kuwait">
+<option value="Kyrgyzstan">
+<option value="Laos">
+<option value="Latvia">
+<option value="Lebanon">
+<option value="Lesotho">
+<option value="Liberia">
+<option value="Libya">
+<option value="Liechtenstein">
+<option value="Lithuania">
+<option value="Luxembourg">
+<option value="Madagascar">
+<option value="Malawi">
+<option value="Malaysia">
+<option value="Maldives">
+<option value="Mali">
+<option value="Malta">
+<option value="Marshall Islands">
+<option value="Mauritania">
+<option value="Mauritius">
+<option value="Mexico">
+<option value="Micronesia">
+<option value="Moldova">
+<option value="Monaco">
+<option value="Mongolia">
+<option value="Montenegro">
+<option value="Morocco">
+<option value="Mozambique">
+<option value="Myanmar (formerly Burma)">
+<option value="Namibia">
+<option value="Nauru">
+<option value="Nepal">
+<option value="Netherlands">
+<option value="New Zealand">
+<option value="Nicaragua">
+<option value="Niger">
+<option value="Nigeria">
+<option value="North Korea">
+<option value="North Macedonia">
+<option value="Norway">
+<option value="Oman">
+<option value="Pakistan">
+<option value="Palau">
+<option value="Palestine State">
+<option value="Panama">
+<option value="Papua New Guinea">
+<option value="Paraguay">
+<option value="Peru">
+<option value="Philippines">
+<option value="Poland">
+<option value="Portugal">
+<option value="Qatar">
+<option value="Romania">
+<option value="Russia">
+<option value="Rwanda">
+<option value="Saint Kitts and Nevis">
+<option value="Saint Lucia">
+<option value="Saint Vincent and the Grenadines">
+<option value="Samoa">
+<option value="San Marino">
+<option value="Sao Tome and Principe">
+<option value="Saudi Arabia">
+<option value="Senegal">
+<option value="Serbia">
+<option value="Seychelles">
+<option value="Sierra Leone">
+<option value="Singapore">
+<option value="Slovakia">
+<option value="Slovenia">
+<option value="Solomon Islands">
+<option value="Somalia">
+<option value="South Africa">
+<option value="South Korea">
+<option value="South Sudan">
+<option value="Spain">
+<option value="Sri Lanka">
+<option value="Sudan">
+<option value="Suriname">
+<option value="Sweden">
+<option value="Switzerland">
+<option value="Syria">
+<option value="Tajikistan">
+<option value="Tanzania">
+<option value="Thailand">
+<option value="Timor-Leste">
+<option value="Togo">
+<option value="Tonga">
+<option value="Trinidad and Tobago">
+<option value="Tunisia">
+<option value="Turkey">
+<option value="Turkmenistan">
+<option value="Tuvalu">
+<option value="Uganda">
+<option value="Ukraine">
+<option value="United Arab Emirates">
+<option value="United Kingdom">
+<option value="United States of America">
+<option value="Uruguay">
+<option value="Uzbekistan">
+<option value="Vanuatu">
+<option value="Venezuela">
+<option value="Vietnam">
+<option value="Yemen">
+<option value="Zambia">
+<option value="Zimbabwe">
+
     </datalist>
 
     <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
     <input type="text" name="grade" placeholder="Grade/Class" required>
     <input type="text" name="institution" placeholder="Institution Name" required>
-    
+
     <div>Roles You Want to Apply For:</div>
     <div class="role-boxes">
       <div class="role-box" data-role="Student" onclick="toggleRole(this)">Student</div>
@@ -299,8 +304,8 @@ canvas#fireworks{position:absolute; top:0; left:0; width:100%; height:100%; z-in
       <div class="role-box" data-role="Technical & Creative Roles" onclick="toggleRole(this)">Technical & Creative Roles</div>
       <div class="role-box" data-role="Outreach & Growth" onclick="toggleRole(this)">Outreach & Growth</div>
       <div class="role-box" data-role="Administrative Roles" onclick="toggleRole(this)">Administrative Roles</div>
-      <div class="role-box" data-role="Technical & Creative Roles" onclick="toggleRole(this)">Technical & Creative Roles</div>
     </div>
+    <input type="hidden" name="roles" id="rolesInput">
     <input type="text" id="skills" name="skills" class="skills-input" placeholder="Enter skills for other roles">
 
     <select name="hearAbout" required>
@@ -315,26 +320,24 @@ canvas#fireworks{position:absolute; top:0; left:0; width:100%; height:100%; z-in
       <option>Campus Ambassador</option>
       <option>Events/Competitions</option>
       <option>Other</option>
-</select>
-
+    </select>
 
     <div class="terms-box">
-   <p><strong>Welcome to MergeScholars!</strong></p>
-
-<p>By submitting this application, you agree to abide by our community guidelines and policies.</p>
-
-<p>All information you provide in this form must be accurate, truthful, and verifiable. If any false or misleading information is found, MergeScholars reserves the right to take appropriate actions, including rejection or removal from the program.</p>
-
-<p>Members are expected to maintain honesty, integrity, and respect in all academic and community activities associated with MergeScholars.</p>
-
-<p>We reserve the right to revoke membership or privileges if a participant engages in misconduct, provides fraudulent information, or violates our policies.</p>
-
-<p>By joining, you also agree to allow MergeScholars to use your submitted information for verification, academic purposes, and community development, while ensuring your privacy and confidentiality are respected.</p>
-
-<p>These terms may be updated at any time, and continued participation implies acceptance of the latest version.</p>
-
+      <p><strong>Welcome to MergeScholars!</strong></p>
+      <p>By submitting this application, you agree to abide by our community guidelines and policies.</p>
+      <p>All information you provide in this form must be accurate, truthful, and verifiable. If any false or misleading information is found, MergeScholars reserves the right to take appropriate actions, including rejection or removal from the program.</p>
+      <p>Members are expected to maintain honesty, integrity, and respect in all academic and community activities associated with MergeScholars.</p>
+      <p>We reserve the right to revoke membership or privileges if a participant engages in misconduct, provides fraudulent information, or violates our policies.</p>
+      <p>By joining, you also agree to allow MergeScholars to use your submitted information for verification, academic purposes, and community development, while ensuring your privacy and confidentiality are respected.</p>
+      <p>These terms may be updated at any time, and continued participation implies acceptance of the latest version.</p>
     </div>
-    <label><input type="checkbox" name="agree" required> I agree to the terms and conditions</label>
+
+    <label><input type="checkbox" name="agree" required> I agree to the terms and conditions.<br><p> <b>Please note: after successfully submitting the form, a popup from an external website will appear.</p><p>Kindly return to our homepage afterward, as the page shown is not part of MergeScholars.</b></p></label>
+
+    <!-- HIDDEN INPUTS REQUIRED BY FORMSUBMIT -->
+    <input type="hidden" name="_next" value="https://yourdomain.com/success.html">
+    <input type="hidden" name="_captcha" value="false">
+
     <button type="submit" class="submit-btn">Submit Application</button>
   </form>
 </main>
@@ -343,13 +346,10 @@ canvas#fireworks{position:absolute; top:0; left:0; width:100%; height:100%; z-in
   <canvas id="fireworks"></canvas>
   <h1>Congratulations!</h1>
   <p>Your form has been successfully submitted.</p><br>
-
-<p>Thank you for applying as a volunteer at MergeScholars.
-   <p>Our team will review your application and get in touch with you via email regarding the available role. </p>
-   <P>If you perform well in your responsibilities, you will also receive</p>
-   <p>an official online certificate recognizing your hard work and contribution.</p><br>
-   
-   <p>We truly appreciate your interest in being part of MergeScholars!</p>
+  <p>Thank you for applying as a volunteer at MergeScholars.</p>
+  <p>Our team will review your application and get in touch with you via email regarding the available role.</p>
+  <p>If you perform well in your responsibilities, you will also receive an official online certificate recognizing your hard work and contribution.</p><br>
+  <p>We truly appreciate your interest in being part of MergeScholars!</p>
 </div>
 
 <script>
@@ -373,11 +373,18 @@ window.onload=()=>{
 // ----- ROLES -----
 function toggleRole(el){
   el.classList.toggle('selected');
-  const skillsInput=document.getElementById('skills');
-  const selectedRoles=document.querySelectorAll('.role-box.selected');
-  let showSkills=false;
-  selectedRoles.forEach(r=>{if(r.dataset.role!=='Student') showSkills=true;});
-  skillsInput.style.display=showSkills?'block':'none';
+
+  // Show/hide skills input
+  const skillsInput = document.getElementById('skills');
+  const selectedRoles = document.querySelectorAll('.role-box.selected');
+  let showSkills = false;
+  selectedRoles.forEach(r => {if(r.dataset.role!=='Student') showSkills=true;});
+  skillsInput.style.display = showSkills ? 'block' : 'none';
+
+  // Update hidden input with selected roles
+  const rolesInput = document.getElementById('rolesInput');
+  const rolesArray = Array.from(selectedRoles).map(r => r.dataset.role);
+  rolesInput.value = rolesArray.join(", ");
 }
 
 // ----- PARTICLES -----
@@ -394,25 +401,8 @@ function showSuccess(){document.getElementById('success-screen').style.display='
 function startFireworks(){const canvas=document.getElementById('fireworks');canvas.width=window.innerWidth;canvas.height=window.innerHeight;const ctx=canvas.getContext('2d');let fireworks=[],particles=[];function random(min,max){return Math.random()*(max-min)+min;}class Firework{constructor(){this.x=random(0,canvas.width);this.y=canvas.height;this.targetY=random(50,canvas.height/2);this.color=`hsl(${random(0,360)},100%,50%)`;this.done=false;}update(){this.y-=8;if(this.y<=this.targetY){this.done=true;createParticles(this.x,this.y,this.color);}}draw(){ctx.beginPath();ctx.arc(this.x,this.y,3,0,Math.PI*2);ctx.fillStyle=this.color;ctx.fill();}}class Particle{constructor(x,y,color){this.x=x;this.y=y;this.color=color;this.vx=random(-5,5);this.vy=random(-5,5);this.alpha=1;}update(){this.x+=this.vx; this.y+=this.vy; this.alpha-=0.02;}draw(){ctx.beginPath();ctx.arc(this.x,this.y,3,0,Math.PI*2);ctx.fillStyle=`hsla(${this.color},100%,50%,${this.alpha})`;ctx.fill();}}function createParticles(x,y,color){for(let i=0;i<40;i++)particles.push(new Particle(x,y,color));}function animate(){ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fillRect(0,0,canvas.width,canvas.height);if(Math.random()<0.03)fireworks.push(new Firework());fireworks.forEach(f=>{f.update();f.draw();});fireworks=fireworks.filter(f=>!f.done);particles.forEach(p=>{p.update();p.draw();});particles=particles.filter(p=>p.alpha>0);requestAnimationFrame(animate);}animate();}
 
 // ----- FORM SUBMISSION -----
-document.getElementById('mergeForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  const formData=new FormData(this);
-  fetch('https://api.web3forms.com/submit',{
-    method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({
-      access_key:'fcf322f0-dd9f-4174-86b3-79c70d70f420',
-      name:formData.get('fullName'),
-      email:formData.get('email'),
-      country:formData.get('country'),
-      phone:formData.get('phone'),
-      grade:formData.get('grade'),
-      institution:formData.get('institution'),
-      roles:Array.from(document.querySelectorAll('.role-box.selected')).map(r=>r.dataset.role).join(', '),
-      skills:formData.get('skills'),
-      hearAbout:formData.get('hearAbout'),
-      agree:formData.get('agree')?'Yes':'No'
-    })
-  }).then(res=>res.json()).then(data=>{showSuccess();}).catch(err=>{alert('Error submitting form!');});
+document.getElementById('mergeForm').addEventListener('submit', function(e) {
+    showSuccess();
 });
 </script>
 
