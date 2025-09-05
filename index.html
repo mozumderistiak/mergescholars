@@ -2,691 +2,792 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZTSGLM0ZH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZZTSGLM0ZH');
-</script>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="MergeScholars – Free academic resources, certificates, and guides for students.">
-<meta name="keywords" content="MergeScholars, free certificates, student resources, educational tools">
-<meta name="author" content="Istiak Ahmed Mozumder">
-<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-<title>MergeScholars</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZTSGLM0ZH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZZTSGLM0ZH');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MergeScholars – Free academic resources, certificates, and guides for students.">
+  <meta name="keywords" content="MergeScholars, free certificates, student resources, educational tools">
+  <meta name="author" content="Istiak Ahmed Mozumder">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <title>MergeScholars</title>
   
-<style>
-  /* ----------- Fonts and base styles ----------- */
-  body {
-    margin: 0; padding: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.5;
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    transition: background-color 0.4s, color 0.4s;
-  }
-
-  /* --- Theme Variables --- */
-  body.theme-desert {
-    --bg-body: #fff8e7;
-    --bg-header: rgba(255, 244, 214, 0);
-    --bg-section-1: #fff9e5;
-    --bg-section-2: #f7edd0;
-    --bg-section-3: #f2e6b9;
-    --bg-section-4: #efe5a6;
-    --bg-section-5: #f7ecd0;
-    --text-main: #5a4a1a;
-    --text-sub: #7a6c3c;
-    --btn-bg: #ccaa4d;
-    --btn-hover-bg: #b9953e;
-    --box-bg: #fff8d6;
-    --box-hover-shadow: 0 0 12px 2px rgba(204,170,77,0.7);
-  }
-
-  body.theme-dark {
-    --bg-body: #121212;
-    --bg-header: rgba(20, 20, 20, 0);
-    --bg-section-1: #1e1e1e;
-    --bg-section-2: #2a2a2a;
-    --bg-section-3: #333333;
-    --bg-section-4: #3d3d3d;
-    --bg-section-5: #282828;
-    --text-main: #e0e0e0;
-    --text-sub: #a0a0a0;
-    --btn-bg: #4444aa;
-    --btn-hover-bg: #6666cc;
-    --box-bg: #222244;
-    --box-hover-shadow: 0 0 14px 2px rgba(102,102,204,0.7);
-  }
-
-  body.theme-light {
-    --bg-body: #fafafa;
-    --bg-header: rgba(240, 240, 240, 0);
-    --bg-section-1: #ffffff;
-    --bg-section-2: #f0f0f0;
-    --bg-section-3: #e0e0e0;
-    --bg-section-4: #d0d0d0;
-    --bg-section-5: #c0c0c0;
-    --text-main: #222222;
-    --text-sub: #555555;
-    --btn-bg: #5a8dee;
-    --btn-hover-bg: #3677e0;
-    --box-bg: #e9f0ff;
-    --box-hover-shadow: 0 0 14px 2px rgba(90,141,238,0.7);
-  }
-
-  /* ----------- Header ----------- */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 56px;
-    background-color: var(--bg-header);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    box-sizing: border-box;
-    backdrop-filter: saturate(180%) blur(10px);
-    z-index: 1000;
-    transition: background-color 0.3s ease;
-  }
-
-  header:hover {
-    background-color: var(--bg-header);
-  }
-
-  #logo {
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: var(--text-main);
-    user-select: none;
-    cursor: default;
-  }
-
-  nav a {
-    color: var(--text-main);
-    text-decoration: none;
-    margin: 0 0.8rem;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: color 0.3s;
-  }
-
-  nav a:hover,
-  nav a:focus {
-    color: var(--btn-bg);
-    outline: none;
-    text-decoration: underline;
-  }
-
-  #theme-select {
-    padding: 0.3rem 0.6rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1.5px solid var(--btn-bg);
-    background: transparent;
-    color: var(--text-main);
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  #theme-select:hover,
-  #theme-select:focus {
-    background-color: var(--btn-bg);
-    color: #fff;
-    outline: none;
-  }
-
-  /* ----------- Main ----------- */
-  main {
-    padding-top: 56px; /* header height */
-  }
-
-  /* ----------- Part 1: Hero ----------- */
-  #part1 {
-    position: relative;
-    background-color: var(--bg-section-1);
-    color: var(--text-main);
-    text-align: center;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 6rem 1rem 6rem;
-    overflow: hidden;
-  }
-
-  #dots-canvas {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  #part1 .content {
-    position: relative;
-    z-index: 10;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  #part1 h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--text-main);
-  }
-
-  #part1 p {
-    font-size: 1.3rem;
-    font-weight: 500;
-    margin-bottom: 2.8rem;
-    color: var(--text-sub);
-  }
-
-  #part1 .btns button {
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 0.7rem 2rem;
-    margin: 0 0.7rem;
-    border: none;
-    border-radius: 6px;
-    background-color: var(--btn-bg);
-    color: #fff;
-    box-shadow: 0 0 8px 0 rgba(0,0,0,0.15);
-    transition: box-shadow 0.3s, background-color 0.3s;
-  }
-
-  #part1 .btns button:hover,
-  #part1 .btns button:focus {
-    background-color: var(--btn-hover-bg);
-    box-shadow: 0 0 16px 3px rgba(255 255 255 / 0.6);
-    outline: none;
-  }
-
-  /* ----------- Part 2: About + Small Boxes ----------- */
-  #part2 {
-    background-color: var(--bg-section-2);
-    padding: 3rem 1rem 5rem;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  #part2.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #about-box {
-    max-width: 720px;
-    margin: 0 auto 3rem;
-    padding: 1.8rem 2rem;
-    background-color: var(--box-bg);
-    border-radius: 8px;
-    color: var(--text-main);
-    font-weight: 600;
-    box-shadow: 0 0 8px 0 rgba(0,0,0,0.08);
-    user-select: none;
-  }
-
-  #about-box h2 {
-    margin-top: 0;
-    margin-bottom: 0.7rem;
-  }
-
-  #small-boxes {
-    max-width: 960px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-    gap: 1.3rem;
-  }
-
-  .small-box {
-    background-color: var(--box-bg);
-    border-radius: 8px;
-    padding: 1.6rem 1.2rem;
-    box-shadow: 0 0 4px 0 rgba(0,0,0,0.05);
-    color: var(--text-main);
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    text-decoration: none;
-    transition: box-shadow 0.3s ease;
-  }
-  .small-box:hover,
-  .small-box:focus {
-    box-shadow: var(--box-hover-shadow);
-    outline: none;
-  }
-
-  .small-box h3 {
-    margin: 0 0 0.6rem 0;
-    font-weight: 700;
-    font-size: 1.2rem;
-  }
-
-  .small-box p {
-    margin: 0;
-    font-weight: 400;
-    font-size: 0.95rem;
-    color: var(--text-sub);
-  }
-
-  /* ----------- Part 3: Stats ----------- */
-  #part3 {
-    background-color: var(--bg-section-3);
-    padding: 3rem 1rem 5rem;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  #part3.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #stats-grid {
-    max-width: 960px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem 1.6rem;
-  }
-
-  .stat-box {
-    background-color: var(--box-bg);
-    border-radius: 8px;
-    padding: 1.5rem 1.2rem;
-    box-shadow: 0 0 4px 0 rgba(0,0,0,0.05);
-    text-align: center;
-    user-select: none;
-    transition: box-shadow 0.3s ease;
-  }
-
-  .stat-box:focus,
-  .stat-box:hover {
-    box-shadow: var(--box-hover-shadow);
-    outline: none;
-  }
-
-  .stat-box h3 {
-    margin-top: 0;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-    font-size: 1.1rem;
-  }
-
-  .stat-box .number {
-    font-weight: 700;
-    font-size: 2.3rem;
-    color: var(--btn-bg);
-    margin-bottom: 0.3rem;
-    user-select: text;
-  }
-
-  .stat-box p {
-    margin: 0;
-    font-weight: 400;
-    font-size: 0.9rem;
-    color: var(--text-sub);
-  }
-
-  /* ----------- Part 4: Reviews ----------- */
-  #part4 {
-    background-color: var(--bg-section-4);
-    padding: 3rem 1rem 5rem;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    text-align: center;
-  }
-  #part4.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #part4 h2 {
-    margin-top: 0; margin-bottom: 2rem;
-    font-weight: 700;
-    font-size: 2rem;
-    color: var(--text-main);
-    user-select: none;
-  }
-
-  #review-container {
-    position: relative;
-    max-width: 700px;
-    margin: 0 auto;
-    background-color: var(--box-bg);
-    border-radius: 10px;
-    padding: 2.2rem 3rem 3rem;
-    box-shadow: 0 0 7px 0 rgba(0,0,0,0.1);
-  }
-
-  #review-text {
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--text-main);
-    min-height: 90px;
-    user-select: text;
-  }
-
-  #review-author {
-    margin-top: 1.2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--text-sub);
-    user-select: text;
-  }
-
-  .review-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    color: var(--btn-bg);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0 0.5rem;
-    user-select: none;
-    transition: color 0.3s ease;
-  }
-  .review-arrow:hover,
-  .review-arrow:focus {
-    color: var(--btn-hover-bg);
-    outline: none;
-  }
-  #review-prev {
-    left: 1rem;
-  }
-  #review-next {
-    right: 1rem;
-  }
-
-  /* ----------- Part 5: Notifications ----------- */
-  #part5 {
-    background-color: var(--bg-section-5);
-    padding: 3rem 1rem 6rem;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    text-align: center;
-  }
-  #part5.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #part5 h2 {
-    font-weight: 700;
-    font-size: 2rem;
-    margin-top: 0; margin-bottom: 0.4rem;
-    color: var(--text-main);
-    user-select: none;
-  }
-  #part5 .subtitle {
-    color: var(--text-sub);
-    font-weight: 500;
-    margin-bottom: 2.5rem;
-  }
-
-  #form-box {
-    max-width: 480px;
-    margin: 0 auto;
-    background-color: var(--box-bg);
-    border-radius: 10px;
-    padding: 2.2rem 2.8rem 2.8rem;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.12);
-  }
-
-  form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: var(--text-main);
-    user-select: none;
-  }
-
-  form input {
-    width: 100%;
-    padding: 0.7rem 0.9rem;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 6px;
-    border: 1.8px solid #bbb;
-    font-family: inherit;
-    box-sizing: border-box;
-  }
-  form input:focus {
-    outline: none;
-    border-color: var(--btn-bg);
-    box-shadow: 0 0 8px 2px rgba(204,170,77,0.6);
-  }
-
-  #submit-btn {
-    width: 100%;
-    padding: 0.85rem 0;
-    font-weight: 700;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 7px;
-    background-color: var(--btn-bg);
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  #submit-btn:hover,
-  #submit-btn:focus {
-    background-color: var(--btn-hover-bg);
-    box-shadow: 0 0 16px 4px rgba(255 255 255 / 0.6);
-    outline: none;
-  }
-
-  /* ----------- Footer ----------- */
-  footer {
-    background-color: var(--bg-header);
-    color: var(--text-main);
-    text-align: center;
-    padding: 1rem 0;
-    font-weight: 600;
-    user-select: none;
-    font-size: 0.9rem;
-    box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.05);
-  }
-
-  /* ----------- Responsive ----------- */
-  @media (max-width: 900px) {
-    #part1 h1 {
-      font-size: 2.2rem;
+  <style>
+    /* ----------- Fonts and base styles ----------- */
+    body {
+      margin: 0; padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.5;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      transition: background-color 0.4s, color 0.4s;
+      overflow-x: hidden;
     }
-    #stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
 
-  @media (max-width: 550px) {
-    #stats-grid {
-      grid-template-columns: 1fr;
+    /* --- Theme Variables --- */
+    body.theme-desert {
+      --bg-body: #fff0d0;
+      --bg-header: rgba(255, 240, 200, 0.9);
+      --bg-section-1: #fff4d5;
+      --bg-section-2: #f7e6bb;
+      --bg-section-3: #f2dc9e;
+      --bg-section-4: #efd585;
+      --bg-section-5: #f7e6bb;
+      --text-main: #4a3800;
+      --text-sub: #6b5a20;
+      --btn-bg: #cc9933;
+      --btn-hover-bg: #b3821a;
+      --box-bg: #fff5d0;
+      --box-hover-shadow: 0 0 12px 2px rgba(204,153,51,0.7);
+      --neon-1: #ff3366;
+      --neon-2: #33ccff;
+      --neon-3: #ffcc00;
+      --neon-4: #9966ff;
+      --neon-5: #00ff99;
+      --neon-6: #ff6633;
     }
+
+    body.theme-dark {
+      --bg-body: #0a0a0a;
+      --bg-header: rgba(15, 15, 15, 0.9);
+      --bg-section-1: #151515;
+      --bg-section-2: #222222;
+      --bg-section-3: #2d2d2d;
+      --bg-section-4: #383838;
+      --bg-section-5: #222222;
+      --text-main: #e8e8e8;
+      --text-sub: #909090;
+      --btn-bg: #4444cc;
+      --btn-hover-bg: #6666ff;
+      --box-bg: #222244;
+      --box-hover-shadow: 0 0 14px 2px rgba(102,102,255,0.7);
+      --neon-1: #ff3366;
+      --neon-2: #33ccff;
+      --neon-3: #ffcc00;
+      --neon-4: #9966ff;
+      --neon-5: #00ff99;
+      --neon-6: #ff6633;
+    }
+
+    body.theme-light {
+      --bg-body: #f0f0f0;
+      --bg-header: rgba(230, 230, 230, 0.9);
+      --bg-section-1: #f8f8f8;
+      --bg-section-2: #e8e8e8;
+      --bg-section-3: #d8d8d8;
+      --bg-section-4: #c8c8c8;
+      --bg-section-5: #e0e0e0;
+      --text-main: #111111;
+      --text-sub: #444444;
+      --btn-bg: #3a7de8;
+      --btn-hover-bg: #2a6dda;
+      --box-bg: #e0e8ff;
+      --box-hover-shadow: 0 0 14px 2px rgba(58,125,232,0.7);
+      --neon-1: #ff3366;
+      --neon-2: #33ccff;
+      --neon-3: #ffcc00;
+      --neon-4: #9966ff;
+      --neon-5: #00ff99;
+      --neon-6: #ff6633;
+    }
+
+    /* ----------- Header ----------- */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background-color: var(--bg-header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      backdrop-filter: saturate(180%) blur(10px);
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    header:hover {
+      background-color: var(--bg-header);
+    }
+
+    #logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text-main);
+      user-select: none;
+      cursor: default;
+    }
+
     nav a {
-      margin: 0 0.4rem;
-      font-size: 0.9rem;
+      color: var(--text-main);
+      text-decoration: none;
+      margin: 0 0.8rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s;
     }
+
+    nav a:hover,
+    nav a:focus {
+      color: var(--btn-bg);
+      outline: none;
+      text-decoration: underline;
+    }
+
+    #theme-select {
+      padding: 0.3rem 0.6rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1.5px solid var(--btn-bg);
+      background: transparent;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #theme-select:hover,
+    #theme-select:focus {
+      background-color: var(--btn-bg);
+      color: #fff;
+      outline: none;
+    }
+
+    /* ----------- Main ----------- */
+    main {
+      padding-top: 56px; /* header height */
+    }
+
+    /* ----------- Part 1: Hero ----------- */
+    #part1 {
+      position: relative;
+      background-color: var(--bg-section-1);
+      color: var(--text-main);
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 1rem 6rem;
+      overflow: hidden;
+    }
+
+    #science-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #part1 .content {
+      position: relative;
+      z-index: 10;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
     #part1 h1 {
-      font-size: 1.8rem;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
     #part1 p {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 2.8rem;
+      color: var(--text-sub);
+    }
+
+    #part1 .btns button {
+      cursor: pointer;
+      font-weight: 600;
       font-size: 1.1rem;
+      padding: 0.7rem 2rem;
+      margin: 0 0.7rem;
+      border: none;
+      border-radius: 6px;
+      background-color: var(--btn-bg);
+      color: #fff;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
-  }
-
-  /* ----------- Neon hover effect ----------- */
-  .small-box:hover, .small-box:focus,
-  .stat-box:hover, .stat-box:focus,
-  #part1 .btns button:hover, #part1 .btns button:focus {
-    box-shadow: 0 0 14px 3px var(--btn-hover-bg);
-  }
-/* ----------- Mobile-specific Fixes & Theme Tweaks ----------- */
-@media (max-width: 600px) {
-  /* Header adjustments */
-  header {
-    flex-direction: column;
-    height: auto;
-    padding: 0.6rem;
-    align-items: flex-start;
-  }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-
-  nav a {
-    margin: 0.3rem 0.6rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-  }
-
-  #theme-select {
-    margin-top: 0.6rem;
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-
-  /* Hero section */
-  #part1 {
-    padding: 3rem 1rem;
-  }
-
-  #part1 h1 {
-    font-size: 1.6rem;
-    line-height: 1.3;
-  }
-
-  #part1 p {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .btns {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    align-items: center;
-  }
-
-  #part1 .btns button {
-    width: 90%;
-    margin: 0;
-    padding: 0.9rem 1rem;
-    font-size: 1.05rem;
-    border-radius: 8px;
-  }
-
-  /* About section boxes */
-  #small-boxes {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  /* Stats section */
-  #stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .stat-box {
-    padding: 1.2rem;
-  }
-
-  .stat-box .number {
-    font-size: 2rem;
-  }
-
-  /* Reviews */
-  #review-container {
-    padding: 1.5rem 1rem;
-  }
-
-  #review-text {
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-
-  .review-arrow {
-    font-size: 1.5rem;
-  }
-
-  /* Notifications form */
-  #form-box {
-    padding: 1.5rem;
-  }
-
-  form input, #submit-btn {
-    font-size: 1rem;
-    padding: 0.8rem;
-  }
-
-  /* ----------- Theme Improvements (Mobile Only) ----------- */
-  body.theme-desert {
-    --bg-body: #fffdf5;
-    --text-main: #4a3a0f;
-    --btn-bg: #d4a63f;
-    --btn-hover-bg: #b88528;
-  }
-
-  body.theme-dark {
-    --bg-body: #0f0f0f;
-    --text-main: #f1f1f1;
-    --btn-bg: #5555dd;
-    --btn-hover-bg: #7777ff;
-  }
-
-  body.theme-light {
-    --bg-body: #ffffff;
-    --text-main: #111111;
-    --btn-bg: #4a90e2;
-    --btn-hover-bg: #3578c6;
-  }
-}
-
-</style>
-<script>
-  function detectDevice() {
-    const width = window.innerWidth;
-    const body = document.body;
-    body.classList.remove("device-mobile", "device-tablet", "device-desktop");
-    if (width <= 600) {
-      body.classList.add("device-mobile");
-    } else if (width <= 1024) {
-      body.classList.add("device-tablet");
-    } else {
-      body.classList.add("device-desktop");
+    
+    #part1 .btns button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+      z-index: -1;
     }
-  }
-  window.addEventListener("resize", detectDevice);
-  window.addEventListener("load", detectDevice);
-</script>
+    
+    #part1 .btns button:hover::before,
+    #part1 .btns button:focus::before {
+      transform: translateX(100%);
+    }
 
+    #part1 .btns button:hover,
+    #part1 .btns button:focus {
+      background-color: var(--btn-hover-bg);
+      box-shadow: 0 0 20px 6px var(--btn-hover-bg);
+      outline: none;
+      transform: translateY(-2px);
+    }
 
+    /* ----------- Part 2: About + Small Boxes ----------- */
+    #part2 {
+      background-color: var(--bg-section-2);
+      padding: 3rem 1rem 5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    #part2.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
+    #about-box {
+      max-width: 720px;
+      margin: 0 auto 3rem;
+      padding: 1.8rem 2rem;
+      background-color: var(--box-bg);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-weight: 600;
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.08);
+      user-select: none;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
 
+    #about-box h2 {
+      margin-top: 0;
+      margin-bottom: 0.7rem;
+      color: var(--text-main);
+      border-bottom: 2px solid var(--btn-bg);
+      padding-bottom: 0.5rem;
+      display: inline-block;
+    }
 
+    #small-boxes {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 1.3rem;
+    }
+
+    .small-box {
+      background-color: var(--box-bg);
+      border-radius: 8px;
+      padding: 1.6rem 1.2rem;
+      box-shadow: 0 0 4px 0 rgba(0,0,0,0.05);
+      color: var(--text-main);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .small-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+      z-index: -1;
+    }
+    
+    .small-box:hover::before,
+    .small-box:focus::before {
+      transform: translateX(100%);
+    }
+
+    .small-box:hover,
+    .small-box:focus {
+      outline: none;
+      transform: translateY(-5px);
+    }
+
+    .small-box:nth-child(1):hover,
+    .small-box:nth-child(1):focus {
+      box-shadow: 0 0 20px 8px var(--neon-1);
+    }
+    
+    .small-box:nth-child(2):hover,
+    .small-box:nth-child(2):focus {
+      box-shadow: 0 0 20px 8px var(--neon-2);
+    }
+    
+    .small-box:nth-child(3):hover,
+    .small-box:nth-child(3):focus {
+      box-shadow: 0 0 20px 8px var(--neon-3);
+    }
+    
+    .small-box:nth-child(4):hover,
+    .small-box:nth-child(4):focus {
+      box-shadow: 0 0 20px 8px var(--neon-4);
+    }
+
+    .small-box h3 {
+      margin: 0 0 0.6rem 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .small-box p {
+      margin: 0;
+      font-weight: 400;
+      font-size: 0.95rem;
+      color: var(--text-sub);
+    }
+
+    /* ----------- Part 3: Stats ----------- */
+    #part3 {
+      background-color: var(--bg-section-3);
+      padding: 3rem 1rem 5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    #part3.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #stats-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.6rem;
+    }
+
+    .stat-box {
+      background-color: var(--box-bg);
+      border-radius: 8px;
+      padding: 1.5rem 1.2rem;
+      box-shadow: 0 0 4px 0 rgba(0,0,0,0.05);
+      text-align: center;
+      user-select: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+      z-index: -1;
+    }
+    
+    .stat-box:hover::before,
+    .stat-box:focus::before {
+      transform: translateX(100%);
+    }
+
+    .stat-box:focus,
+    .stat-box:hover {
+      outline: none;
+      transform: translateY(-5px);
+    }
+
+    .stat-box:nth-child(1):hover,
+    .stat-box:nth-child(1):focus {
+      box-shadow: 0 0 20px 8px var(--neon-1);
+    }
+    
+    .stat-box:nth-child(2):hover,
+    .stat-box:nth-child(2):focus {
+      box-shadow: 0 0 20px 8px var(--neon-2);
+    }
+    
+    .stat-box:nth-child(3):hover,
+    .stat-box:nth-child(3):focus {
+      box-shadow: 0 0 20px 8px var(--neon-3);
+    }
+    
+    .stat-box:nth-child(4):hover,
+    .stat-box:nth-child(4):focus {
+      box-shadow: 0 0 20px 8px var(--neon-4);
+    }
+    
+    .stat-box:nth-child(5):hover,
+    .stat-box:nth-child(5):focus {
+      box-shadow: 0 0 20px 8px var(--neon-5);
+    }
+    
+    .stat-box:nth-child(6):hover,
+    .stat-box:nth-child(6):focus {
+      box-shadow: 0 0 20px 8px var(--neon-6);
+    }
+
+    .stat-box h3 {
+      margin-top: 0;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      font-size: 1.1rem;
+      color: var(--text-main);
+    }
+
+    .stat-box .number {
+      font-weight: 700;
+      font-size: 2.3rem;
+      color: var(--btn-bg);
+      margin-bottom: 0.3rem;
+      user-select: text;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stat-box p {
+      margin: 0;
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    /* ----------- Part 4: Reviews ----------- */
+    #part4 {
+      background-color: var(--bg-section-4);
+      padding: 3rem 1rem 5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      text-align: center;
+    }
+    #part4.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #part4 h2 {
+      margin-top: 0; margin-bottom: 2rem;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--text-main);
+      user-select: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #review-container {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: var(--box-bg);
+      border-radius: 16px;
+      padding: 3rem 3.5rem 3.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    #review-container:hover {
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      transform: translateY(-5px);
+    }
+
+    #review-text {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-main);
+      min-height: 90px;
+      user-select: text;
+      position: relative;
+      padding: 1.5rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+      line-height: 1.6;
+      border-left: 4px solid var(--btn-bg);
+    }
+
+    #review-text::before,
+    #review-text::after {
+      content: '"';
+      font-size: 3rem;
+      color: var(--btn-bg);
+      opacity: 0.3;
+      position: absolute;
+      font-family: Georgia, serif;
+    }
+
+    #review-text::before {
+      top: 0;
+      left: 5px;
+    }
+
+    #review-text::after {
+      bottom: -1.5rem;
+      right: 5px;
+    }
+
+    #review-author {
+      margin-top: 1.8rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-sub);
+      user-select: text;
+      font-style: normal;
+      padding: 0.5rem 1rem;
+      background: rgba(0,0,0,0.05);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .review-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: var(--btn-bg);
+      background: rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      user-select: none;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .review-arrow:hover,
+    .review-arrow:focus {
+      background-color: var(--btn-bg);
+      color: white;
+      outline: none;
+      box-shadow: 0 0 15px var(--btn-bg);
+    }
+    
+    #review-prev {
+      left: 1rem;
+    }
+    
+    #review-next {
+      right: 1rem;
+    }
+
+    /* ----------- Part 5: Notifications ----------- */
+    #part5 {
+      background-color: var(--bg-section-5);
+      padding: 3rem 1rem 6rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      text-align: center;
+    }
+    #part5.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #part5 h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-top: 0; margin-bottom: 0.4rem;
+      color: var(--text-main);
+      user-select: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #part5 .subtitle {
+      color: var(--text-sub);
+      font-weight: 500;
+      margin-bottom: 2.5rem;
+    }
+
+    #form-box {
+      max-width: 480px;
+      margin: 0 auto;
+      background-color: var(--box-bg);
+      border-radius: 16px;
+      padding: 2.2rem 2.8rem 2.8rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    #form-box:hover {
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      transform: translateY(-5px);
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--text-main);
+      user-select: none;
+      text-align: left;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 6px;
+      border: 1.8px solid #bbb;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: all 0.3s;
+      background-color: rgba(255,255,255,0.8);
+    }
+    
+    form textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    form input:focus, form textarea:focus {
+      outline: none;
+      border-color: var(--btn-bg);
+      box-shadow: 0 0 10px 3px var(--btn-bg);
+    }
+
+    #submit-btn {
+      width: 100%;
+      padding: 0.85rem 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 7px;
+      background-color: var(--btn-bg);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    #submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+      z-index: -1;
+    }
+    
+    #submit-btn:hover::before,
+    #submit-btn:focus::before {
+      transform: translateX(100%);
+    }
+    
+    #submit-btn:hover,
+    #submit-btn:focus {
+      background-color: var(--btn-hover-bg);
+      box-shadow: 0 0 20px 6px var(--btn-hover-bg);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    /* ----------- Footer ----------- */
+    footer {
+      background-color: var(--bg-header);
+      color: var(--text-main);
+      text-align: center;
+      padding: 1.5rem 0;
+      font-weight: 600;
+      user-select: none;
+      font-size: 0.9rem;
+      box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.05);
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* ----------- Responsive ----------- */
+    @media (max-width: 900px) {
+      #part1 h1 {
+        font-size: 2.2rem;
+      }
+      #stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #review-container {
+        padding: 2rem 2.5rem 2.5rem;
+      }
+    }
+
+    @media (max-width: 550px) {
+      #stats-grid {
+        grid-template-columns: 1fr;
+      }
+      nav a {
+        margin: 0 0.4rem;
+        font-size: 0.9rem;
+      }
+      #part1 h1 {
+        font-size: 1.8rem;
+      }
+      #part1 p {
+        font-size: 1.1rem;
+      }
+      #review-container {
+        padding: 1.5rem 1.5rem 2.5rem;
+      }
+      #review-text {
+        padding: 1rem;
+        font-size: 1rem;
+        min-height: 120px;
+      }
+      .review-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 1.5rem;
+      }
+      #form-box {
+        padding: 1.5rem;
+      }
+    }
+
+  </style>
 </head>
 <body class="theme-desert">
 
@@ -709,18 +810,17 @@
 
 <main>
   <!-- Part 1 -->
-<section id="part1" aria-label="Hero section with main tagline and call to action">
-  <canvas id="dots-canvas" aria-hidden="true"></canvas>
-  <div class="content">
-    <h1>Empowering Tomorrow's Scholars Today.</h1>
-    <p>Join our non-profit and explore learning that goes beyond the limits of the classroom.</p>
-    <div class="btns" role="navigation" aria-label="Call to action buttons">
-      <button onclick="location.href='Join%20US.html'">Join Now</button>
-      <button onclick="location.href='About%20us.html'">Learn More</button>
+  <section id="part1" aria-label="Hero section with main tagline and call to action">
+    <canvas id="science-canvas" aria-hidden="true"></canvas>
+    <div class="content">
+      <h1>Empowering Tomorrow's Scholars Today.</h1>
+      <p>Join our non-profit and explore learning that goes beyond the limits of the classroom.</p>
+      <div class="btns" role="navigation" aria-label="Call to action buttons">
+        <button onclick="location.href='Join%20US.html'">Join Now</button>
+        <button onclick="location.href='About%20us.html'">Learn More</button>
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
 
   <!-- Part 2 -->
   <section id="part2" aria-label="About MergeScholars and features">
@@ -728,23 +828,22 @@
       <h2>About MergeScholars</h2>
       <p>At MergeScholars, we see you—the student with big dreams but limited resources,
          the one hungry to learn beyond the classroom walls. We understand the challenges you face,
-          and we’re here to help you break through those barriers.
+          and we're here to help you break through those barriers.
 
 This platform is built on a simple but powerful idea: to connect you directly with real professors and
  researchers from all corners of the world who genuinely want to share their knowledge with you. 
  Every article you read here is a personal gift from these scholars, written just for you—not borrowed, not copied, but created with care and passion.
 
 More than that, MergeScholars opens the door to real conversations through live online meetings,
- giving you a rare chance to speak, ask, and learn from those who’ve dedicated their lives to education. 
- And if you can’t join live, the sessions live on our YouTube channel, waiting for you anytime you need inspiration or answers.
+ giving you a rare chance to speak, ask, and learn from those who've dedicated their lives to education. 
+ And if you can't join live, the sessions live on our YouTube channel, waiting for you anytime you need inspiration or answers.
 
-MergeScholars is not just a website—it’s a community of hope,
+MergeScholars is not just a website—it's a community of hope,
  a bridge over the gap, and a beacon for every student who believes that education
   is more than textbooks and tests. We are here to nurture your curiosity, 
   fuel your passion, and walk with you on your journey to a brighter future.
 
 Because your dreams deserve nothing less.
-
 </p>
     </div>
     <div id="small-boxes">
@@ -796,8 +895,8 @@ Because your dreams deserve nothing less.
         <p>By experts and scholars</p>
       </div>
       <div class="stat-box" tabindex="0" role="listitem" aria-label="Online meetings held">
-        <h3>Online Meetings</h3>
-        <div class="number" data-target="1">0</div>
+        <h3>Online Workshops</h3>
+        <div class="number" data-target="0">0</div>
         <p>Engaging sessions worldwide</p>
       </div>
     </div>
@@ -805,7 +904,7 @@ Because your dreams deserve nothing less.
 
   <!-- Part 4 -->
   <section id="part4" aria-label="Reviews about MergeScholars">
-    <h2>Reviews of Our Website</h2>
+    <h2>Reviews of Our Platform</h2>
     <div id="review-container">
       <button id="review-prev" class="review-arrow" aria-label="Previous review" tabindex="0">&#8592;</button>
       <div id="review-text" tabindex="0"></div>
@@ -814,286 +913,345 @@ Because your dreams deserve nothing less.
     </div>
   </section>
 
-          
-<!-- Notifications Form -->
-<section id="part5" aria-label="Join notifications panel">
-  <h2>Join MergeScholars Notifications Panel</h2>
-  <div class="subtitle">Get new updates about MergeScholars before everyone else.</div>
+  <!-- Part 5: Notifications Form with Web3Forms -->
+  <section id="part5" aria-label="Join notifications panel">
+    <h2>Join MergeScholars Notifications Panel</h2>
+    <div class="subtitle">Get new updates about MergeScholars before everyone else.</div>
 
-  <div id="form-box">
-    <form id="notify-form" action="https://getform.io/f/bpjzzmqb" method="POST" novalidate>
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" name="name" placeholder="Your full name" required autocomplete="name" />
+    <div id="form-box">
+      <form id="notify-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="80f59af2-a4d5-4a21-b99b-5a6471185082">
+        <input type="hidden" name="subject" value="New Notification Signup from MergeScholars">
+        <input type="hidden" name="from_name" value="MergeScholars Website">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+        
+        <label for="fullname">Full Name *</label>
+        <input type="text" id="fullname" name="name" placeholder="Your full name" required autocomplete="name">
+        
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        
+        <label for="message">Additional Message</label>
+        <textarea id="message" name="message" placeholder="Your message or questions"></textarea>
+        
+        <button type="submit" id="submit-btn">Get Started</button>
+      </form>
+    </div>
+  </section>
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
-
-      <label for="message">Message (optional)</label>
-      <textarea id="message" name="message" placeholder="Your message"></textarea>
-
-      <button type="submit" id="submit-btn">Get Started</button>
-    </form>
+  <!-- Success Popup -->
+  <div id="success-popup" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 9999;
+    text-align: center;
+    border: 2px solid #4CAF50;
+  ">
+    <h3 style="margin-bottom: 10px; color: #4CAF50;">Success!</h3>
+    <p style="margin: 0;">Thank you for joining our notifications panel.</p>
   </div>
-</section>
 
-<!-- Small Success Popup -->
-<div id="success-popup" style="
-  display:none;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:#fff;
-  padding:20px 30px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
-  z-index:999;
-  text-align:center;
-">
-  <h3 style="margin-bottom:10px;">Congratulations!</h3>
-  <p>Your request has been submitted.</p>
-</div>
+</main>
 
-<script>
-document.getElementById('notify-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const form = e.target;
-  const formData = new FormData(form);
-
-  // Ensure message is not empty
-  if (!formData.get('message')) formData.set('message', 'No message provided');
-
-  try {
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    const result = await response.json();
-    console.log(result);
-
-    if (response.ok) {
-      // Show small popup
-      const popup = document.getElementById('success-popup');
-      popup.style.display = 'block';
-      form.reset();
-    } else {
-      alert('Submission failed. Please check your fields and try again.');
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Error submitting the form. Please check your internet and try again.');
-  }
-});
-
-// Close popup when clicking outside
-window.addEventListener('click', function(e){
-  const popup = document.getElementById('success-popup');
-  if (popup.style.display === 'block' && !popup.contains(e.target) && e.target.id !== 'submit-btn') {
-    popup.style.display = 'none';
-  }
-});
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-</script>
-
-<footer>
-  &copy; <span id="year"></span> MergeScholars. All rights reserved.
+<footer role="contentinfo" aria-label="Site footer">
+  <p>&copy; <span id="current-year"></span> MergeScholars. All rights reserved.</p>
 </footer>
 
 <script>
-  // Dynamic Year in footer
-  document.getElementById('year').textContent = new Date().getFullYear();
+  // Set current year in footer
+  document.getElementById('current-year').textContent = new Date().getFullYear();
 
-  // Theme switcher
-  const themeSelect = document.getElementById('theme-select');
-  themeSelect.addEventListener('change', e => {
-    document.body.className = 'theme-' + e.target.value;
+  // Theme switching
+  const themeSelect = document.getElementById("theme-select");
+  const body = document.body;
+
+  themeSelect.addEventListener("change", () => {
+    const theme = themeSelect.value;
+    body.className = `theme-${theme}`;
+    localStorage.setItem("selectedTheme", theme);
   });
 
-  // Moving dots canvas for part1 background
-  const canvas = document.getElementById('dots-canvas');
-  const ctx = canvas.getContext('2d');
-  let dotsArray = [];
-  let animationFrameId;
+  // Load saved theme
+  const savedTheme = localStorage.getItem("selectedTheme") || "desert";
+  themeSelect.value = savedTheme;
+  body.className = `theme-${savedTheme}`;
 
-  function resizeCanvas() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-  }
-  window.addEventListener('resize', () => {
-    resizeCanvas();
-    initDots();
+  // Scroll animations
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll("#part2, #part3, #part4, #part5").forEach(section => {
+    observer.observe(section);
   });
 
-  class Dot {
-    constructor(x, y, radius, vx, vy) {
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.vx = vx;
-      this.vy = vy;
-    }
-    update() {
-      if (this.x + this.radius > canvas.width || this.x - this.radius < 0) this.vx = -this.vx;
-      if (this.y + this.radius > canvas.height || this.y - this.radius < 0) this.vy = -this.vy;
-      this.x += this.vx;
-      this.y += this.vy;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(204,170,77,0.35)';
-      ctx.shadowColor = 'rgba(204,170,77,0.9)';
-      ctx.shadowBlur = 6;
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-  }
+  // Number counter animation
+  const numberElements = document.querySelectorAll(".number");
+  const observerNumbers = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const element = entry.target;
+        const target = parseInt(element.getAttribute("data-target"));
+        const duration = 2000; // ms
+        const step = target / (duration / 16); // 60fps
 
-  function initDots() {
-    dotsArray = [];
-    const dotsCount = Math.floor(canvas.width / 25);
-    for (let i = 0; i < dotsCount; i++) {
-      let radius = 3 + Math.random() * 2;
-      let x = Math.random() * (canvas.width - radius * 2) + radius;
-      let y = Math.random() * (canvas.height - radius * 2) + radius;
-      let vx = (Math.random() - 0.5) * 0.4;
-      let vy = (Math.random() - 0.5) * 0.4;
-      dotsArray.push(new Dot(x, y, radius, vx, vy));
-    }
-  }
-
-  function animateDots() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    dotsArray.forEach(dot => {
-      dot.update();
-      dot.draw();
+        let current = 0;
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            clearInterval(timer);
+            current = target;
+          }
+          element.textContent = Math.round(current);
+        }, 16);
+        observerNumbers.unobserve(element);
+      }
     });
-    animationFrameId = requestAnimationFrame(animateDots);
-  }
+  }, { threshold: 0.5 });
 
-  resizeCanvas();
-  initDots();
-  animateDots();
+  numberElements.forEach(el => {
+    observerNumbers.observe(el);
+  });
 
-  // Animate numbers in Part3
-  const counters = document.querySelectorAll('#part3 .number');
-  const speed = 40; // lower is faster
-
-  function animateCounters() {
-    counters.forEach(counter => {
-      const updateCount = () => {
-        const target = +counter.getAttribute('data-target');
-        const count = +counter.textContent;
-        const increment = target / speed;
-        if (count < target) {
-          counter.textContent = Math.ceil(count + increment);
-          setTimeout(updateCount, 20);
-        } else {
-          counter.textContent = target + '+';
-        }
-      };
-      updateCount();
-    });
-  }
-
-  // Reviews part
-  const reviews = [
-    { text: "Thanks to MergeScholars, I got the incredible opportunity to connect with an American professor. Their guidance and resources really helped me understand advanced topics and boosted my confidence in applying for international programs!", author: "— Arif Rahman, HSC Graduate, Dhaka" },
-    { text: "MergeScholars is amazing! I was able to attend live Zoom sessions with U.S. professors and gain insights I wouldn’t have anywhere else. Truly a platform that bridges the gap between students and global educators.", author: "— Fatima Chowdhury, A-Level Student, Chittagong" },
-    { text: "The resources here are unmatched. ", author: "— Ayesha M., Aspiring Physicist" },
-    { text: "Their articles and expert talks helped me prepare for my interviews and essays.", author: "— Mim Rashid, O-Level Student, Rajshahi" },
-    { text: "I was able to connect with professors and students worldwide. Amazing experience!", author: "— Sazzadur Rahman, Engineering Major" },
-    { text: "The online meetings were incredibly insightful and motivating.", author: "— Jihad Zafar., Undergraduate Student" },
-    { text: "I loved the certificate programs — they added real value to my resume.", author: "— Priya B., Undergraduate Student" },
+  // Reviews
+ const reviews = [
+    {
+      text: "MergeScholars has an incredible collection of articles and quizzes. The subjects are explained clearly, and I learned a lot in a short time!",
+      author: "— Arif Rahman, HSC Graduate, Dhaka"
+    },
+    {
+      text: "The website design is clean and easy to navigate, which makes learning more enjoyable. I especially loved how quickly they respond to questions.",
+      author: "— Fatima Chowdhury, A-Level Student, Chittagong"
+    },
+    {
+      text: "I like the quizzes, but some topics could use more depth. Still, it’s a good platform to start learning complex subjects.",
+      author: "— Rohan Patel, Undergraduate Student, India"
+    },
+    {
+      text: "The articles are well-written and updated regularly. It helped me understand concepts that I struggled with in class.",
+      author: "— Mim Rashid, O-Level Student, Rajshahi"
+    },
+    {
+      text: "I had a few questions about the subjects, and the team responded really fast. That made the learning experience smooth and motivating.",
+      author: "— Jihad Zafar, Undergraduate Student"
+    },
+    {
+      text: "Sometimes the website takes a moment to load, but the organized layout and topic structure make it easy to find what I need.",
+      author: "— Ananya Sharma, High School Student, India"
+    },
+    {
+      text: "MergeScholars helped me explore new subjects through quizzes and articles that I wouldn't find elsewhere. Highly recommended for curious students.",
+      author: "— Sazzadur Rahman, Engineering Major"
+    },
+    {
+      text: "The platform is excellent for self-learning. The subjects are broad, and the articles are very informative, though a few topics could be more interactive.",
+      author: "— Priya B., Undergraduate Student"
+    },
+    {
+      text: "I really appreciate the fast responses when I had doubts. It shows they care about helping students learn effectively.",
+      author: "— Nabila Hossain, High School Student, Sylhet"
+    },
+    {
+      text: "The quizzes are fun and challenging, but I wish there were more exercises for advanced topics. Still, a very useful learning tool.",
+      author: "— Tanvir Ahmed, O-Level Student, Dhaka"
+    }
 ];
-  let currentReview = 0;
 
-  const reviewText = document.getElementById('review-text');
-  const reviewAuthor = document.getElementById('review-author');
-  const prevBtn = document.getElementById('review-prev');
-  const nextBtn = document.getElementById('review-next');
+  let currentReview = 0;
+  const reviewText = document.getElementById("review-text");
+  const reviewAuthor = document.getElementById("review-author");
 
   function showReview(index) {
-    const review = reviews[index];
-    reviewText.textContent = `"${review.text}"`;
-    reviewAuthor.textContent = review.author;
+    reviewText.textContent = reviews[index].text;
+    reviewAuthor.textContent = reviews[index].author;
   }
 
-  prevBtn.addEventListener('click', () => {
-    currentReview = (currentReview - 1 + reviews.length) % reviews.length;
-    showReview(currentReview);
-  });
-
-  nextBtn.addEventListener('click', () => {
+  document.getElementById("review-next").addEventListener("click", () => {
     currentReview = (currentReview + 1) % reviews.length;
     showReview(currentReview);
   });
 
+  document.getElementById("review-prev").addEventListener("click", () => {
+    currentReview = (currentReview - 1 + reviews.length) % reviews.length;
+    showReview(currentReview);
+  });
+
+  // Initialize first review
   showReview(currentReview);
 
-  // Scroll reveal for parts 2 to 5 and animate counters once visible
-  function revealOnScroll() {
-    const revealParts = [2,3,4,5].map(n => document.getElementById('part' + n));
-    const scrollY = window.scrollY || window.pageYOffset;
-    const windowH = window.innerHeight;
+  // Science pattern animation for hero section
+  const canvas = document.getElementById("science-canvas");
+  const ctx = canvas.getContext("2d");
+  let animationId;
 
-    revealParts.forEach((part, i) => {
-      if (!part.classList.contains('visible')) {
-        const top = part.getBoundingClientRect().top + scrollY;
-        if (scrollY + windowH > top + 100) {
-          part.classList.add('visible');
-          if (part.id === 'part3') {
-            animateCounters();
-          }
-        }
-      } else {
-        // Optionally, hide again if scrolled back up (comment out if you want permanent)
-        const top = part.getBoundingClientRect().top + scrollY;
-        if (scrollY + windowH < top + 50) {
-          part.classList.remove('visible');
-        }
-      }
-    });
+  // Node class for the particles
+  class Node {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 1.2;
+      this.vy = (Math.random() - 0.5) * 1.2;
+      this.radius = 2 + Math.random() * 2;
+      this.color = `rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, ${Math.random() * 255}, 0.7)`;
+    }
+    
+    update(width, height) {
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      // Bounce off walls
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+    
+    draw(ctx) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
   }
 
-  window.addEventListener('scroll', revealOnScroll);
-  // Initial call so part2 might show if page is short
-  revealOnScroll();
+  function resizeCanvas() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
 
+  // Create nodes
+  const nodes = [];
+  const nodeCount = 80;
+
+  function initNodes() {
+    nodes.length = 0;
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push(new Node(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height
+      ));
+    }
+  }
+
+  function drawSciencePattern(time) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update and draw nodes
+    nodes.forEach(node => {
+      node.update(canvas.width, canvas.height);
+      node.draw(ctx);
+    });
+    
+    // Draw connections between nearby nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 150) {
+          const opacity = 1 - distance / 150;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(150, 150, 250, ${opacity * 0.4})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    
+    // Draw some scientific symbols occasionally
+    if (time % 100 < 5) {
+      const symbols = ["∑", "∫", "∂", "Δ", "π", "Ω", "∞", "√"];
+      const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      
+      ctx.font = "24px Arial";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.fillText(randomSymbol, x, y);
+    }
+    
+    animationId = requestAnimationFrame(drawSciencePattern);
+  }
+
+  function startAnimation() {
+    resizeCanvas();
+    initNodes();
+    if (animationId) cancelAnimationFrame(animationId);
+    animationId = requestAnimationFrame(drawSciencePattern);
+  }
+
+  window.addEventListener("resize", startAnimation);
+  startAnimation();
+
+  // Form submission with Web3Forms
+  document.getElementById('notify-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = document.getElementById('submit-btn');
+    const originalBtnText = submitBtn.textContent;
+    
+    // Show loading state
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
+    
+    try {
+      const formData = new FormData(form);
+      
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        // Show success popup
+        const popup = document.getElementById('success-popup');
+        popup.style.display = 'block';
+        
+        // Hide popup after 5 seconds
+        setTimeout(() => {
+          popup.style.display = 'none';
+        }, 5000);
+        
+        // Reset form
+        form.reset();
+      } else {
+        alert('There was an error submitting your request. Please try again.');
+        console.error('Form submission error:', result);
+      }
+    } catch (error) {
+      alert('There was a network error. Please check your connection and try again.');
+      console.error('Form submission error:', error);
+    } finally {
+      // Reset button state
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  });
 </script>
+
 </body>
 </html>
-
-
