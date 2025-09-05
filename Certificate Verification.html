@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+   <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZTSGLM0ZH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZZTSGLM0ZH');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MergeScholars – Free academic resources, certificates, and guides for students.">
+  <meta name="keywords" content="MergeScholars, free certificates, student resources, educational tools">
+  <meta name="author" content="Istiak Ahmed Mozumder">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
 <title>MergeScholars Certificate Verification</title>
 
 <!-- Three.js -->
@@ -11,25 +26,84 @@
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
   body, html {
-    margin: 0; padding: 0; height: 100%;
+    height: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
     user-select: none;
     transition: background-color 0.5s, color 0.5s;
   }
 
+  /* Canvas for connecting dots animation */
+  #dots-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  /* Header styles */
+  #header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  #header:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .logo i {
+    font-size: 1.5rem;
+  }
+
 /* THEME STYLES */
 
 body.bonita {
-  background-color: #f4e1c1;
+  background: linear-gradient(135deg, #f4e1c1 0%, #e6c9a3 100%);
   color: #5a381e;
 }
 body.bonita #main {
-  background: rgba(244, 225, 193, 0.85);
+  background: rgba(244, 225, 193, 0.92);
   border-color: #c28e47;
-  box-shadow: 0 0 15px #c28e47;
+  box-shadow: 0 10px 30px rgba(194, 142, 71, 0.3);
 }
 body.bonita input[type="text"] {
   border-color: #c28e47;
@@ -41,12 +115,13 @@ body.bonita input[type="text"]:focus {
   box-shadow: 0 0 10px #a56b1d;
 }
 body.bonita button {
-  background: #c28e47;
+  background: linear-gradient(to right, #c28e47, #d9a663);
   color: white;
-  box-shadow: 0 0 10px #c28e47;
+  box-shadow: 0 4px 15px rgba(194, 142, 71, 0.4);
 }
 body.bonita button:hover {
-  box-shadow: 0 0 20px #a56b1d;
+  box-shadow: 0 6px 20px rgba(165, 107, 29, 0.6);
+  transform: translateY(-2px);
 }
 body.bonita #message {
   color: #5a381e;
@@ -57,47 +132,36 @@ body.bonita #flag-container {
 }
 body.bonita #whatsapp-btn {
   background: #25D366;
-  box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
 }
-
-/* Certificates box colors in bonita theme */
 body.bonita .cert-box.issued {
-  background-color: #e6d5a8; /* lighter warm beige */
+  background: linear-gradient(135deg, #e6d5a8 0%, #d9c495 100%);
   color: #5a381e;
   border-color: #c28e47;
-  box-shadow: 0 0 15px #c28e47;
+  box-shadow: 0 10px 20px rgba(194, 142, 71, 0.3);
 }
-
 body.bonita .cert-box.verified {
-  background-color: #d1bc75; /* a bit darker warm gold */
+  background: linear-gradient(135deg, #d1bc75 0%, #c5ab5f 100%);
   color: #5a381e;
   border-color: #a56b1d;
-  box-shadow: 0 0 15px #a56b1d;
+  box-shadow: 0 10px 20px rgba(165, 107, 29, 0.3);
 }
-
-/* Neon color for hover effect */
-body.bonita {
-  --neon-color: #c28e47;
+body.bonita #header {
+  border-bottom: 1px solid rgba(194, 142, 71, 0.3);
 }
-
-body.bonita .cert-box:hover {
-  color: var(--neon-color);
-  border-color: var(--neon-color);
-  box-shadow:
-    0 0 8px var(--neon-color),
-    0 0 20px var(--neon-color),
-    0 0 30px var(--neon-color);
+body.bonita .theme-btn.active {
+  background: rgba(194, 142, 71, 0.2);
+  border: 1px solid #c28e47;
 }
-
 
 body.sunora {
-  background-color: #0a0f22;
+  background: linear-gradient(135deg, #0a0f22 0%, #1a2342 100%);
   color: #0ff;
 }
 body.sunora #main {
-  background: rgba(10, 15, 34, 0.85);
+  background: rgba(10, 15, 34, 0.92);
   border-color: #0ff;
-  box-shadow: 0 0 15px #0ff;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
 }
 body.sunora input[type="text"] {
   border-color: #0ff;
@@ -109,12 +173,13 @@ body.sunora input[type="text"]:focus {
   box-shadow: 0 0 10px #00ffff;
 }
 body.sunora button {
-  background: #0ff;
+  background: linear-gradient(to right, #0ff, #4deeea);
   color: black;
-  box-shadow: 0 0 10px #0ff;
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
 }
 body.sunora button:hover {
-  box-shadow: 0 0 20px #0ff;
+  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 body.sunora #message {
   color: #0ff;
@@ -125,17 +190,24 @@ body.sunora #flag-container {
 }
 body.sunora #whatsapp-btn {
   background: #25D366;
-  box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+body.sunora #header {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+}
+body.sunora .theme-btn.active {
+  background: rgba(0, 255, 255, 0.2);
+  border: 1px solid #0ff;
 }
 
 body.luna {
-  background-color: #fcfcfc;
+  background: linear-gradient(135deg, #fcfcfc 0%, #e6e6e6 100%);
   color: #444;
 }
 body.luna #main {
   background: rgba(255, 255, 255, 0.95);
   border-color: #888;
-  box-shadow: 0 0 15px #888;
+  box-shadow: 0 10px 30px rgba(136, 136, 136, 0.3);
 }
 body.luna input[type="text"] {
   border-color: #888;
@@ -147,12 +219,13 @@ body.luna input[type="text"]:focus {
   box-shadow: 0 0 10px #555;
 }
 body.luna button {
-  background: #555;
+  background: linear-gradient(to right, #555, #777);
   color: white;
-  box-shadow: 0 0 10px #555;
+  box-shadow: 0 4px 15px rgba(85, 85, 85, 0.4);
 }
 body.luna button:hover {
-  box-shadow: 0 0 20px #333;
+  box-shadow: 0 6px 20px rgba(51, 51, 51, 0.6);
+  transform: translateY(-2px);
 }
 body.luna #message {
   color: #444;
@@ -163,89 +236,102 @@ body.luna #flag-container {
 }
 body.luna #whatsapp-btn {
   background: #25D366;
-  box-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
 }
-
-
-  #earth-container {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: 0;
-  }
+body.luna #header {
+  border-bottom: 1px solid rgba(136, 136, 136, 0.3);
+}
+body.luna .theme-btn.active {
+  background: rgba(136, 136, 136, 0.2);
+  border: 1px solid #888;
+}
 
   #main {
     position: relative;
     z-index: 10;
-    max-width: 450px;
-    margin: 4vh auto;
-    padding: 2rem;
-    border-radius: 10px;
+    max-width: 500px;
+    margin: 100px auto 40px;
+    padding: 2.5rem;
+    border-radius: 20px;
     border: 2px solid currentColor;
+    backdrop-filter: blur(5px);
+    animation: fadeInUp 0.8s ease-out;
   }
 
   h1 {
     margin-top: 0;
     text-align: center;
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, currentColor 0%, #888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
     font-weight: 600;
+    font-size: 1.1rem;
   }
 
   input[type="text"] {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.8rem 1.2rem;
     font-size: 1.1rem;
-    border-radius: 5px;
+    border-radius: 10px;
     outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: all 0.3s;
     border: 2px solid currentColor;
     background-color: transparent;
     color: inherit;
   }
 
   input.shake {
-    animation: shake 0.3s;
+    animation: shake 0.4s;
   }
 
   @keyframes shake {
     0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
     100% { transform: translateX(0); }
   }
 
   button {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     width: 100%;
     font-weight: 700;
     font-size: 1.2rem;
-    padding: 0.7rem;
+    padding: 0.9rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s;
   }
 
   button:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
   }
 
   #message {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     min-height: 6rem;
     font-size: 1.1rem;
     white-space: pre-wrap;
     font-family: monospace;
-    line-height: 1.3;
+    line-height: 1.4;
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
   }
 
   #action-buttons {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -254,28 +340,30 @@ body.luna #whatsapp-btn {
 
   #action-buttons button {
     flex: 1;
+    min-width: 180px;
   }
 
   /* WhatsApp floating button */
   #whatsapp-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
-    box-shadow: 0 0 15px #25D366, 0 0 30px #25D366;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 30;
-    transition: transform 0.2s ease;
+    transition: all 0.3s;
     background-color: #25D366;
   }
 
   #whatsapp-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
   }
 
   #whatsapp-btn svg {
@@ -286,57 +374,152 @@ body.luna #whatsapp-btn {
 
   /* Theme toggle button */
   #theme-toggle-container {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 25;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
 
-  #theme-toggle-container button {
-    padding: 0.4rem 0.8rem;
-    font-weight: 700;
-    border-radius: 5px;
-    border: 2px solid transparent;
+  .theme-btn {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s;
-    background-color: transparent;
-    color: inherit;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
   }
 
-  #theme-toggle-container button:hover,
-  #theme-toggle-container button:focus {
-    border-color: currentColor;
+  .theme-btn:hover {
+    transform: translateY(-3px);
   }
 
   /* Notification toast */
   #toast {
     position: fixed;
-    bottom: 90px;
-    right: 20px;
+    bottom: 100px;
+    right: 25px;
     background: rgba(0,0,0,0.85);
     color: #0ff;
-    padding: 0.8rem 1.2rem;
-    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
     font-weight: 600;
-    box-shadow: 0 0 15px #0ff;
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s;
+    transition: all 0.4s;
     z-index: 100;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   #toast.show {
     opacity: 1;
-    pointer-events: auto;
+    transform: translateY(-10px);
   }
 
+  /* Certificates container */
+  .certificates-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin: 40px auto;
+    max-width: 90%;
+    animation: fadeInUp 1s ease forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Boxes */
+  .cert-box {
+    flex: 1 1 250px;
+    max-width: 300px;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.4s ease;
+    cursor: default;
+    user-select: none;
+    opacity: 0.9;
+    border: 2px solid transparent;
+    animation: pulse 2s infinite;
+  }
+
+  .cert-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .cert-box p {
+    font-size: 2.8rem;
+    font-weight: 800;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #main {
+      margin: 90px 20px 30px;
+      padding: 1.5rem;
+    }
+    
+    .certificates-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    #theme-toggle-container {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    #header {
+      padding: 1rem;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+    }
+  }
 </style>
 </head>
 <body class="sunora">
 
-<div id="earth-container"></div>
+<canvas id="dots-canvas"></canvas>
+
+<header id="header">
+  <a href="index.html" class="logo">
+    <i class="fas fa-graduation-cap"></i>
+    <span>MergeScholars</span>
+  </a>
+  <div id="theme-toggle-container" aria-label="Theme selection">
+    <button type="button" class="theme-btn" data-theme="bonita" aria-pressed="false">Desert</button>
+    <button type="button" class="theme-btn active" data-theme="sunora" aria-pressed="true">Neon</button>
+    <button type="button" class="theme-btn" data-theme="luna" aria-pressed="false">Classic</button>
+  </div>
+</header>
 
 <div id="main" role="main" aria-label="Certificate verification section">
   <h1>Certificate Verification</h1>
@@ -350,25 +533,27 @@ body.luna #whatsapp-btn {
   </div>
 </div>
 
-<!-- Removed flag-container completely -->
-
-<div id="whatsapp-btn" title="Contact Support via WhatsApp" role="button" aria-label="Contact Support via WhatsApp" tabindex="0">
-  <!-- Updated WhatsApp Icon SVG -->
-  <svg viewBox="0 0 448 512" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <path d="M380.9 97.1C339-2.9 235.7-24.2 158.6 43.2c-47 45.7-50.5 115.9-39 175.8-43.5-13-80.7-48.6-80.8-109.1-1.1-77.2 73.6-139.1 134.5-118.3 26.6 9.3 43.5 28.6 54.8 45.7 18.3 27.8 21.9 72.6 15.6 109.7-6 33.4-32 50-47 64.2-21.3 20.2-27.9 27.9-44 35.8 17.7 5.2 38.6 6.8 58 3.5 38.4-6.6 64.2-31.8 81.7-60.8 9.7-16.7 16.8-36.4 18-57.1 0-12.6-5.8-23.4-16.1-30.6zM319.4 383c-3.9 1.6-8 3.3-12.3 5.2-19.2 8.9-32.9 14.3-47.3 22.8-20.7 12.4-45.7 29.4-66.2 40.4-29.8 15.3-56.4 23.4-83.5 12.4-15.3-6.3-29.1-23.4-34.4-39.4-6.2-19.8-4.2-43.8 2-66.3 10-38.8 40.5-67.6 81-78.6 33.9-8.7 68.8-1.7 98.3 8.5 21.9 7.2 40.4 18.9 52.9 37.2 4.7 7.6 8.8 16.5 11.2 26.1 1.3 5.2 1.9 11.1 1.7 17.5-.3 11.6-3.7 20.7-9.2 27.7-3.8 5-7.3 7.9-12.6 10z"/>
-  </svg>
+<div class="certificates-container">
+  <div class="cert-box issued">
+    <h2>Certificate Issued</h2>
+    <p><span class="count" data-target="50">0</span>+</p>
+  </div>
+  <div class="cert-box verified">
+    <h2>Certificate Verified</h2>
+    <p><span class="count" data-target="20">0</span>+</p>
+  </div>
 </div>
 
-<div id="theme-toggle-container" aria-label="Theme selection">
-  <button type="button" data-theme="bonita" aria-pressed="false">Bonita Desert</button>
-  <button type="button" data-theme="sunora" aria-pressed="true">Sunora Moon</button>
-  <button type="button" data-theme="luna" aria-pressed="false">Luna Bella</button>
+<div id="whatsapp-btn" title="Contact Support via WhatsApp" role="button" aria-label="Contact Support via WhatsApp" tabindex="0">
+  <svg viewBox="0 0 448 512" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path d="M380.9 97.1C339-2.9 235.7-24.2 158.6 43.2c-47 45.7-50 115.9-39 175.8-43.5-13-80.7-48.6-80.8-109.1-1.1-77.2 73.6-139.1 134.5-118.3 26.6 9.3 43.5 28.6 54.8 45.7 18.3 27.8 21.9 72.6 15.6 109.7-6 33.4-32 50-47 64.2-21.3 20.2-27.9 27.9-44 35.8 17.7 5.2 38.6 6.8 58 3.5 38.4-6.6 64.2-31.8 81.7-60.8 9.7-16.7 16.8-36.4 18-57.1 0-12.6-5.8-23.4-16.1-30.6zM319.4 383c-3.9 1.6-8 3.3-12.3 5.2-19.2 8.9-32.9 14.3-47.3 22.8-20.7 12.4-45.7 29.4-66.2 40.4-29.8 15.3-56.4 23.4-83.5 12.4-15.3-6.3-29.1-23.4-34.4-39.4-6.2-19.8-4.2-43.8 2-66.3 10-38.8 40.5-67.6 81-78.6 33.9-8.7 68.8-1.7 98.3 8.5 21.9 7.2 40.4 18.9 52.9 37.2 4.7 7.6 8.8 16.5 11.2 26.1 1.3 5.2 1.9 11.1 1.7 17.5-.3 11.6-3.7 20.7-9.2 27.7-3.8 5-7.3 7.9-12.6 10z"/>
+  </svg>
 </div>
 
 <div id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
 
-  <script>
-  // Certificate data - Add more certificates here
+<script>
+  // Certificate data
   const validCertificates = {
     "2016345022": {
       name: "Istiak Ahmed Mozumder",
@@ -399,8 +584,8 @@ body.luna #whatsapp-btn {
       issuer: "MergeScholars Team"
     }
   };
-</script>
-<script>
+
+  // DOM elements
   const certInput = document.getElementById('cert-id');
   const verifyBtn = document.getElementById('verify-btn');
   const messageDiv = document.getElementById('message');
@@ -409,13 +594,106 @@ body.luna #whatsapp-btn {
   const actionButtonsDiv = document.getElementById('action-buttons');
   const toast = document.getElementById('toast');
   const whatsappBtn = document.getElementById('whatsapp-btn');
+  const dotsCanvas = document.getElementById('dots-canvas');
+  const themeButtons = document.querySelectorAll('.theme-btn');
 
   let currentCert = null;
 
-  // Typing effect helper - super fast (~2 sec total for full text)
+  // Dot pattern animation
+  function initDotsAnimation() {
+    const canvas = dotsCanvas;
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    
+    canvas.width = width;
+    canvas.height = height;
+    
+    const dots = [];
+    const dotCount = 80;
+    const connectionDistance = 150;
+    
+    // Create dots
+    for (let i = 0; i < dotCount; i++) {
+      dots.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 2 + 1
+      });
+    }
+    
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // Get current theme color
+      let dotColor, lineColor;
+      if (document.body.classList.contains('bonita')) {
+        dotColor = '194, 142, 71';
+        lineColor = '194, 142, 71';
+      } else if (document.body.classList.contains('sunora')) {
+        dotColor = '0, 255, 255';
+        lineColor = '0, 255, 255';
+      } else {
+        dotColor = '136, 136, 136';
+        lineColor = '136, 136, 136';
+      }
+      
+      // Draw and update dots
+      for (let i = 0; i < dots.length; i++) {
+        const dot = dots[i];
+        
+        // Draw dot
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${dotColor}, 0.8)`;
+        ctx.fill();
+        
+        // Update position
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+        
+        // Bounce off walls
+        if (dot.x < 0 || dot.x > width) dot.vx *= -1;
+        if (dot.y < 0 || dot.y > height) dot.vy *= -1;
+        
+        // Draw connections
+        for (let j = i + 1; j < dots.length; j++) {
+          const otherDot = dots[j];
+          const dx = dot.x - otherDot.x;
+          const dy = dot.y - otherDot.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < connectionDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${lineColor}, ${1 - dist/connectionDistance})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(dot.x, dot.y);
+            ctx.lineTo(otherDot.x, otherDot.y);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      requestAnimationFrame(draw);
+    }
+    
+    draw();
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
+  }
+
+  // Typing effect helper
   async function typeText(element, text) {
     element.textContent = "";
-    const totalDuration = 2000; // 2 seconds total
+    const totalDuration = 2000;
     const delay = totalDuration / text.length;
     for (const char of text) {
       element.textContent += char;
@@ -474,7 +752,7 @@ body.luna #whatsapp-btn {
     }
   });
 
-  // PDF generation - improved professional style
+  // PDF generation
   downloadPdfBtn.addEventListener('click', () => {
     if (!currentCert) return;
 
@@ -506,7 +784,7 @@ body.luna #whatsapp-btn {
 
     // Subtitle
     doc.setFontSize(14);
-    doc.setFont('Cormorant Garamond', );
+    doc.setFont('Cormorant Garamond');
     doc.setTextColor(70, 70, 70);
     doc.text('Certificate Verification Test Copy', margin, margin + 50);
 
@@ -538,7 +816,7 @@ body.luna #whatsapp-btn {
 
       For further authentication or to verify this certificate independently,
       please visit:
-      https://mergescholars.vercel.app/
+       https://mergescholars.vercel.app/Certificate%20Verification.html
       and enter the Certificate ID provided above in the verification section.`;
 
     const splitText = doc.splitTextToSize(mainText, usableWidth);
@@ -592,122 +870,24 @@ body.luna #whatsapp-btn {
     window.open(url, '_blank');
   });
 
-  // 3D Earth setup
-  function createEarth() {
-    const container = document.getElementById('earth-container');
-    if (!container) return;
-
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.z = 3;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
-
-    // Detailed Earth textures
-    const textureLoader = new THREE.TextureLoader();
-    const earthTexture = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthmap4k.jpg'); 
-    const bumpMap = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthbump4k.jpg');
-    const specularMap = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthspec4k.jpg');
-
-    const geometry = new THREE.SphereGeometry(1, 128, 128);
-    const material = new THREE.MeshPhongMaterial({
-      map: earthTexture,
-      bumpMap: bumpMap,
-      bumpScale: 0.05,
-      specularMap: specularMap,
-      specular: new THREE.Color('grey'),
-      shininess: 10,
-    });
-
-    const earth = new THREE.Mesh(geometry, material);
-    scene.add(earth);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 3, 5);
-    scene.add(directionalLight);
-
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-    scene.add(ambientLight);
-
-    let rotation = { x: 0, y: 0 };
-    let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
-
-    container.style.cursor = 'grab';
-
-    container.addEventListener('mousedown', e => {
-      isDragging = true;
-      previousMousePosition = { x: e.clientX, y: e.clientY };
-      container.style.cursor = 'grabbing';
-    });
-
-    container.addEventListener('mouseup', () => {
-      isDragging = false;
-      container.style.cursor = 'grab';
-    });
-
-    container.addEventListener('mouseleave', () => {
-      isDragging = false;
-      container.style.cursor = 'grab';
-    });
-
-    container.addEventListener('mousemove', e => {
-      if (isDragging) {
-        const deltaMove = {
-          x: e.clientX - previousMousePosition.x,
-          y: e.clientY - previousMousePosition.y,
-        };
-        rotation.y += deltaMove.x * 0.005;
-        rotation.x += deltaMove.y * 0.005;
-        rotation.x = Math.min(Math.max(rotation.x, -Math.PI / 2), Math.PI / 2);
-
-        earth.rotation.y = rotation.y;
-        earth.rotation.x = rotation.x;
-
-        previousMousePosition = { x: e.clientX, y: e.clientY };
-      }
-    });
-
-    container.addEventListener('wheel', e => {
-      e.preventDefault();
-      camera.position.z += e.deltaY * 0.0025;
-      camera.position.z = Math.min(Math.max(camera.position.z, 1.5), 5);
-    });
-
-    function animate() {
-      requestAnimationFrame(animate);
-      earth.rotation.y += 0.0004; // slow continuous rotation
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      const widthNew = container.clientWidth;
-      const heightNew = container.clientHeight;
-      renderer.setSize(widthNew, heightNew);
-      camera.aspect = widthNew / heightNew;
-      camera.updateProjectionMatrix();
-    });
-  }
-
   // THEME TOGGLE LOGIC
-  const themeButtons = document.querySelectorAll('#theme-toggle-container button');
-
   function setTheme(themeName) {
     document.body.classList.remove('bonita', 'sunora', 'luna');
     document.body.classList.add(themeName);
 
-    // Update aria-pressed attributes for accessibility
+    // Update active button state
     themeButtons.forEach(btn => {
-      btn.setAttribute('aria-pressed', btn.dataset.theme === themeName ? 'true' : 'false');
+      if (btn.dataset.theme === themeName) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      }
     });
 
     showToast(`Theme changed to ${themeName.replace(/^\w/, c => c.toUpperCase())}`);
+    initDotsAnimation(); // Reinitialize dots with new colors
   }
 
   themeButtons.forEach(button => {
@@ -716,157 +896,12 @@ body.luna #whatsapp-btn {
     });
   });
 
-
-
-</script>
-
-
-
-
-
-<div class="certificates-container">
-  <div class="cert-box issued">
-    <h2>Certificate Issued</h2>
-    <p><span class="count" data-target="50">0</span>+</p>
-  </div>
-  <div class="cert-box verified">
-    <h2>Certificate Verified</h2>
-    <p><span class="count" data-target="20">0</span>+</p>
-  </div>
-</div>
-
-<style>
-  /* Container */
-  .certificates-container {
-    display: flex;
-    gap: 30px;
-    justify-content: center;
-    margin: 40px 0;
-    animation: fadeInUp 1s ease forwards;
-    opacity: 0;
-  }
-
-  /* Boxes */
-  .cert-box {
-    flex: 1 1 250px;
-    max-width: 300px;
-    padding: 25px 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: all 0.4s ease;
-    cursor: default;
-    user-select: none;
-    opacity: 0.9;
-    border: 2px solid transparent;
-  }
-
-  .cert-box h2 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-  }
-
-  .cert-box p {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-
-  /* Neon Hover Effect */
-  .cert-box:hover {
-    opacity: 1;
-    border-color: var(--neon-color);
-    box-shadow:
-      0 0 8px var(--neon-color),
-      0 0 20px var(--neon-color),
-      0 0 30px var(--neon-color);
-    color: var(--neon-color);
-  }
-
-  /* Theme Variables */
-  /* Dark Theme */
-  body.dark {
-    --bg-color: #121212;
-    --text-color: #eee;
-    --issued-bg: #1f1f1f;
-    --verified-bg: #2a2a2a;
-    --neon-color: #0ff;
-  }
-
-  /* Light Theme */
-  body.light {
-    --bg-color: #f9f9f9;
-    --text-color: #222;
-    --issued-bg: #e0f7fa;
-    --verified-bg: #b2ebf2;
-    --neon-color: #0077cc;
-  }
-
-  /* Desert Theme */
-  body.desert {
-    --bg-color: #f4e1b6;
-    --text-color: #5a3e1b;
-    --issued-bg: #d9c495;
-    --verified-bg: #c9b07a;
-    --neon-color: #d97714;
-  }
-
-  /* Applying theme colors to boxes */
-  body.dark .cert-box.issued {
-    background-color: var(--issued-bg);
-    color: var(--text-color);
-  }
-
-  body.dark .cert-box.verified {
-    background-color: var(--verified-bg);
-    color: var(--text-color);
-  }
-
-  body.light .cert-box.issued {
-    background-color: var(--issued-bg);
-    color: var(--text-color);
-  }
-
-  body.light .cert-box.verified {
-    background-color: var(--verified-bg);
-    color: var(--text-color);
-  }
-
-  body.desert .cert-box.issued {
-    background-color: var(--issued-bg);
-    color: var(--text-color);
-  }
-
-  body.desert .cert-box.verified {
-    background-color: var(--verified-bg);
-    color: var(--text-color);
-  }
-
-  /* Fade In Animation */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 0.9;
-      transform: translateY(0);
-    }
-  }
-</style>
-
-<script>
-  window.addEventListener('load', () => {
-    const container = document.querySelector('.certificates-container');
-    if (container) {
-      container.style.opacity = '1';
-    }
-
-    // Animate numbers
+  // Animate numbers in certificate boxes
+  function animateCounters() {
     const counters = document.querySelectorAll('.count');
     counters.forEach(counter => {
       const target = +counter.getAttribute('data-target');
-      const duration = 3500; // 3.5 seconds
+      const duration = 3500;
       let start = 0;
       const stepTime = Math.abs(Math.floor(duration / target));
 
@@ -876,15 +911,27 @@ body.luna #whatsapp-btn {
         if (start < target) {
           setTimeout(increment, stepTime);
         } else {
-          counter.textContent = target; // ensure exact target number
+          counter.textContent = target;
         }
       };
 
       increment();
     });
+  }
+
+  // Initialize everything when page loads
+  window.addEventListener('load', () => {
+    initDotsAnimation();
+    animateCounters();
+    
+    // Make certificate boxes float
+    const certBoxes = document.querySelectorAll('.cert-box');
+    certBoxes.forEach((box, index) => {
+      box.style.animationDelay = `${index * 0.3}s`;
+      box.style.animation = 'fadeInUp 1s ease forwards, float 4s ease-in-out infinite';
+    });
   });
 </script>
-
 
 </body>
 </html>
